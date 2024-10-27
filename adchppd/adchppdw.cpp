@@ -22,7 +22,6 @@
 #include <adchpp/File.h>
 #include <adchpp/LogManager.h>
 #include <adchpp/Util.h>
-#include <adchpp/shared_ptr.h>
 #include <adchpp/version.h>
 
 #include "adchppd.h"
@@ -41,7 +40,7 @@ static const string modName = "adchpp";
 
 bool asService = true;
 static const TCHAR* serviceName = _T("adchpp");
-static adchpp::shared_ptr<Core> core;
+static std::shared_ptr<Core> core;
 static string configPath;
 
 static void installService()

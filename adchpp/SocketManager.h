@@ -161,7 +161,7 @@ namespace adchpp
 
 		static const std::string className;
 
-		typedef shared_ptr<boost::asio::deadline_timer> timer_ptr;
+		typedef std::shared_ptr<boost::asio::deadline_timer> timer_ptr;
 		void addJob(const boost::asio::deadline_timer::duration_type& duration, const Callback& callback);
 		Callback addTimedJob(const boost::asio::deadline_timer::duration_type& duration, const Callback& callback);
 		void setTimer(timer_ptr timer, const boost::asio::deadline_timer::duration_type& duration, Callback* callback);

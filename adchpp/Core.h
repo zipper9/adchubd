@@ -35,7 +35,7 @@ namespace adchpp
 		typedef std::function<void()> Callback;
 		~Core();
 
-		static shared_ptr<Core> create(const std::string& configPath);
+		static std::shared_ptr<Core> create(const std::string& configPath);
 
 		void run();
 

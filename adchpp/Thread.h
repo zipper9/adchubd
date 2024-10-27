@@ -27,14 +27,13 @@
 #endif
 
 #include "Exception.h"
-#include "nullptr.h"
 
 namespace adchpp
 {
 
 	STANDARD_EXCEPTION(ThreadException);
 
-	class Thread : private boost::noncopyable
+	class Thread
 	{
 	public:
 		void start();
@@ -48,9 +47,10 @@ namespace adchpp
 			HIGH = THREAD_PRIORITY_ABOVE_NORMAL
 		};
 
-		Thread() noexcept : threadHandle(INVALID_HANDLE_VALUE)
-		{
-		}
+		Thread() noexcept : threadHandle(INVALID_HANDLE_VALUE) {}
+		Thread(const Thread&) = delete;
+		Thread& operator= (const Thread&) = delete;
+
 		virtual ~Thread()
 		{
 			if (threadHandle != INVALID_HANDLE_VALUE) CloseHandle(threadHandle);
@@ -70,6 +70,7 @@ namespace adchpp
 		{
 			::Sleep(millis);
 		}
+
 		static void yield()
 		{
 			::Sleep(1);
@@ -77,22 +78,25 @@ namespace adchpp
 
 #elif defined(HAVE_PTHREAD)
 
-		enum Priority{ LOW = 1, NORMAL = 0, HIGH = -1 };
-		Thread() noexcept : t(0)
+		enum Priority
 		{
-		}
+			LOW = 1,
+			NORMAL = 0,
+			HIGH = -1
+		};
+
+		Thread() noexcept : t(0) {}
+
 		virtual ~Thread()
 		{
-			if (t != 0)
-			{
-				pthread_detach(t);
-			}
+			if (t != 0) pthread_detach(t);
 		}
 
 		void setThreadPriority(Priority p)
 		{
 			setpriority(PRIO_PROCESS, 0, p);
 		}
+
 		bool isRunning()
 		{
 			return (t != 0);

@@ -70,7 +70,7 @@ namespace adchpp
 		PluginDataDeleter deleter;
 	};
 
-	typedef shared_ptr<PluginData> PluginDataHandle;
+	typedef std::shared_ptr<PluginData> PluginDataHandle;
 
 } // namespace adchpp
 

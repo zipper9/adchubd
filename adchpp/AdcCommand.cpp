@@ -25,17 +25,6 @@
 namespace adchpp
 {
 
-#ifdef __GNUC__ /// @todo go figure why some GCCs need these...
-	const char AdcCommand::TYPE_BROADCAST;
-	const char AdcCommand::TYPE_CLIENT;
-	const char AdcCommand::TYPE_DIRECT;
-	const char AdcCommand::TYPE_ECHO;
-	const char AdcCommand::TYPE_FEATURE;
-	const char AdcCommand::TYPE_INFO;
-	const char AdcCommand::TYPE_HUB;
-	const char AdcCommand::TYPE_UDP;
-#endif
-
 	using namespace std;
 
 	AdcCommand::AdcCommand()

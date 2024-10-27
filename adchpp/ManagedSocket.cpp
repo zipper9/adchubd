@@ -261,19 +261,10 @@ namespace adchpp
 		{
 			failedHandler(reason, info);
 
-			// using nullptr fails on older GCCs for which we're using nullptr.h; using
-			// 0 fails on VS...
-#ifndef FAKE_NULLPTR
 			connectedHandler = nullptr;
 			readyHandler = nullptr;
 			dataHandler = nullptr;
 			failedHandler = nullptr;
-#else
-			connectedHandler = 0;
-			readyHandler = 0;
-			dataHandler = 0;
-			failedHandler = 0;
-#endif
 		}
 	}
 

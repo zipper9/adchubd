@@ -22,7 +22,7 @@
 namespace adchpp
 {
 
-	class AsyncStream : private boost::noncopyable
+	class AsyncStream
 	{
 	public:
 		typedef std::function<void(const boost::system::error_code& ec, size_t)> Handler;
@@ -37,11 +37,9 @@ namespace adchpp
 		virtual void shutdown(const Handler& handler) = 0;
 		virtual void close() = 0;
 
-		virtual ~AsyncStream()
-		{
-		}
+		virtual ~AsyncStream() {}
 	};
 
-	typedef shared_ptr<AsyncStream> AsyncStreamPtr;
+	typedef std::shared_ptr<AsyncStream> AsyncStreamPtr;
 
 } // namespace adchpp

@@ -22,15 +22,14 @@
 namespace adchpp
 {
 
-	struct Connection : private boost::noncopyable
+	struct Connection
 	{
 	public:
-		Connection()
-		{
-		}
-		virtual ~Connection()
-		{
-		}
+		Connection() {}
+		virtual ~Connection() {}
+
+		Connection(const Connection&) = delete;
+		Connection& operator= (const Connection&) = delete;
 
 		virtual void disconnect() = 0;
 	};
@@ -87,10 +86,7 @@ namespace adchpp
 
 		struct SlotConnection : public Connection
 		{
-			SlotConnection(Signal<F>* sig_, const typename SlotList::iterator& i_)
-			: sig(sig_), i(i_)
-			{
-			}
+			SlotConnection(Signal<F>* sig, const typename SlotList::iterator& i) : sig(sig), i(i) {}
 
 			virtual void disconnect()
 			{
@@ -101,11 +97,12 @@ namespace adchpp
 		};
 	};
 
-	struct ManagedConnection : private boost::noncopyable
+	struct ManagedConnection
 	{
-		ManagedConnection(ConnectionPtr&& conn_) : conn(move(conn_))
-		{
-		}
+		ManagedConnection(ConnectionPtr&& conn) : conn(move(conn)) {}
+
+		ManagedConnection(const ManagedConnection&) = delete;
+		ManagedConnection& operator= (const ManagedConnection&) = delete;
 
 		void disconnect()
 		{
@@ -130,7 +127,7 @@ namespace adchpp
 		ConnectionPtr conn;
 	};
 
-	typedef shared_ptr<ManagedConnection> ManagedConnectionPtr;
+	typedef std::shared_ptr<ManagedConnection> ManagedConnectionPtr;
 
 	template <typename F1, typename F2>
 	inline ManagedConnectionPtr manage(Signal<F1>* signal, const F2& f)

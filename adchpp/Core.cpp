@@ -28,9 +28,9 @@
 namespace adchpp
 {
 
-	shared_ptr<Core> Core::create(const std::string& configPath)
+	std::shared_ptr<Core> Core::create(const std::string& configPath)
 	{
-		auto ret = shared_ptr<Core>(new Core(configPath));
+		auto ret = std::shared_ptr<Core>(new Core(configPath));
 		ret->init();
 		return ret;
 	}

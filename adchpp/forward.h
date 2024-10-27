@@ -21,34 +21,28 @@
 
 #include <vector>
 
-#include "shared_ptr.h"
-
 namespace adchpp
 {
 
 	class Client;
-
 	class ClientManager;
-
 	class Core;
-
 	class Entity;
-
 	class LogManager;
 
 	class ManagedSocket;
-	typedef shared_ptr<ManagedSocket> ManagedSocketPtr;
+	typedef std::shared_ptr<ManagedSocket> ManagedSocketPtr;
 
 	class PluginManager;
 
 	struct ServerInfo;
-	typedef shared_ptr<ServerInfo> ServerInfoPtr;
+	typedef std::shared_ptr<ServerInfo> ServerInfoPtr;
 	typedef std::vector<ServerInfoPtr> ServerInfoList;
 
 	class SimpleXML;
 
 	class SocketFactory;
-	typedef shared_ptr<SocketFactory> SocketFactoryPtr;
+	typedef std::shared_ptr<SocketFactory> SocketFactoryPtr;
 
 	class SocketManager;
 

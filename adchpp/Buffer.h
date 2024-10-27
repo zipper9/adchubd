@@ -28,7 +28,7 @@ namespace adchpp
 	/**
 	 * Reference-counted buffer
 	 */
-	class Buffer : public FastAlloc<Buffer>, private boost::noncopyable
+	class Buffer : public FastAlloc<Buffer>
 	{
 	public:
 		Buffer(const std::string& str) : bufp(pool.get())
@@ -43,6 +43,9 @@ namespace adchpp
 		{
 			resize(size);
 		}
+
+		Buffer(const Buffer&) = delete;
+		Buffer& operator= (const Buffer&) = delete;
 
 		operator const ByteVector&() const
 		{
@@ -117,7 +120,7 @@ namespace adchpp
 		static SimplePool<ByteVector, Clear> pool;
 	};
 
-	typedef shared_ptr<Buffer> BufferPtr;
+	typedef std::shared_ptr<Buffer> BufferPtr;
 	typedef std::vector<BufferPtr> BufferList;
 
 } // namespace adchpp

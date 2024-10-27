@@ -36,10 +36,13 @@ namespace adchpp
 	/**
 	 * An asynchronous socket managed by SocketManager.
 	 */
-	class ManagedSocket : private boost::noncopyable, public enable_shared_from_this<ManagedSocket>
+	class ManagedSocket : public std::enable_shared_from_this<ManagedSocket>
 	{
 	public:
 		ManagedSocket(SocketManager& sm, const AsyncStreamPtr& sock_, const ServerInfoPtr& aServer);
+
+		ManagedSocket(const ManagedSocket&) = delete;
+		ManagedSocket& operator= (const ManagedSocket&) = delete;
 
 		/** Asynchronous write */
 		void write(const BufferPtr& buf, bool lowPrio = false) noexcept;

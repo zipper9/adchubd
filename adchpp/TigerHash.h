@@ -22,7 +22,7 @@
 namespace adchpp
 {
 
-	class TigerHash : private boost::noncopyable
+	class TigerHash
 	{
 	public:
 		/** Hash size */
@@ -43,9 +43,8 @@ namespace adchpp
 			res[2] = initial_res[2];
 		}
 
-		~TigerHash()
-		{
-		}
+		TigerHash(const TigerHash&) = delete;
+		TigerHash& operator= (const TigerHash&) = delete;
 
 		/** Calculates the Tiger hash of the data. */
 		void update(const void* data, size_t len);

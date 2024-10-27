@@ -244,7 +244,7 @@ namespace adchpp
 			   Util::toString(ep.port());
 	}
 
-	class SocketFactory : public enable_shared_from_this<SocketFactory>, boost::noncopyable
+	class SocketFactory : public enable_shared_from_this<SocketFactory>
 	{
 	public:
 		SocketFactory(SocketManager& sm,
@@ -295,6 +295,9 @@ namespace adchpp
 			}
 #endif
 		}
+
+		SocketFactory(const SocketFactory&) = delete;
+		SocketFactory& operator= (const SocketFactory&) = delete;
 
 		void prepareAccept()
 		{

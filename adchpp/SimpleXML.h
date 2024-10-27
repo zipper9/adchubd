@@ -31,11 +31,14 @@ namespace adchpp
 	 * A simple XML class that loads an XML-ish structure into an internal tree
 	 * and allows easy access to each element through a "current location".
 	 */
-	class SimpleXML : private boost::noncopyable
+	class SimpleXML
 	{
 	public:
 		SimpleXML(int numAttribs = 0);
 		~SimpleXML();
+
+		SimpleXML(const SimpleXML&) = delete;
+		SimpleXML& operator= (const SimpleXML&) = delete;
 
 		void addTag(const std::string& aName, const std::string& aData = Util::emptyString);
 		void addTag(const std::string& aName, int aData)

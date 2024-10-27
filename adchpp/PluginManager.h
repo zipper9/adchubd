@@ -125,7 +125,7 @@ namespace adchpp
 	class PluginManager
 	{
 	public:
-		typedef std::unordered_map<std::string, shared_ptr<Plugin>> Registry;
+		typedef std::unordered_map<std::string, std::shared_ptr<Plugin>> Registry;
 
 		/**
 		 * This is a thread-safe method to call when you need to perform some work
@@ -175,7 +175,7 @@ namespace adchpp
 		 * Register a plugin interface under a name.
 		 * @return false if name was already registered and call fails
 		 */
-		bool registerPlugin(const std::string& name, shared_ptr<Plugin> ptr)
+		bool registerPlugin(const std::string& name, std::shared_ptr<Plugin> ptr)
 		{
 			return registry.insert(std::make_pair(name, ptr)).second;
 		}
@@ -189,10 +189,10 @@ namespace adchpp
 		/**
 		 * @return Plugin interface, or an empty pointer if not found
 		 */
-		shared_ptr<Plugin> getPlugin(const std::string& name)
+		std::shared_ptr<Plugin> getPlugin(const std::string& name)
 		{
 			auto i = registry.find(name);
-			return i == registry.end() ? shared_ptr<Plugin>() : i->second;
+			return i == registry.end() ? std::shared_ptr<Plugin>() : i->second;
 		}
 
 		/**

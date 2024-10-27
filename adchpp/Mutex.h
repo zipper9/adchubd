@@ -27,40 +27,25 @@ namespace adchpp
 	template <typename Mutex> class ScopedLock
 	{
 	public:
-		ScopedLock(Mutex& m_) : m(m_)
-		{
-			m.lock();
-		}
-		~ScopedLock()
-		{
-			m.unlock();
-		}
+		ScopedLock(Mutex& m) : m(m) { m.lock(); }
+		~ScopedLock() { m.unlock(); }
 
 	private:
 		Mutex& m;
 	};
 
 #if defined(_WIN32)
-	class RecursiveMutex : private boost::noncopyable
+	class RecursiveMutex
 	{
 	public:
-		RecursiveMutex()
-		{
-			InitializeCriticalSection(&cs);
-		}
-		~RecursiveMutex()
-		{
-			DeleteCriticalSection(&cs);
-		}
+		RecursiveMutex() { InitializeCriticalSection(&cs); }
+		~RecursiveMutex() { DeleteCriticalSection(&cs); }
 
-		void lock()
-		{
-			EnterCriticalSection(&cs);
-		}
-		void unlock()
-		{
-			LeaveCriticalSection(&cs);
-		}
+		RecursiveMutex(const RecursiveMutex&) = delete;
+		RecursiveMutex& operator= (const RecursiveMutex&) = delete;
+
+		void lock() { EnterCriticalSection(&cs); }
+		void unlock() { LeaveCriticalSection(&cs); }
 
 		typedef ScopedLock<RecursiveMutex> Lock;
 
@@ -68,15 +53,13 @@ namespace adchpp
 		CRITICAL_SECTION cs;
 	};
 
-	class FastMutex : private boost::noncopyable
+	class FastMutex
 	{
 	public:
-		FastMutex() : val(0)
-		{
-		}
-		~FastMutex()
-		{
-		}
+		FastMutex() : val(0) {}
+
+		FastMutex(const FastMutex&) = delete;
+		FastMutex& operator= (const FastMutex&) = delete;
 
 		void lock()
 		{
@@ -96,7 +79,7 @@ namespace adchpp
 
 #elif defined(HAVE_PTHREAD)
 
-	class RecursiveMutex : private boost::noncopyable
+	class RecursiveMutex
 	{
 	public:
 		RecursiveMutex() noexcept
@@ -111,14 +94,12 @@ namespace adchpp
 		{
 			pthread_mutex_destroy(&mtx);
 		}
-		void lock() noexcept
-		{
-			pthread_mutex_lock(&mtx);
-		}
-		void unlock() noexcept
-		{
-			pthread_mutex_unlock(&mtx);
-		}
+
+		RecursiveMutex(const RecursiveMutex&) = delete;
+		RecursiveMutex& operator= (const RecursiveMutex&) = delete;
+
+		void lock() noexcept { pthread_mutex_lock(&mtx); }
+		void unlock() noexcept { pthread_mutex_unlock(&mtx); }
 
 		typedef ScopedLock<RecursiveMutex> Lock;
 
@@ -126,7 +107,7 @@ namespace adchpp
 		pthread_mutex_t mtx;
 	};
 
-	class FastMutex : private boost::noncopyable
+	class FastMutex
 	{
 	public:
 		FastMutex() noexcept
@@ -141,14 +122,12 @@ namespace adchpp
 		{
 			pthread_mutex_destroy(&mtx);
 		}
-		void lock() noexcept
-		{
-			pthread_mutex_lock(&mtx);
-		}
-		void unlock() noexcept
-		{
-			pthread_mutex_unlock(&mtx);
-		}
+
+		FastMutex(const FastMutex&) = delete;
+		FastMutex& operator= (const FastMutex&) = delete;
+
+		void lock() noexcept { pthread_mutex_lock(&mtx); }
+		void unlock() noexcept { pthread_mutex_unlock(&mtx); }
 
 		typedef ScopedLock<FastMutex> Lock;
 

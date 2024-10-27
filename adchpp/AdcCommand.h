@@ -29,15 +29,12 @@ namespace adchpp
 
 	STANDARD_EXCEPTION(ParseException);
 
-	class AdcCommand : private boost::noncopyable
+	class AdcCommand
 	{
 	public:
 		template <uint32_t T> struct Type
 		{
-			enum
-			{
-				CMD = T
-			};
+			enum { CMD = T };
 		};
 
 		enum Error
@@ -85,7 +82,7 @@ namespace adchpp
 		{
 			PRIORITY_NORMAL, ///< Default priority, command will be sent out normally
 			PRIORITY_LOW,	 ///< Low priority, command will only be sent if connection
-							 ///< isn't saturated
+			                 ///< isn't saturated
 			PRIORITY_IGNORE	 ///< Ignore, command will not be put in send queue
 		};
 
@@ -185,6 +182,9 @@ namespace adchpp
 		{
 			parse((const char*)buffer->data(), buffer->size());
 		}
+
+		AdcCommand(const AdcCommand&) = delete;
+		AdcCommand& operator= (const AdcCommand&) = delete;
 
 		void parse(const std::string& str)
 		{

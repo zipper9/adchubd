@@ -29,7 +29,7 @@
 namespace adchpp
 {
 
-	class Entity : private boost::noncopyable
+	class Entity
 	{
 	public:
 		enum State
@@ -80,6 +80,9 @@ namespace adchpp
 		Entity(ClientManager& cm, uint32_t sid_) : sid(sid_), state(STATE_PROTOCOL), cm(cm)
 		{
 		}
+
+		Entity(const Entity&) = delete;
+		Entity& operator= (const Entity&) = delete;
 
 		void send(const AdcCommand& cmd)
 		{

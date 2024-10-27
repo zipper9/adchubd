@@ -22,7 +22,6 @@
 #include <adchpp/Core.h>
 #include <adchpp/File.h>
 #include <adchpp/Util.h>
-#include <adchpp/shared_ptr.h>
 #include <adchpp/version.h>
 
 #include <limits.h>
@@ -37,7 +36,7 @@ using namespace adchpp;
 static FILE* pidFile;
 static string pidFileName;
 static bool asdaemon = false;
-static shared_ptr<Core> core;
+static std::shared_ptr<Core> core;
 
 static void installHandler();
 
