@@ -29,7 +29,7 @@
 namespace adchpp
 {
 
-	class ADCHPP_VISIBLE Entity : private boost::noncopyable
+	class Entity : private boost::noncopyable
 	{
 	public:
 		enum State
@@ -87,39 +87,39 @@ namespace adchpp
 		}
 		virtual void send(const BufferPtr& cmd) = 0;
 
-		ADCHPP_DLL virtual void inject(AdcCommand& cmd);
+		virtual void inject(AdcCommand& cmd);
 
-		ADCHPP_DLL const std::string& getField(const char* name) const;
-		ADCHPP_DLL bool hasField(const char* name) const;
-		ADCHPP_DLL void setField(const char* name, const std::string& value);
+		const std::string& getField(const char* name) const;
+		bool hasField(const char* name) const;
+		void setField(const char* name, const std::string& value);
 
 		/** Add any flags that have been updated to the AdcCommand (type etc is not
 		 * set) */
-		ADCHPP_DLL bool getAllFields(AdcCommand& cmd) const noexcept;
-		ADCHPP_DLL const BufferPtr& getINF() const;
+		bool getAllFields(AdcCommand& cmd) const noexcept;
+		const BufferPtr& getINF() const;
 
-		ADCHPP_DLL bool addSupports(uint32_t feature);
-		ADCHPP_DLL StringList getSupportList() const;
-		ADCHPP_DLL bool hasSupport(uint32_t feature) const;
-		ADCHPP_DLL bool removeSupports(uint32_t feature);
+		bool addSupports(uint32_t feature);
+		StringList getSupportList() const;
+		bool hasSupport(uint32_t feature) const;
+		bool removeSupports(uint32_t feature);
 
-		ADCHPP_DLL bool hasClientSupport(uint32_t feature) const;
-		ADCHPP_DLL bool removeClientSupport(uint32_t feature);
+		bool hasClientSupport(uint32_t feature) const;
+		bool removeClientSupport(uint32_t feature);
 
 		/** Remove supports for the protocol that wasn't used for connecting **/
-		ADCHPP_DLL void stripProtocolSupports() noexcept;
+		void stripProtocolSupports() noexcept;
 
-		ADCHPP_DLL const BufferPtr& getSUP() const;
+		const BufferPtr& getSUP() const;
 
 		uint32_t getSID() const
 		{
 			return sid;
 		}
 
-		ADCHPP_DLL bool isFiltered(const std::string& features) const;
+		bool isFiltered(const std::string& features) const;
 
-		ADCHPP_DLL void updateFields(const AdcCommand& cmd);
-		ADCHPP_DLL void updateSupports(const AdcCommand& cmd) noexcept;
+		void updateFields(const AdcCommand& cmd);
+		void updateSupports(const AdcCommand& cmd) noexcept;
 
 		/**
 		 * Set PSD (plugin specific data). This allows a plugin to store arbitrary
@@ -130,20 +130,20 @@ namespace adchpp
 		 * @param id Id as retrieved from PluginManager::getPluginId()
 		 * @param data Data to store, this can be pretty much anything
 		 */
-		ADCHPP_DLL void setPluginData(const PluginDataHandle& handle, void* data) noexcept;
+		void setPluginData(const PluginDataHandle& handle, void* data) noexcept;
 
 		/**
 		 * @param handle Plugin data handle, as returned by
 		 * PluginManager::registerPluginData
 		 * @return Value stored, NULL if none found
 		 */
-		ADCHPP_DLL void* getPluginData(const PluginDataHandle& handle) const noexcept;
+		void* getPluginData(const PluginDataHandle& handle) const noexcept;
 
 		/**
 		 * Clear any data referenced by the handle, calling the registered delete
 		 * function.
 		 */
-		ADCHPP_DLL void clearPluginData(const PluginDataHandle& handle) noexcept;
+		void clearPluginData(const PluginDataHandle& handle) noexcept;
 
 		const CID& getCID() const { return cid; }
 		void setCID(const CID& cid_) { cid = cid_; }
@@ -153,17 +153,17 @@ namespace adchpp
 
 		bool isSet(size_t flag) const { return flags.isSet(flag); }
 		bool isAnySet(size_t flag) const { return flags.isAnySet(flag); }
-		ADCHPP_DLL void setFlag(size_t flag);
-		ADCHPP_DLL void unsetFlag(size_t flag);
+		void setFlag(size_t flag);
+		void unsetFlag(size_t flag);
 
-		ADCHPP_DLL virtual void disconnect(Util::Reason reason, const std::string& info = Util::emptyString) = 0;
+		virtual void disconnect(Util::Reason reason, const std::string& info = Util::emptyString) = 0;
 
 		/** The number of bytes in the write buffer */
-		ADCHPP_DLL virtual size_t getQueuedBytes() const;
+		virtual size_t getQueuedBytes() const;
 
 		/** The time that this entity's write buffer size exceeded the maximum buffer
 		 * size, 0 if no overflow */
-		ADCHPP_DLL virtual time::ptime getOverflow() const;
+		virtual time::ptime getOverflow() const;
 
 	protected:
 		virtual ~Entity();

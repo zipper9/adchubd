@@ -46,17 +46,17 @@ namespace adchpp
 		typedef EntityMap::iterator EntityIter;
 
 		/** @return SID of entity or AdcCommand::INVALID_SID if not found */
-		ADCHPP_DLL uint32_t getSID(const std::string& nick) const noexcept;
+		uint32_t getSID(const std::string& nick) const noexcept;
 		/** @return SID of entity or AdcCommand::INVALID_SID if not found */
-		ADCHPP_DLL uint32_t getSID(const CID& cid) const noexcept;
+		uint32_t getSID(const CID& cid) const noexcept;
 
 		/** @return The entity associated with a certain SID, NULL if not found */
-		ADCHPP_DLL Entity* getEntity(uint32_t aSid) noexcept;
+		Entity* getEntity(uint32_t aSid) noexcept;
 
 		/** @return A new Bot instance in STATE_IDENTIFY; set CID, nick etc and call
 		 * regBot */
-		ADCHPP_DLL Bot* createBot(const Bot::SendHandler& handler);
-		ADCHPP_DLL void regBot(Bot& bot);
+		Bot* createBot(const Bot::SendHandler& handler);
+		void regBot(Bot& bot);
 
 		/**
 		 * Get a list of all currently connected clients. (Don't change it, it's
@@ -68,13 +68,13 @@ namespace adchpp
 		}
 
 		/** Send a command to according to its type */
-		ADCHPP_DLL void send(const AdcCommand& cmd) noexcept;
+		void send(const AdcCommand& cmd) noexcept;
 
 		/** Send a buffer to all connected entities */
-		ADCHPP_DLL void sendToAll(const BufferPtr& buffer) noexcept;
+		void sendToAll(const BufferPtr& buffer) noexcept;
 
 		/** Send buffer to a single client regardless of type */
-		ADCHPP_DLL void sendTo(const BufferPtr& buffer, uint32_t to);
+		void sendTo(const BufferPtr& buffer, uint32_t to);
 
 		/**
 		 * Enter IDENTIFY state.
@@ -82,7 +82,7 @@ namespace adchpp
 		 *
 		 * @param sendData Send ISUP & IINF.
 		 */
-		ADCHPP_DLL void enterIdentify(Entity& c, bool sendData) noexcept;
+		void enterIdentify(Entity& c, bool sendData) noexcept;
 
 		/**
 		 * Enter VERIFY state. Call this if you stop
@@ -92,7 +92,7 @@ namespace adchpp
 		 * @return The random data that was sent to the client (if sendData was true,
 		 * undefined otherwise).
 		 */
-		ADCHPP_DLL ByteVector enterVerify(Entity& c, bool sendData) noexcept;
+		ByteVector enterVerify(Entity& c, bool sendData) noexcept;
 
 		/**
 		 * Enter NORMAL state. Call this if you stop an INF of a password-less
@@ -104,30 +104,30 @@ namespace adchpp
 		 * plugin asks for password)
 		 * @return false if the client was disconnected
 		 */
-		ADCHPP_DLL bool enterNormal(Entity& c, bool sendData, bool sendOwnInf) noexcept;
+		bool enterNormal(Entity& c, bool sendData, bool sendOwnInf) noexcept;
 
 		/**
 		 * Do all SUP verifications and update client data. Call if you stop SUP but
 		 * still want the default processing.
 		 */
-		ADCHPP_DLL bool verifySUP(Entity& c, AdcCommand& cmd) noexcept;
+		bool verifySUP(Entity& c, AdcCommand& cmd) noexcept;
 
 		/**
 		 * Do all INF verifications and update client data. Call if you stop INF but
 		 * still want the default processing.
 		 */
-		ADCHPP_DLL bool verifyINF(Entity& c, AdcCommand& cmd) noexcept;
+		bool verifyINF(Entity& c, AdcCommand& cmd) noexcept;
 
 		/**
 		 * Verify nick on INF (check that its not a dupe etc...)
 		 * @return false if the client was disconnected
 		 */
-		ADCHPP_DLL bool verifyNick(Entity& c, const AdcCommand& cmd) noexcept;
+		bool verifyNick(Entity& c, const AdcCommand& cmd) noexcept;
 
 		/**
 		 * Verify password
 		 */
-		ADCHPP_DLL bool
+		bool
 		verifyPassword(Entity& c, const std::string& password, const ByteVector& salt, const std::string& suppliedHash);
 		bool verifyPassword(Entity& c,
 							const std::string& password,
@@ -139,7 +139,7 @@ namespace adchpp
 		 * Verify hashed password; based on
 		 * http://www.dcbase.org/forums/viewtopic.php?p=2861#p2861
 		 */
-		ADCHPP_DLL bool verifyHashedPassword(Entity& c,
+		bool verifyHashedPassword(Entity& c,
 											 const ByteVector& hashedPassword,
 											 int64_t hashedPasswordLen,
 											 const ByteVector& salt,
@@ -148,23 +148,23 @@ namespace adchpp
 		/**
 		 * Verify that IP is correct and replace any zero addresses.
 		 */
-		ADCHPP_DLL bool verifyIp(Client& c, AdcCommand& cmd, bool isHbriConn) noexcept;
+		bool verifyIp(Client& c, AdcCommand& cmd, bool isHbriConn) noexcept;
 
 		/**
 		 * Verify that CID is correct and corresponds to PID
 		 */
-		ADCHPP_DLL bool verifyCID(Entity& c, AdcCommand& cmd) noexcept;
+		bool verifyCID(Entity& c, AdcCommand& cmd) noexcept;
 
 		/**
 		 * Verify that there aren't too many sockets overflowing (indicates lack of
 		 * bandwidth)
 		 */
-		ADCHPP_DLL bool verifyOverflow(Entity& c);
+		bool verifyOverflow(Entity& c);
 
 		/** Update the state of c (this fires signalState as well) */
-		ADCHPP_DLL void setState(Entity& c, Entity::State newState) noexcept;
+		void setState(Entity& c, Entity::State newState) noexcept;
 
-		ADCHPP_DLL size_t getQueuedBytes() noexcept;
+		size_t getQueuedBytes() noexcept;
 
 		typedef SignalTraits<void(Entity&)> SignalConnected;
 		typedef SignalTraits<void(Entity&)> SignalReady;

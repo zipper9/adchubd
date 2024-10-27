@@ -49,23 +49,23 @@ namespace adchpp
 			TRUNCATE = 0x04
 		};
 
-		ADCHPP_DLL File(const std::string& aFileName, int access, int mode = OPEN);
+		File(const std::string& aFileName, int access, int mode = OPEN);
 
-		ADCHPP_DLL int64_t getSize();
-		ADCHPP_DLL static int64_t getSize(const std::string& aFileName);
+		int64_t getSize();
+		static int64_t getSize(const std::string& aFileName);
 
-		ADCHPP_DLL std::string read(uint32_t len);
+		std::string read(uint32_t len);
 
 		/** Returns the directory part of the full path */
-		ADCHPP_DLL static std::string getFilePath(const std::string& name) noexcept;
+		static std::string getFilePath(const std::string& name) noexcept;
 		/** Returns the filename part of the full path */
-		ADCHPP_DLL static std::string getFileName(const std::string& name) noexcept;
-		ADCHPP_DLL static bool isAbsolutePath(const std::string& name) noexcept;
+		static std::string getFileName(const std::string& name) noexcept;
+		static bool isAbsolutePath(const std::string& name) noexcept;
 
-		ADCHPP_DLL static std::string makeAbsolutePath(const std::string& filename);
-		ADCHPP_DLL static std::string makeAbsolutePath(const std::string& path, const std::string& filename);
+		static std::string makeAbsolutePath(const std::string& filename);
+		static std::string makeAbsolutePath(const std::string& path, const std::string& filename);
 
-		ADCHPP_DLL static void ensureDirectory(const std::string& aFile) noexcept;
+		static void ensureDirectory(const std::string& aFile) noexcept;
 
 #ifdef _WIN32
 		void close()

@@ -48,9 +48,9 @@ namespace adchpp
 		}
 
 		/** Calculates the Tiger hash of the data. */
-		ADCHPP_DLL void update(const void* data, size_t len);
+		void update(const void* data, size_t len);
 		/** Call once all data has been processed. */
-		ADCHPP_DLL uint8_t* finalize();
+		uint8_t* finalize();
 
 		uint8_t* getResult()
 		{

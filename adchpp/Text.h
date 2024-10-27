@@ -41,24 +41,24 @@ namespace adchpp
 
 	public:
 		static const string& acpToUtf8(const string& str, string& tmp) noexcept;
-		ADCHPP_DLL static string acpToUtf8(const string& str) noexcept;
+		static string acpToUtf8(const string& str) noexcept;
 
 		static const wstring& acpToWide(const string& str, wstring& tmp) noexcept;
-		ADCHPP_DLL static wstring acpToWide(const string& str) noexcept;
+		static wstring acpToWide(const string& str) noexcept;
 
 		static const string& utf8ToAcp(const string& str, string& tmp) noexcept;
-		ADCHPP_DLL static string utf8ToAcp(const string& str) noexcept;
+		static string utf8ToAcp(const string& str) noexcept;
 
 		static const wstring& utf8ToWide(const string& str, wstring& tmp) noexcept;
-		ADCHPP_DLL static wstring utf8ToWide(const string& str) noexcept;
+		static wstring utf8ToWide(const string& str) noexcept;
 
 		static const string& wideToAcp(const wstring& str, string& tmp) noexcept;
-		ADCHPP_DLL static string wideToAcp(const wstring& str) noexcept;
+		static string wideToAcp(const wstring& str) noexcept;
 
 		static const string& wideToUtf8(const wstring& str, string& tmp) noexcept;
-		ADCHPP_DLL static string wideToUtf8(const wstring& str) noexcept;
+		static string wideToUtf8(const wstring& str) noexcept;
 
-		ADCHPP_DLL static bool validateUtf8(const string& str) noexcept;
+		static bool validateUtf8(const string& str) noexcept;
 
 	private:
 		static int utf8ToWc(const char* str, wchar_t& c);

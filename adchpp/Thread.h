@@ -37,8 +37,8 @@ namespace adchpp
 	class Thread : private boost::noncopyable
 	{
 	public:
-		ADCHPP_DLL void start();
-		ADCHPP_DLL void join() noexcept;
+		void start();
+		void join() noexcept;
 
 #ifdef _WIN32
 		enum Priority

@@ -37,7 +37,7 @@ namespace adchpp
 		 * @param area Name of the module that generated the error.
 		 * @param msg Message to log.
 		 */
-		ADCHPP_DLL void log(const std::string& area, const std::string& msg) noexcept;
+		void log(const std::string& area, const std::string& msg) noexcept;
 
 		void setLogFile(const std::string& fileName)
 		{
@@ -75,7 +75,7 @@ namespace adchpp
 		SignalLog::Signal signalLog_;
 		Core& core;
 
-		ADCHPP_DLL void dolog(const std::string& msg) noexcept;
+		void dolog(const std::string& msg) noexcept;
 	};
 
 #define LOGC(core, area, msg) (core).getLogManager().log(area, msg)

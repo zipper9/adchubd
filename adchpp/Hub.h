@@ -26,10 +26,10 @@
 namespace adchpp
 {
 
-	class ADCHPP_VISIBLE Hub : public Entity
+	class Hub : public Entity
 	{
 	public:
-		ADCHPP_DLL Hub(ClientManager& cm);
+		Hub(ClientManager& cm);
 
 		virtual void send(const BufferPtr& cmd) {}
 		virtual void disconnect(Util::Reason reason, const std::string&) noexcept {}

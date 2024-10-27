@@ -51,27 +51,27 @@ namespace adchpp
 		typedef std::function<void()> Callback;
 
 		/** execute a function asynchronously */
-		ADCHPP_DLL void addJob(const Callback& callback) noexcept;
+		void addJob(const Callback& callback) noexcept;
 		/** execute a function after the specified amount of time
 		 * @param msec milliseconds
 		 */
-		ADCHPP_DLL void addJob(const long msec, const Callback& callback);
+		void addJob(const long msec, const Callback& callback);
 		/** execute a function after the specified amount of time
 		 * @param time a string that obeys to the "[-]h[h][:mm][:ss][.fff]" format
 		 */
-		ADCHPP_DLL void addJob(const std::string& time, const Callback& callback);
+		void addJob(const std::string& time, const Callback& callback);
 		/** execute a function at regular intervals
 		 * @param msec milliseconds
 		 * @return function one must call to cancel the timer (its callback will still
 		 * be executed)
 		 */
-		ADCHPP_DLL Callback addTimedJob(const long msec, const Callback& callback);
+		Callback addTimedJob(const long msec, const Callback& callback);
 		/** execute a function at regular intervals
 		 * @param time a string that obeys to the "[-]h[h][:mm][:ss][.fff]" format
 		 * @return function one must call to cancel the timer (its callback will still
 		 * be executed)
 		 */
-		ADCHPP_DLL Callback addTimedJob(const std::string& time, const Callback& callback);
+		Callback addTimedJob(const std::string& time, const Callback& callback);
 
 		void shutdown();
 

@@ -152,37 +152,37 @@ namespace adchpp
 			REASON_LAST,
 		};
 
-		ADCHPP_DLL static std::string emptyString;
+		static std::string emptyString;
 		static std::wstring emptyStringW;
 
-		ADCHPP_DLL static std::string getOsVersion();
-		ADCHPP_DLL static void
+		static std::string getOsVersion();
+		static void
 		decodeUrl(const std::string& aUrl, std::string& aServer, short& aPort, std::string& aFile);
-		ADCHPP_DLL static std::string formatTime(const std::string& msg, time_t t = std::time(NULL));
+		static std::string formatTime(const std::string& msg, time_t t = std::time(NULL));
 
-		ADCHPP_DLL static std::string getAppPath();
-		ADCHPP_DLL static std::string getAppName();
+		static std::string getAppPath();
+		static std::string getAppName();
 
 #ifndef _WIN32
-		ADCHPP_DLL static void setApp(const std::string& app);
+		static void setApp(const std::string& app);
 		static std::string appPath;
 		static std::string appName;
 
 #endif
 
-		ADCHPP_DLL static std::string translateError(int aError);
+		static std::string translateError(int aError);
 
 		static std::string formatBytes(const std::string& aString)
 		{
 			return formatBytes(toInt64(aString));
 		}
 
-		ADCHPP_DLL static std::string getShortTimeString();
-		ADCHPP_DLL static std::string getTimeString();
+		static std::string getShortTimeString();
+		static std::string getTimeString();
 
-		ADCHPP_DLL static std::string formatBytes(int64_t aBytes);
+		static std::string formatBytes(int64_t aBytes);
 
-		ADCHPP_DLL static void
+		static void
 		tokenize(StringList& lst, const std::string& str, char sep, std::string::size_type j = 0);
 
 		static std::string formatSeconds(int64_t aSec)
@@ -314,9 +314,9 @@ namespace adchpp
 		}
 
 		/** Avoid this! Use the one of a connected socket instead... */
-		ADCHPP_DLL static std::string getLocalIp();
+		static std::string getLocalIp();
 
-		ADCHPP_DLL static uint32_t rand();
+		static uint32_t rand();
 		static uint32_t rand(uint32_t high)
 		{
 			return rand() % high;
@@ -330,8 +330,8 @@ namespace adchpp
 			return ((double)rand()) / ((double)0xffffffff);
 		}
 
-		ADCHPP_DLL static bool isPrivateIp(std::string const& ip, bool v6);
-		ADCHPP_DLL static bool validateCharset(std::string const& field, int p);
+		static bool isPrivateIp(std::string const& ip, bool v6);
+		static bool validateCharset(std::string const& field, int p);
 	};
 
 } // namespace adchpp

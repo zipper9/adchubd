@@ -111,10 +111,10 @@ namespace adchpp
 
 		struct Clear
 		{
-			ADCHPP_DLL void operator()(ByteVector& x);
+			void operator()(ByteVector& x);
 		};
 
-		ADCHPP_DLL static SimplePool<ByteVector, Clear> pool;
+		static SimplePool<ByteVector, Clear> pool;
 	};
 
 	typedef shared_ptr<Buffer> BufferPtr;

@@ -73,18 +73,6 @@
 #define NOMINMAX
 #endif
 
-#define ADCHPP_VISIBLE
-#ifdef BUILDING_ADCHPP
-#define ADCHPP_DLL __declspec(dllexport)
-#else
-#define ADCHPP_DLL __declspec(dllimport)
-#endif // DLLEXPORT
-
-#else
-
-#define ADCHPP_DLL __attribute__((visibility("default")))
-#define ADCHPP_VISIBLE __attribute__((visibility("default")))
-
 #endif
 
 #endif /* CONFIG_H_ */

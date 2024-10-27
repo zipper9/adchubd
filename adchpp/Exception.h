@@ -24,7 +24,7 @@
 namespace adchpp
 {
 
-	class ADCHPP_VISIBLE Exception : public std::exception
+	class Exception : public std::exception
 	{
 	public:
 		Exception()
@@ -53,36 +53,24 @@ namespace adchpp
 
 #ifndef NDEBUG
 
-#define STANDARD_EXCEPTION(name)                                                  \
-	class ADCHPP_VISIBLE name : public Exception                                  \
-	{                                                                             \
-	public:                                                                       \
-		name() noexcept : Exception(#name)                                        \
-		{                                                                         \
-		}                                                                         \
-		name(const std::string& aError) noexcept : Exception(#name ": " + aError) \
-		{                                                                         \
-		}                                                                         \
-		virtual ~name() noexcept                                                  \
-		{                                                                         \
-		}                                                                         \
+#define STANDARD_EXCEPTION(name) \
+	class name : public Exception                                              \
+	{                                                                          \
+	public:                                                                    \
+	name() noexcept : Exception(#name) {}                                      \
+	name(const std::string& error) noexcept : Exception(#name ": " + error) {} \
+	virtual ~name() noexcept {}                                                \
 	}
 
 #else // NDEBUG
 
-#define STANDARD_EXCEPTION(name)                                     \
-	class ADCHPP_VISIBLE name : public Exception                     \
-	{                                                                \
-	public:                                                          \
-		name() noexcept : Exception()                                \
-		{                                                            \
-		}                                                            \
-		name(const std::string& aError) noexcept : Exception(aError) \
-		{                                                            \
-		}                                                            \
-		virtual ~name() noexcept                                     \
-		{                                                            \
-		}                                                            \
+#define STANDARD_EXCEPTION(name) \
+	class name : public Exception                                 \
+	{                                                             \
+	public:                                                       \
+	name() noexcept : Exception()  {}                             \
+	name(const std::string& error) noexcept : Exception(error) {} \
+	virtual ~name() noexcept {}                                   \
 	}
 #endif
 

@@ -132,7 +132,7 @@ namespace adchpp
 		 * in the main ADCH++ worker thread. Your job will be executed once, when
 		 * time permits.
 		 */
-		ADCHPP_DLL void attention(const std::function<void()>& f);
+		void attention(const std::function<void()>& f);
 
 		/**
 		 * Get a list of currently loaded plugins
@@ -211,18 +211,18 @@ namespace adchpp
 		 * parameters will have been parsed already, and the function will only be
 		 * called if the command name matches
 		 */
-		ADCHPP_DLL ClientManager::SignalReceive::Connection
+		ClientManager::SignalReceive::Connection
 		onCommand(const std::string& commandName, const CommandSlot& f);
 		/// Handle +-commands set by another script, and possibly prevent them from
 		/// being dispatched
-		ADCHPP_DLL CommandSignal& getCommandSignal(const std::string& commandName);
+		CommandSignal& getCommandSignal(const std::string& commandName);
 
 		/** @internal */
 		void load();
 		/** @internal */
 		void shutdown();
 
-		ADCHPP_DLL Core& getCore();
+		Core& getCore();
 
 	private:
 		friend class Core;

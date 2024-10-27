@@ -33,7 +33,7 @@ namespace adchpp
 	/**
 	 * The client represents one connection to a user.
 	 */
-	class ADCHPP_VISIBLE Client : public Entity, public FastAlloc<Client>
+	class Client : public Entity, public FastAlloc<Client>
 	{
 	public:
 		static Client* create(ClientManager& cm, const ManagedSocketPtr& ms_, uint32_t sid_) noexcept;
@@ -46,7 +46,7 @@ namespace adchpp
 		}
 
 		/** @param reason The statistic to update */
-		ADCHPP_DLL virtual void disconnect(Util::Reason reason, const std::string& info = Util::emptyString) noexcept;
+		virtual void disconnect(Util::Reason reason, const std::string& info = Util::emptyString) noexcept;
 		const std::string& getIp() const noexcept
 		{
 			return socket->getIp();

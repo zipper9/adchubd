@@ -25,16 +25,16 @@ namespace adchpp
 	class Encoder
 	{
 	public:
-		ADCHPP_DLL static std::string& toBase32(const uint8_t* src, size_t len, std::string& tgt);
+		static std::string& toBase32(const uint8_t* src, size_t len, std::string& tgt);
 		static std::string toBase32(const uint8_t* src, size_t len)
 		{
 			std::string tmp;
 			return toBase32(src, len, tmp);
 		}
-		ADCHPP_DLL static void fromBase32(const char* src, uint8_t* dst, size_t len);
+		static void fromBase32(const char* src, uint8_t* dst, size_t len);
 
-		ADCHPP_DLL static const int8_t base32Table[256];
-		ADCHPP_DLL static const char base32Alphabet[32];
+		static const int8_t base32Table[256];
+		static const char base32Alphabet[32];
 
 	private:
 	};

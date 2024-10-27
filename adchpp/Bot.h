@@ -28,19 +28,19 @@ namespace adchpp
 
 	struct BotRemover;
 
-	class ADCHPP_VISIBLE Bot : public Entity
+	class Bot : public Entity
 	{
 	public:
 		typedef std::function<void(Bot& bot, const BufferPtr& cmd)> SendHandler;
 
-		ADCHPP_DLL Bot(ClientManager& cm, uint32_t sid, const SendHandler& handler_);
+		Bot(ClientManager& cm, uint32_t sid, const SendHandler& handler_);
 
 		virtual void send(const BufferPtr& cmd)
 		{
 			if (handler) handler(*this, cmd);
 		}
 
-		ADCHPP_DLL virtual void disconnect(Util::Reason reason, const std::string& info) noexcept;
+		virtual void disconnect(Util::Reason reason, const std::string& info) noexcept;
 
 		using Entity::send;
 

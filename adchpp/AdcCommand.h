@@ -168,8 +168,8 @@ namespace adchpp
 			return std::string(reinterpret_cast<const char*>(&x), sizeof(x));
 		}
 
-		ADCHPP_DLL AdcCommand();
-		ADCHPP_DLL explicit AdcCommand(Severity sev, Error err, const std::string& desc, char aType = TYPE_INFO);
+		AdcCommand();
+		explicit AdcCommand(Severity sev, Error err, const std::string& desc, char aType = TYPE_INFO);
 		explicit AdcCommand(uint32_t cmd, char aType = TYPE_INFO, uint32_t aFrom = HUB_SID)
 		: cmdInt(cmd), priority(PRIORITY_NORMAL), from(aFrom), to(INVALID_SID), type(aType)
 		{
@@ -190,7 +190,7 @@ namespace adchpp
 		{
 			parse(str.data(), str.size());
 		}
-		ADCHPP_DLL void parse(const char* buf, size_t len);
+		void parse(const char* buf, size_t len);
 		uint32_t getCommand() const
 		{
 			return cmdInt;
@@ -216,7 +216,7 @@ namespace adchpp
 		{
 			return parameters;
 		}
-		ADCHPP_DLL std::string toString() const;
+		std::string toString() const;
 
 		AdcCommand& addParam(const std::string& param)
 		{
@@ -246,19 +246,19 @@ namespace adchpp
 		}
 
 		/** Return a named parameter where the name is a two-letter code */
-		ADCHPP_DLL bool getParam(const char* name, size_t start, std::string& ret) const;
-		ADCHPP_DLL bool delParam(const char* name, size_t start);
+		bool getParam(const char* name, size_t start, std::string& ret) const;
+		bool delParam(const char* name, size_t start);
 
-		ADCHPP_DLL bool hasFlag(const char* name, size_t start) const;
+		bool hasFlag(const char* name, size_t start) const;
 
 		bool operator==(uint32_t aCmd) const
 		{
 			return cmdInt == aCmd;
 		}
 
-		ADCHPP_DLL static void escape(const std::string& s, std::string& out);
+		static void escape(const std::string& s, std::string& out);
 
-		ADCHPP_DLL const BufferPtr& getBuffer() const;
+		const BufferPtr& getBuffer() const;
 
 		uint32_t getTo() const
 		{

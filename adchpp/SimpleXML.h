@@ -34,10 +34,10 @@ namespace adchpp
 	class SimpleXML : private boost::noncopyable
 	{
 	public:
-		ADCHPP_DLL SimpleXML(int numAttribs = 0);
-		ADCHPP_DLL ~SimpleXML();
+		SimpleXML(int numAttribs = 0);
+		~SimpleXML();
 
-		ADCHPP_DLL void addTag(const std::string& aName, const std::string& aData = Util::emptyString);
+		void addTag(const std::string& aName, const std::string& aData = Util::emptyString);
 		void addTag(const std::string& aName, int aData)
 		{
 			addTag(aName, Util::toString(aData));
@@ -52,13 +52,13 @@ namespace adchpp
 			addAttrib(aName, Util::toString(aData));
 		}
 
-		ADCHPP_DLL void addAttrib(const std::string& aName, const std::string& aData);
+		void addAttrib(const std::string& aName, const std::string& aData);
 
 		template <typename T> void addChildAttrib(const std::string& aName, const T& aData)
 		{
 			addChildAttrib(aName, Util::toString(aData));
 		}
-		ADCHPP_DLL void addChildAttrib(const std::string& aName, const std::string& aData);
+		void addChildAttrib(const std::string& aName, const std::string& aData);
 
 		const std::string& getData() const
 		{
@@ -66,8 +66,8 @@ namespace adchpp
 			return current->data;
 		}
 
-		ADCHPP_DLL void stepIn() const;
-		ADCHPP_DLL void stepOut() const;
+		void stepIn() const;
+		void stepOut() const;
 
 		void resetCurrentChild() const noexcept
 		{
@@ -76,7 +76,7 @@ namespace adchpp
 			currentChild = current->children.begin();
 		}
 
-		ADCHPP_DLL bool findChild(const std::string& aName) const noexcept;
+		bool findChild(const std::string& aName) const noexcept;
 
 		const std::string& getChildName() const
 		{
@@ -115,13 +115,13 @@ namespace adchpp
 			return (tmp.size() > 0) && tmp[0] == '1';
 		}
 
-		ADCHPP_DLL void fromXML(const std::string& aXML);
+		void fromXML(const std::string& aXML);
 		std::string toXML()
 		{
 			return (!root->children.empty()) ? root->children[0]->toXML(0) : Util::emptyString;
 		}
 
-		ADCHPP_DLL static void escape(std::string& aString, bool aAttrib, bool aLoading = false);
+		static void escape(std::string& aString, bool aAttrib, bool aLoading = false);
 		/**
 		 * This is a heurestic for whether escape needs to be called or not. The
 		 * results are only guaranteed for false, i e sometimes true might be returned
@@ -177,7 +177,7 @@ namespace adchpp
 				auto i = std::ranges::find(attribs | std::views::keys, aName).base();
 				return (i == attribs.end()) ? aDefault : i->second;
 			}
-			ADCHPP_DLL std::string toXML(int indent);
+			std::string toXML(int indent);
 
 			std::string::size_type
 			fromXML(const std::string& tmp, std::string::size_type start, int aa, bool isRoot = false);

@@ -40,8 +40,8 @@
 namespace adchpp
 {
 
-	extern ADCHPP_DLL const char compileTime[];
-	extern ADCHPP_DLL void logAssert(const char* file, int line, const char* exp);
+	extern const char compileTime[];
+	extern void logAssert(const char* file, int line, const char* exp);
 
 #ifndef NDEBUG
 

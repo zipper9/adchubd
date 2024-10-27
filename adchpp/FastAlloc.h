@@ -27,7 +27,7 @@ namespace adchpp
 #ifdef NDEBUG
 	struct FastAllocBase
 	{
-		ADCHPP_DLL static FastMutex mtx;
+		static FastMutex mtx;
 	};
 
 	/**
