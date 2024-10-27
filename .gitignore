@@ -1,0 +1,4 @@
+vc16
+.vs
+*.vcxproj.user
+*.sln
