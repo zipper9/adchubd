@@ -1,4 +1,5 @@
 vc16
 .vs
 *.vcxproj.user
-*.sln
+boost
+openssl

@@ -229,20 +229,6 @@ namespace adchpp
 
 		PluginManager(Core& core) noexcept;
 
-		class PluginInfo
-		{
-		public:
-			PluginInfo(plugin_t h, PLUGIN_GET_VERSION v, PLUGIN_LOAD l, PLUGIN_UNLOAD u)
-			: handle(h), pluginGetVersion(v), pluginLoad(l), pluginUnload(u)
-			{
-			}
-
-			plugin_t handle;
-			PLUGIN_GET_VERSION pluginGetVersion;
-			PLUGIN_LOAD pluginLoad;
-			PLUGIN_UNLOAD pluginUnload;
-		};
-
 		struct CommandDispatch
 		{
 			CommandDispatch(PluginManager& pm, const std::string& name_, const PluginManager::CommandSlot& f_);
@@ -257,10 +243,6 @@ namespace adchpp
 
 		friend struct CommandDispatch;
 
-		typedef std::vector<PluginInfo> PluginList;
-		typedef PluginList::iterator PluginIter;
-
-		PluginList active;
 		Registry registry;
 
 		StringList plugins;

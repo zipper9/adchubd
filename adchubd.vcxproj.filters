@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="scripting">
+      <UniqueIdentifier>{c4c613f2-a6a1-4b01-b2e3-3e8132d67152}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="adchpp\AdcCommand.cpp">
@@ -86,6 +89,18 @@
     </ClCompile>
     <ClCompile Include="adchppd\adchppdw.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="adchpp\LuaEngine.cpp">
+      <Filter>scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="adchpp\LuaScript.cpp">
+      <Filter>scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="adchpp\ScriptManager.cpp">
+      <Filter>scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="swig\lua_wrap.cxx">
+      <Filter>scripting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +214,21 @@
     </ClInclude>
     <ClInclude Include="adchpp\version.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="adchpp\Engine.h">
+      <Filter>scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="adchpp\LuaCommon.h">
+      <Filter>scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="adchpp\LuaEngine.h">
+      <Filter>scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="adchpp\LuaScript.h">
+      <Filter>scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="adchpp\ScriptManager.h">
+      <Filter>scripting</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

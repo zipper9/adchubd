@@ -24,9 +24,10 @@
 #endif
 
 #ifdef _MSC_VER
-// disable the deprecated warnings for the CRT functions.
-#define _CRT_SECURE_NO_DEPRECATE 1
-#define _ATL_SECURE_NO_DEPRECATE 1
+#ifndef _CRT_SECURE_NO_DEPRECATE
+#define _CRT_SECURE_NO_DEPRECATE
+#endif
+
 #define _CRT_NON_CONFORMING_SWPRINTFS 1
 #endif
 

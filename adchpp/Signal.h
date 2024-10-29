@@ -132,12 +132,12 @@ namespace adchpp
 	template <typename F1, typename F2>
 	inline ManagedConnectionPtr manage(Signal<F1>* signal, const F2& f)
 	{
-		return make_shared<ManagedConnection>(signal->connect(f));
+		return std::make_shared<ManagedConnection>(signal->connect(f));
 	}
 
 	inline ManagedConnectionPtr manage(ConnectionPtr&& conn)
 	{
-		return make_shared<ManagedConnection>(move(conn));
+		return std::make_shared<ManagedConnection>(move(conn));
 	}
 
 	template <typename F> struct SignalTraits
