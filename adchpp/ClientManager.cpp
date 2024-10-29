@@ -322,11 +322,7 @@ namespace adchpp
 		return true;
 	}
 
-	bool ClientManager::verifyPassword(Entity& c,
-		const string& password,
-		const ByteVector& salt,
-		const string& suppliedHash,
-		TigerHash&& tiger)
+	bool ClientManager::verifyPassword(Entity& c, const string& password, const ByteVector& salt, const string& suppliedHash, TigerHash& tiger)
 	{
 		tiger.update(&password[0], password.size());
 		tiger.update(&salt[0], salt.size());
@@ -337,25 +333,8 @@ namespace adchpp
 
 	bool ClientManager::verifyPassword(Entity& c, const string& password, const ByteVector& salt, const string& suppliedHash)
 	{
-		return verifyPassword(c, password, salt, suppliedHash, TigerHash());
-	}
-
-	bool ClientManager::verifyHashedPassword(Entity& c,
-		const ByteVector& hashedPassword,
-		int64_t hashedPasswordLen,
-		const ByteVector& salt,
-		const string& suppliedHash)
-	{
-		// hashedPassword must be in little-endian order; this code itself is
-		// endian-independent.
-		uint64_t initial_res[TigerHash::BYTES / 8];
-		for (auto i = 0; i < 3; ++i)
-		{
-			initial_res[i] = 0;
-			for (auto j = 0; j < 8; ++j)
-				initial_res[i] = initial_res[i] * 256 + hashedPassword[8 * i + (7 - j)];
-		}
-		return verifyPassword(c, "", salt, suppliedHash, TigerHash(hashedPasswordLen, initial_res));
+		TigerHash tiger;
+		return verifyPassword(c, password, salt, suppliedHash, tiger);
 	}
 
 	bool ClientManager::verifyOverflow(Entity& c)

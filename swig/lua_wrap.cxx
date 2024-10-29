@@ -16122,66 +16122,6 @@ fail:
 }
 
 
-static int _wrap_ClientManager_verifyHashedPassword(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::ClientManager *arg1 = (adchpp::ClientManager *) 0 ;
-  adchpp::Entity *arg2 = 0 ;
-  adchpp::ByteVector *arg3 = 0 ;
-  int64_t arg4 ;
-  adchpp::ByteVector *arg5 = 0 ;
-  std::string *arg6 = 0 ;
-  std::string temp6 ;
-  bool result;
-  
-  SWIG_check_num_args("adchpp::ClientManager::verifyHashedPassword",6,6)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::ClientManager::verifyHashedPassword",1,"adchpp::ClientManager *");
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg("adchpp::ClientManager::verifyHashedPassword",2,"adchpp::Entity &");
-  if(!lua_isuserdata(L,3)) SWIG_fail_arg("adchpp::ClientManager::verifyHashedPassword",3,"adchpp::ByteVector const &");
-  if(!lua_isnumber(L,4)) SWIG_fail_arg("adchpp::ClientManager::verifyHashedPassword",4,"int64_t");
-  if(!lua_isuserdata(L,5)) SWIG_fail_arg("adchpp::ClientManager::verifyHashedPassword",5,"adchpp::ByteVector const &");
-  if(!lua_isstring(L,6)) SWIG_fail_arg("adchpp::ClientManager::verifyHashedPassword",6,"std::string const &");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__ClientManager,0))){
-    SWIG_fail_ptr("ClientManager_verifyHashedPassword",1,SWIGTYPE_p_adchpp__ClientManager);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_adchpp__Entity,0))){
-    SWIG_fail_ptr("ClientManager_verifyHashedPassword",2,SWIGTYPE_p_adchpp__Entity);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&arg3,SWIGTYPE_p_std__vectorT_unsigned_char_t,0))){
-    SWIG_fail_ptr("ClientManager_verifyHashedPassword",3,SWIGTYPE_p_std__vectorT_unsigned_char_t);
-  }
-  
-  {
-    arg4 = (int64_t)lua_tonumber(L,4);
-  }
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,5,(void**)&arg5,SWIGTYPE_p_std__vectorT_unsigned_char_t,0))){
-    SWIG_fail_ptr("ClientManager_verifyHashedPassword",5,SWIGTYPE_p_std__vectorT_unsigned_char_t);
-  }
-  
-  temp6.assign(lua_tostring(L,6),lua_rawlen(L,6)); arg6=&temp6;
-  {
-    try {
-      result = (bool)(arg1)->verifyHashedPassword(*arg2,(adchpp::ByteVector const &)*arg3,arg4,(adchpp::ByteVector const &)*arg5,(std::string const &)*arg6);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_ClientManager_verifyIp(lua_State* L) {
   int SWIG_arg = 0;
   adchpp::ClientManager *arg1 = (adchpp::ClientManager *) 0 ;
@@ -16796,7 +16736,6 @@ static swig_lua_method swig_ClientManager_methods[]= {
     { "verifyINF", _wrap_ClientManager_verifyINF},
     { "verifyNick", _wrap_ClientManager_verifyNick},
     { "verifyPassword", _wrap_ClientManager_verifyPassword},
-    { "verifyHashedPassword", _wrap_ClientManager_verifyHashedPassword},
     { "verifyIp", _wrap_ClientManager_verifyIp},
     { "verifyCID", _wrap_ClientManager_verifyCID},
     { "verifyOverflow", _wrap_ClientManager_verifyOverflow},
