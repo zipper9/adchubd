@@ -21,6 +21,7 @@
 #include "Core.h"
 #include "LogManager.h"
 #include "ScriptManager.h"
+#include "BloomManager.h"
 
 namespace adchpp
 {
@@ -48,6 +49,12 @@ namespace adchpp
 				auto sm = std::make_shared<ScriptManager>(getCore());
 				sm->load();
 				registerPlugin("ScriptManager", sm);
+			}
+			else if (*i == "Bloom")
+			{
+				auto bm = std::make_shared<BloomManager>(getCore());
+				bm->init();
+				registerPlugin("BloomManager", bm);
 			}
 			else
 				LOG(className, "Unknown plugin '" + *i + "'");

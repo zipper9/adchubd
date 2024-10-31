@@ -23,6 +23,7 @@
     <ClCompile Include="adchppd\adchppdw.cpp" />
     <ClCompile Include="adchpp\AdcCommand.cpp" />
     <ClCompile Include="adchpp\adchpp.cpp" />
+    <ClCompile Include="adchpp\BloomManager.cpp" />
     <ClCompile Include="adchpp\Bot.cpp" />
     <ClCompile Include="adchpp\Buffer.cpp" />
     <ClCompile Include="adchpp\Client.cpp" />
@@ -32,6 +33,7 @@
     <ClCompile Include="adchpp\Encoder.cpp" />
     <ClCompile Include="adchpp\Entity.cpp" />
     <ClCompile Include="adchpp\File.cpp" />
+    <ClCompile Include="adchpp\HashBloom.cpp" />
     <ClCompile Include="adchpp\Hub.cpp" />
     <ClCompile Include="adchpp\LogManager.cpp" />
     <ClCompile Include="adchpp\LuaEngine.cpp" />
@@ -52,6 +54,7 @@
     <ClInclude Include="adchpp\AdcCommand.h" />
     <ClInclude Include="adchpp\adchpp.h" />
     <ClInclude Include="adchpp\AsyncStream.h" />
+    <ClInclude Include="adchpp\BloomManager.h" />
     <ClInclude Include="adchpp\Bot.h" />
     <ClInclude Include="adchpp\Buffer.h" />
     <ClInclude Include="adchpp\CID.h" />
@@ -68,6 +71,8 @@
     <ClInclude Include="adchpp\FastAlloc.h" />
     <ClInclude Include="adchpp\File.h" />
     <ClInclude Include="adchpp\forward.h" />
+    <ClInclude Include="adchpp\HashBloom.h" />
+    <ClInclude Include="adchpp\HashValue.h" />
     <ClInclude Include="adchpp\Hub.h" />
     <ClInclude Include="adchpp\LogManager.h" />
     <ClInclude Include="adchpp\LuaCommon.h" />

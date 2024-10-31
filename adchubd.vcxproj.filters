@@ -16,6 +16,9 @@
     <Filter Include="scripting">
       <UniqueIdentifier>{c4c613f2-a6a1-4b01-b2e3-3e8132d67152}</UniqueIdentifier>
     </Filter>
+    <Filter Include="bloom">
+      <UniqueIdentifier>{a04fee44-370b-4c26-bb22-bbb3ae14b077}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="adchpp\AdcCommand.cpp">
@@ -101,6 +104,12 @@
     </ClCompile>
     <ClCompile Include="swig\lua_wrap.cxx">
       <Filter>scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="adchpp\BloomManager.cpp">
+      <Filter>bloom</Filter>
+    </ClCompile>
+    <ClCompile Include="adchpp\HashBloom.cpp">
+      <Filter>bloom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -229,6 +238,15 @@
     </ClInclude>
     <ClInclude Include="adchpp\ScriptManager.h">
       <Filter>scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="adchpp\BloomManager.h">
+      <Filter>bloom</Filter>
+    </ClInclude>
+    <ClInclude Include="adchpp\HashBloom.h">
+      <Filter>bloom</Filter>
+    </ClInclude>
+    <ClInclude Include="adchpp\HashValue.h">
+      <Filter>bloom</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
