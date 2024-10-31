@@ -17,7 +17,6 @@
  */
 
 #include "adchpp.h"
-
 #include "SimpleXML.h"
 
 namespace adchpp
@@ -27,7 +26,7 @@ namespace adchpp
 
 	SimpleXML::SimpleXML(int numAttribs) : attribs(numAttribs), found(false)
 	{
-		root = current = new Tag("BOGUSROOT", Util::emptyString, NULL);
+		root = current = new Tag("BOGUSROOT", Util::emptyString, nullptr);
 	}
 
 	SimpleXML::~SimpleXML()
@@ -79,7 +78,6 @@ namespace adchpp
 					while ((i = aString.find('\n', i)) != string::npos)
 					{
 						if (aString[i - 1] != '\r') aString.insert(i, 1, '\r');
-
 						i += 2;
 					}
 				}
@@ -120,7 +118,7 @@ namespace adchpp
 
 	void SimpleXML::Tag::appendAttribString(string& tmp)
 	{
-		for (AttribIter i = attribs.begin(); i != attribs.end(); ++i)
+		for (auto i = attribs.begin(); i != attribs.end(); ++i)
 		{
 			tmp.append(i->first);
 			tmp.append("=\"", 2);
@@ -131,9 +129,7 @@ namespace adchpp
 				tmp.append(tmp2);
 			}
 			else
-			{
 				tmp.append(i->second);
-			}
 			tmp.append("\" ", 2);
 		}
 		tmp.erase(tmp.size() - 1);
@@ -171,17 +167,13 @@ namespace adchpp
 					tmp.append(tmp2);
 				}
 				else
-				{
 					tmp.append(data);
-				}
 			}
 			else
 			{
 				tmp.append(">\r\n", 3);
-				for (Iter i = children.begin(); i != children.end(); ++i)
-				{
+				for (auto i = children.begin(); i != children.end(); ++i)
 					tmp.append((*i)->toXML(indent + 1));
-				}
 				tmp.append(indent, '\t');
 			}
 			tmp.append("</", 2);
@@ -193,7 +185,7 @@ namespace adchpp
 
 	bool SimpleXML::findChild(const string& aName) const noexcept
 	{
-		dcassert(current != NULL);
+		dcassert(current);
 
 		if (found && currentChild != current->children.end()) currentChild++;
 
@@ -222,7 +214,7 @@ namespace adchpp
 	{
 		if (current == root) throw SimpleXMLException("Already at lowest level");
 
-		dcassert(current->parent != NULL);
+		dcassert(current->parent);
 
 		currentChild = find(current->parent->children.begin(), current->parent->children.end(), current);
 
@@ -238,19 +230,13 @@ namespace adchpp
 		{
 			j = tmp.find('=', i);
 			if (j == string::npos)
-			{
 				throw SimpleXMLException("Missing '=' in " + name);
-			}
 			if (tmp[j + 1] != '"' && tmp[j + 1] != '\'')
-			{
 				throw SimpleXMLException("Invalid character after '=' in " + name);
-			}
 			string::size_type x = j + 2;
 			string::size_type y = tmp.find(tmp[j + 1], x);
 			if (y == string::npos)
-			{
 				throw SimpleXMLException("Missing '" + string(1, tmp[j + 1]) + "' in " + name);
-			}
 			// Ok, we have an attribute...
 			attribs.push_back(make_pair(tmp.substr(i, j - i), tmp.substr(x, y - x)));
 			escape(attribs.back().second, true, true);
@@ -274,23 +260,17 @@ namespace adchpp
 			if (j == string::npos)
 			{
 				if (isRoot)
-				{
 					throw SimpleXMLException("Invalid XML file, missing root tag");
-				}
 				else
-				{
 					throw SimpleXMLException("Missing end tag in " + name);
-				}
 			}
 
 			// Check that we have at least 3 more characters as the shortest valid xml
 			// tag is <a/>...
 			if ((j + 3) > tmp.size())
-			{
 				throw SimpleXMLException("Missing end tag in " + name);
-			}
 
-			Ptr child = NULL;
+			Ptr child = nullptr;
 
 			i = j + 1;
 
@@ -299,9 +279,7 @@ namespace adchpp
 				// <? processing instruction ?>, ignore...
 				i = tmp.find("?>", i);
 				if (i == string::npos)
-				{
 					throw SimpleXMLException("Missing '?>' in " + name);
-				}
 				i += 2;
 				continue;
 			}
@@ -311,9 +289,7 @@ namespace adchpp
 				// <!-- comment -->, ignore...
 				i = tmp.find("-->", i);
 				if (i == string::npos)
-				{
 					throw SimpleXMLException("Missing '-->' in " + name);
-				}
 				continue;
 			}
 
@@ -331,17 +307,13 @@ namespace adchpp
 					return i + name.length() + 1;
 				}
 				else
-				{
 					throw SimpleXMLException("Missing end tag in " + name);
-				}
 			}
 
 			// Alright, we have a real tag for sure...now get the name of it.
 			j = tmp.find_first_of("\r\n\t />", i);
 			if (j == string::npos)
-			{
 				throw SimpleXMLException("Missing '>' in " + name);
-			}
 
 			child = new Tag(tmp.substr(i, j - i), Util::emptyString, this, aa);
 			// Put it here immideately to avoid mem leaks
@@ -350,9 +322,7 @@ namespace adchpp
 			if (tmp[j] == ' ') j = tmp.find_first_not_of("\r\n\t ", j + 1);
 
 			if (j == string::npos)
-			{
 				throw SimpleXMLException("Missing '>' in " + name);
-			}
 
 			if (tmp[j] != '/' && tmp[j] != '>')
 			{
@@ -375,9 +345,7 @@ namespace adchpp
 			if (isRoot)
 			{
 				if (tmp.find('<', i) != string::npos)
-				{
 					throw SimpleXMLException("Invalid XML file, multiple root tags");
-				}
 				return tmp.length();
 			}
 		}
@@ -386,9 +354,7 @@ namespace adchpp
 	void SimpleXML::addTag(const string& aName, const string& aData /* = "" */)
 	{
 		if (aName.empty())
-		{
 			throw SimpleXMLException("Empty tag names not allowed");
-		}
 
 		if (current == root)
 		{
@@ -398,9 +364,7 @@ namespace adchpp
 				currentChild = current->children.begin();
 			}
 			else
-			{
 				throw SimpleXMLException("Only one root tag allowed");
-			}
 		}
 		else
 		{
@@ -411,32 +375,26 @@ namespace adchpp
 
 	void SimpleXML::addAttrib(const string& aName, const string& aData)
 	{
-		if (current == root) throw SimpleXMLException("No tag is currently selected");
-
+		if (current == root)
+			throw SimpleXMLException("No tag is currently selected");
 		current->attribs.push_back(make_pair(aName, aData));
 	}
 
 	void SimpleXML::addChildAttrib(const string& aName, const string& aData)
 	{
 		checkChildSelected();
-
 		(*currentChild)->attribs.push_back(make_pair(aName, aData));
 	}
 
 	void SimpleXML::fromXML(const string& aXML)
 	{
-		if (root)
-		{
-			delete root;
-		}
-		root = new Tag("BOGUSROOT", Util::emptyString, NULL, 0);
+		delete root;
+		root = new Tag("BOGUSROOT", Util::emptyString, nullptr, 0);
 
 		root->fromXML(aXML, 0, attribs, true);
 
 		if (root->children.size() != 1)
-		{
 			throw SimpleXMLException("Invalid XML file, missing or multiple root tags");
-		}
 
 		current = root;
 		resetCurrentChild();

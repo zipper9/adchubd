@@ -65,7 +65,7 @@ namespace adchpp
 
 		const std::string& getData() const
 		{
-			dcassert(current != NULL);
+			dcassert(current);
 			return current->data;
 		}
 
@@ -75,7 +75,7 @@ namespace adchpp
 		void resetCurrentChild() const noexcept
 		{
 			found = false;
-			dcassert(current != NULL);
+			dcassert(current);
 			currentChild = current->children.begin();
 		}
 
@@ -121,7 +121,7 @@ namespace adchpp
 		void fromXML(const std::string& aXML);
 		std::string toXML()
 		{
-			return (!root->children.empty()) ? root->children[0]->toXML(0) : Util::emptyString;
+			return !root->children.empty() ? root->children[0]->toXML(0) : Util::emptyString;
 		}
 
 		static void escape(std::string& aString, bool aAttrib, bool aLoading = false);
@@ -175,15 +175,15 @@ namespace adchpp
 				if (numAttribs > 0) attribs.reserve(numAttribs);
 			}
 
-			const std::string& getAttrib(const std::string& aName, const std::string& aDefault = Util::emptyString)
+			const std::string& getAttrib(const std::string& name, const std::string& defValue = Util::emptyString)
 			{
-				auto i = std::ranges::find(attribs | std::views::keys, aName).base();
-				return (i == attribs.end()) ? aDefault : i->second;
+				auto i = find_if(attribs.begin(), attribs.end(), [&](const auto& p) { return p.first == name; });
+				return i == attribs.end() ? defValue : i->second;
 			}
+
 			std::string toXML(int indent);
 
-			std::string::size_type
-			fromXML(const std::string& tmp, std::string::size_type start, int aa, bool isRoot = false);
+			std::string::size_type fromXML(const std::string& tmp, std::string::size_type start, int aa, bool isRoot = false);
 			std::string::size_type loadAttribs(const std::string& tmp, std::string::size_type start);
 
 			void appendAttribString(std::string& tmp);
@@ -207,7 +207,7 @@ namespace adchpp
 
 		void checkChildSelected() const noexcept
 		{
-			dcassert(current != NULL);
+			dcassert(current);
 			dcassert(currentChild != current->children.end());
 		}
 

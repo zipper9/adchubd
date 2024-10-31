@@ -398,10 +398,6 @@ namespace adchpp
 		return true;
 	}
 
-	static const int allowedCount = 3;
-	static const char* allowedV4[allowedCount] = { "I4", "U4", "SU" };
-	static const char* allowedV6[allowedCount] = { "I6", "U6", "SU" };
-
 	bool ClientManager::handle(AdcCommand::TCP, Entity& c, AdcCommand& cmd) noexcept
 	{
 		dcdebug("Received HBRI TCP: %s", cmd.toString().c_str());
@@ -451,13 +447,25 @@ namespace adchpp
 
 				// remove extra parameters
 				auto& params = cmd.getParameters();
-				const auto& allowed = hbriCC->isV6() ? allowedV6 : allowedV4;
-
-				std::erase_if(params,
-							  [&](const string& s) {
-								  return find(allowed, allowed + allowedCount, s.substr(0, 2)) ==
-										 &allowed[allowedCount];
-							  });
+				const char *ipParam, *portParam;
+				if (hbriCC->isV6())
+				{
+					ipParam = "I6";
+					portParam = "U6";
+				}
+				else
+				{
+					ipParam = "I4";
+					portParam = "U4";
+				}
+				for (auto i = params.begin(); i != params.end();)
+				{
+					const string& s = *i;
+					if (s.length() < 2 || !(s.compare(0, 2, "SU") == 0 || s.compare(0, 2, ipParam) == 0 || s.compare(0, 2, portParam) == 0))
+						i = params.erase(i);
+					else
+						++i;
+				}
 
 				// update the fields for the main entity
 				mainCC->updateFields(cmd);
@@ -496,17 +504,22 @@ namespace adchpp
 		return true;
 	}
 
-	template <typename IPClass> std::optional<IPClass> parseParamIp(const string& aIP)
+	template<typename IPClass>
+	bool parseParamIp(IPClass& result, const string& ip) noexcept
 	{
-		if (aIP.empty()) return IPClass::any();
+		if (ip.empty())
+		{
+			result = IPClass::any();
+			return true;
+		}
 		try
 		{
-			return IPClass::from_string(aIP);
+			result = IPClass::from_string(ip);
+			return true;
 		}
 		catch (const boost::system::system_error&)
 		{
-			printf("Error when reading IP %s\n", aIP.c_str());
-			return std::nullopt;
+			return false;
 		}
 	}
 
@@ -516,7 +529,7 @@ namespace adchpp
 	}
 
 	template <typename PrimaryIPClass, typename SecondaryIpClass>
-	bool validateIP(AdcCommand& cmd, const PrimaryIPClass& remoteAddress, bool v6, bool& validateSecondary_, string& error_)
+	bool validateIP(AdcCommand& cmd, const PrimaryIPClass& remoteAddress, bool v6, bool& validateSecondary, string& error)
 	{
 		using namespace boost::asio::ip;
 
@@ -528,23 +541,23 @@ namespace adchpp
 			string paramIpStr;
 			if (cmd.getParam(tcpIpParamName, 0, paramIpStr))
 			{
-				auto paramIp = parseParamIp<PrimaryIPClass>(paramIpStr);
-				if (!paramIp)
+				PrimaryIPClass paramIp;
+				if (!parseParamIp<PrimaryIPClass>(paramIp, paramIpStr))
 				{
 					// Fatal
-					error_ = "The configured IP " + paramIpStr + " isn't a valid " + formatIpProtocol(v6) + " address";
+					error = "The configured IP " + paramIpStr + " isn't a valid " + formatIpProtocol(v6) + " address";
 					return false;
 				}
 
 				// Something was provided, validate it
-				if (paramIpStr.empty() || paramIp == PrimaryIPClass::any())
+				if (paramIpStr.empty() || paramIp.is_unspecified())
 				{
 					cmd.delParam(tcpIpParamName, 0);
 					cmd.addParam(tcpIpParamName, remoteAddress.to_string());
 				}
-				else if (*paramIp != remoteAddress && !isLocalUser)
+				else if (paramIp != remoteAddress && !isLocalUser)
 				{
-					error_ = "Your IP is " + remoteAddress.to_string() + ", reconfigure your client settings";
+					error = "Your IP is " + remoteAddress.to_string() + ", reconfigure your client settings";
 					return false;
 				}
 			}
@@ -558,19 +571,18 @@ namespace adchpp
 		// Secondary
 		string secondaryIpStr;
 		auto tcpIpSecondaryParamName = !v6 ? "I6" : "I4";
-		validateSecondary_ =
-		cmd.getParam(tcpIpSecondaryParamName, 0, secondaryIpStr) && !secondaryIpStr.empty();
+		validateSecondary = cmd.getParam(tcpIpSecondaryParamName, 0, secondaryIpStr) && !secondaryIpStr.empty();
 
-		auto paramIpSecondary = parseParamIp<SecondaryIpClass>(secondaryIpStr);
-		if (!paramIpSecondary)
+		SecondaryIpClass paramIpSecondary;
+		if (!parseParamIp<SecondaryIpClass>(paramIpSecondary, secondaryIpStr))
 		{
-			error_ = "The configured IP " + secondaryIpStr + " isn't a valid " + formatIpProtocol(!v6) + " address";
+			error = "The configured IP " + secondaryIpStr + " isn't a valid " + formatIpProtocol(!v6) + " address";
 			return false;
 		}
 
 		// Keep the secondary IP (if there is one) for local users, it needs to be
 		// validated otherwise
-		if (!isLocalUser || secondaryIpStr.empty() || *paramIpSecondary == SecondaryIpClass::any())
+		if (!isLocalUser || secondaryIpStr.empty() || paramIpSecondary.is_unspecified())
 		{
 			auto udpPortSecondaryParam = !v6 ? "U6" : "U4";
 			cmd.delParam(udpPortSecondaryParam, 0);
@@ -703,9 +715,8 @@ namespace adchpp
 
 	namespace
 	{
-		bool validateNickF(wchar_t c)
+		bool isBadNickChar(wchar_t c)
 		{
-		 	/// @todo lambda
 			// the following are explicitly allowed (isprint sometimes differs)
 			if (c >= L'\u2100' && c <= L'\u214F' /* letter-like symbols */)
 				return false;
@@ -724,8 +735,8 @@ namespace adchpp
 
 			// avoid impersonators
 			auto nickW = std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>>().from_bytes(nick);
-			if (std::ranges::find_if(nickW, validateNickF) != nickW.end())
-				return false;
+			for (auto ch : nickW)
+				if (isBadNickChar(ch)) return false;
 
 			return true;
 		}
@@ -855,15 +866,21 @@ namespace adchpp
 		Client* c = dynamic_cast<Client*>(&e);
 		if (!c) return;
 
-		{
-			auto i = std::ranges::find(logins | std::views::keys, c).base();
-			if (i != logins.end()) logins.erase(i);
-		}
+		for (auto i = logins.begin(); i != logins.end(); ++i)
+			if (i->first == c)
+			{
+				logins.erase(i);
+				break;
+			}
 
 		if (e.hasSupport(AdcCommand::toFourCC("HBRI")))
 		{
-			auto i = std::ranges::find_if(hbriTokens | views::values, CompareFirst<Entity*, time::ptime>(c)).base();
-			if (i != hbriTokens.end()) hbriTokens.erase(i);
+			for (auto i = hbriTokens.begin(); i != hbriTokens.end(); ++i)
+				if (i->second.first == c)
+				{
+					hbriTokens.erase(i);
+					break;
+				}
 		}
 	}
 
