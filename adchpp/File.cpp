@@ -210,7 +210,7 @@ namespace adchpp
 
 	std::string File::makeAbsolutePath(const std::string& path, const std::string& filename)
 	{
-		return isAbsolutePath(filename) ? filename : path + filename;
+		return filename.empty() || isAbsolutePath(filename) ? filename : path + filename;
 	}
 
 } // namespace adchpp

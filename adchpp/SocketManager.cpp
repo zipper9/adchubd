@@ -274,24 +274,10 @@ namespace adchpp
 				context.reset(new ssl::context(ssl::context::tls));
 
 				context->set_options(ssl::context::no_sslv2 | ssl::context::no_sslv3 | ssl::context::single_dh_use);
-				// context->set_password_callback(boost::bind(&server::get_password,
-				// this));
 				context->use_certificate_chain_file(info->TLSParams.cert);
 				context->use_private_key_file(info->TLSParams.pkey, ssl::context::pem);
-				context->use_tmp_dh_file(info->TLSParams.dh);
-
-#if OPENSSL_VERSION_NUMBER >= 0x1000201fL
-				SSL_CTX_set1_curves_list(context->native_handle(), "P-256");
-#endif
-
-				EC_KEY* tmp_ecdh;
-				if ((tmp_ecdh = EC_KEY_new_by_curve_name(NID_X9_62_prime256v1)) != NULL)
-				{
-					SSL_CTX_set_options(context->native_handle(), SSL_OP_SINGLE_ECDH_USE);
-					SSL_CTX_set_tmp_ecdh(context->native_handle(), tmp_ecdh);
-
-					EC_KEY_free(tmp_ecdh);
-				}
+				if (!info->TLSParams.dh.empty())
+					context->use_tmp_dh_file(info->TLSParams.dh);
 			}
 #endif
 		}

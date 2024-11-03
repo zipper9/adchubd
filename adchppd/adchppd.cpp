@@ -123,14 +123,10 @@ void loadXML(Core& core, const string& aFileName)
 
 					if (xml.getBoolChildAttrib("TLS"))
 					{
-						server->TLSParams.cert =
-						File::makeAbsolutePath(xml.getChildAttrib("Certificate"));
-						server->TLSParams.pkey =
-						File::makeAbsolutePath(xml.getChildAttrib("PrivateKey"));
-						server->TLSParams.trustedPath =
-						File::makeAbsolutePath(xml.getChildAttrib("TrustedPath"));
-						server->TLSParams.dh =
-						File::makeAbsolutePath(xml.getChildAttrib("DHParams"));
+						server->TLSParams.cert = File::makeAbsolutePath(xml.getChildAttrib("Certificate"));
+						server->TLSParams.pkey = File::makeAbsolutePath(xml.getChildAttrib("PrivateKey"));
+						server->TLSParams.trustedPath = File::makeAbsolutePath(xml.getChildAttrib("TrustedPath"));
+						server->TLSParams.dh = File::makeAbsolutePath(xml.getChildAttrib("DHParams"));
 					}
 
 					printf("Loaded server for port %s (secure: %s)\n", server->port.c_str(),

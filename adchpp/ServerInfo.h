@@ -39,10 +39,7 @@ namespace adchpp
 
 		private:
 			friend struct ServerInfo;
-			bool secure() const
-			{
-				return !cert.empty() && !pkey.empty() && !trustedPath.empty() && !dh.empty();
-			}
+			bool secure() const { return !cert.empty() && !pkey.empty(); }
 		} TLSParams;
 
 		bool secure() const { return TLSParams.secure(); }
