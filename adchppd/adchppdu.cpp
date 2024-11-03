@@ -35,19 +35,13 @@ using namespace adchpp;
 
 static FILE* pidFile;
 static string pidFileName;
-static bool asdaemon = false;
 static std::shared_ptr<Core> core;
 
 static void installHandler();
 
 void breakHandler(int)
 {
-	if (core)
-	{
-		core->shutdown();
-	}
-
-	installHandler();
+	if (core) core->shutdown();
 }
 
 static void init()
@@ -57,25 +51,25 @@ static void init()
 
 	sa.sa_handler = SIG_IGN;
 
-	sigaction(SIGPIPE, &sa, NULL);
-	sigaction(SIGHUP, &sa, NULL);
+	sigaction(SIGPIPE, &sa, nullptr);
+	sigaction(SIGHUP, &sa, nullptr);
 
 	sigset_t mask;
 
-	sigfillset(&mask); /* Mask all allowed signals, the other threads should
-						  inherit this... */
+	sigfillset(&mask); // Mask all allowed signals, the other threads should inherit this
 	sigdelset(&mask, SIGCONT);
 	sigdelset(&mask, SIGFPE);
 	sigdelset(&mask, SIGILL);
 	sigdelset(&mask, SIGSEGV);
 	sigdelset(&mask, SIGBUS);
 	sigdelset(&mask, SIGINT);
+	sigdelset(&mask, SIGTERM);
 	sigdelset(&mask, SIGTRAP);
-	pthread_sigmask(SIG_SETMASK, &mask, NULL);
+	pthread_sigmask(SIG_SETMASK, &mask, nullptr);
 
 	installHandler();
 
-	if (pidFile != NULL)
+	if (pidFile)
 	{
 		fprintf(pidFile, "%d", (int)getpid());
 		fflush(pidFile);
@@ -87,23 +81,21 @@ static void init()
 static void installHandler()
 {
 	struct sigaction sa = { 0 };
-
 	sa.sa_handler = breakHandler;
-
-	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGINT, &sa, nullptr);
+	sigaction(SIGTERM, &sa, nullptr);
 }
 
-static void uninit()
+static void uninit(bool asDaemon)
 {
-	if (!asdaemon) printf("Shut down");
-
-	if (pidFile != NULL) fclose(pidFile);
-	pidFile = NULL;
-
+	if (!asDaemon) puts("Shut down");
+	if (pidFile)
+	{
+		fclose(pidFile);
+		pidFile = nullptr;
+	}
 	if (!pidFileName.empty()) unlink(pidFileName.c_str());
 }
-
-#include <fcntl.h>
 
 static void daemonize()
 {
@@ -115,7 +107,7 @@ static void daemonize()
 		case 0:
 			break;
 		default:
-			_exit(0);
+			exit(0);
 	}
 
 	if (setsid() < 0)
@@ -144,59 +136,39 @@ static void daemonize()
 	dup(0);
 }
 
-#include <sys/wait.h>
-
-static void runDaemon(const string& configPath)
+static void run(const string& configPath, bool asDaemon)
 {
-	daemonize();
-
+	if (asDaemon)
+		daemonize();
+	else
+		printf("Starting %s\n", versionString.c_str());
 	try
 	{
 		core = Core::create(configPath);
-
 		init();
-
+		if (!asDaemon) printf("%s running, press Ctrl-C to exit...\n", versionString.c_str());
 		core->run();
-
-		core.reset();
-	}
-	catch (const adchpp::Exception& e)
-	{
-		fprintf(stderr, "Failed to start: %s\n", e.what());
-	}
-
-	uninit();
-}
-
-static void runConsole(const string& configPath)
-{
-	printf("Starting.");
-	fflush(stdout);
-
-	try
-	{
-		core = Core::create(configPath);
-
-		printf(".");
-		fflush(stdout);
-		init();
-
-		printf(".\n%s running, press ctrl-c to exit...\n", versionString.c_str());
-		core->run();
-
 		core.reset();
 	}
 	catch (const Exception& e)
 	{
 		fprintf(stderr, "\nFATAL: Can't start ADCH++: %s\n", e.what());
 	}
-
-	uninit();
+	uninit(asDaemon);
 }
 
 static void printUsage()
 {
 	printf("Usage: adchpp [[-c <configdir>] [-d]] | [-v] | [-h]\n");
+}
+
+static void checkArg(int argc, char* argv[], int i)
+{
+	if (i + 1 == argc)
+	{
+		fprintf(stderr, "Parameter %s requires an argument\n", argv[i]);
+		exit(1);
+	}
 }
 
 int main(int argc, char* argv[])
@@ -208,16 +180,18 @@ int main(int argc, char* argv[])
 	if (readlink("/proc/self/exe", buf, sizeof(buf)) == -1)
 	{
 		path = getenv("_");
+		if (!path) path = argv[0];
 	}
 
-	Util::setApp(path == NULL ? argv[0] : path);
+	Util::setApp(path);
 	string configPath = "/etc/adchpp/";
+	bool asDaemon = false;
 
 	for (int i = 1; i < argc; i++)
 	{
 		if (strcmp(argv[i], "-d") == 0)
 		{
-			asdaemon = true;
+			asDaemon = true;
 		}
 		else if (strcmp(argv[i], "-v") == 0)
 		{
@@ -226,37 +200,21 @@ int main(int argc, char* argv[])
 		}
 		else if (strcmp(argv[i], "-c") == 0)
 		{
-			if ((i + 1) == argc)
-			{
-				fprintf(stderr, "-c <directory>\n");
-				return 1;
-			}
-
-			i++;
-			string cfg = argv[i];
-			if (cfg[0] != '/')
+			checkArg(argc, argv, i);
+			string cfg = argv[++i];
+			if (cfg.empty() || cfg[0] != '/')
 			{
 				fprintf(stderr, "Config dir must be an absolute path\n");
 				return 2;
 			}
 
-			if (cfg[cfg.length() - 1] != '/')
-			{
-				cfg += '/';
-			}
-
-			configPath = cfg;
+			if (cfg[cfg.length() - 1] != '/') cfg += '/';
+			configPath = std::move(cfg);
 		}
 		else if (strcmp(argv[i], "-p") == 0)
 		{
-			if ((i + 1) == argc)
-			{
-				fprintf(stderr, "-p <pid-file>\n");
-				return 1;
-			}
-
-			i++;
-			pidFileName = argv[i];
+			checkArg(argc, argv, i);
+			pidFileName = argv[++i];
 		}
 		else if (strcmp(argv[i], "-h") == 0)
 		{
@@ -272,21 +230,15 @@ int main(int argc, char* argv[])
 
 	if (!pidFileName.empty())
 	{
-		pidFileName = File::makeAbsolutePath(configPath, pidFileName);
+		pidFileName = File::makeAbsolutePath("/run/", pidFileName);
 		pidFile = fopen(pidFileName.c_str(), "w");
-		if (pidFile == NULL)
+		if (!pidFile)
 		{
 			fprintf(stderr, "Can't open %s for writing\n", pidFileName.c_str());
 			return 1;
 		}
 	}
 
-	if (asdaemon)
-	{
-		runDaemon(configPath);
-	}
-	else
-	{
-		runConsole(configPath);
-	}
+	run(configPath, asDaemon);
+	return 0;
 }
