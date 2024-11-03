@@ -48,7 +48,7 @@ namespace adchpp
 			STATE_DATA
 		};
 
-		enum Flag
+		enum
 		{
 			FLAG_BOT = 0x01,
 			FLAG_REGISTERED = 0x02,
@@ -77,6 +77,14 @@ namespace adchpp
 			FLAG_VALIDATE_HBRI = 0x1000
 		};
 
+		enum
+		{
+			TYPE_UNKNOWN,
+			TYPE_CLIENT,
+			TYPE_HUB,
+			TYPE_BOT
+		};
+
 		Entity(ClientManager& cm, uint32_t sid_) : sid(sid_), state(STATE_PROTOCOL), cm(cm)
 		{
 		}
@@ -84,14 +92,19 @@ namespace adchpp
 		Entity(const Entity&) = delete;
 		Entity& operator= (const Entity&) = delete;
 
-		void send(const AdcCommand& cmd)
-		{
-			send(cmd.getBuffer());
-		}
+		virtual int getType() const = 0;
 		virtual void send(const BufferPtr& cmd) = 0;
-
 		virtual void inject(AdcCommand& cmd);
+		virtual void disconnect(Util::Reason reason, const std::string& info = Util::emptyString) = 0;
 
+		/** The number of bytes in the write buffer */
+		virtual size_t getQueuedBytes() const;
+
+		/** The time that this entity's write buffer size exceeded the maximum buffer
+		 * size, 0 if no overflow */
+		virtual time::ptime getOverflow() const;
+
+		void send(const AdcCommand& cmd) { send(cmd.getBuffer()); }
 		const std::string& getField(const char* name) const;
 		bool hasField(const char* name) const;
 		void setField(const char* name, const std::string& value);
@@ -108,9 +121,6 @@ namespace adchpp
 
 		bool hasClientSupport(uint32_t feature) const;
 		bool removeClientSupport(uint32_t feature);
-
-		/** Remove supports for the protocol that wasn't used for connecting **/
-		void stripProtocolSupports() noexcept;
 
 		const BufferPtr& getSUP() const;
 
@@ -158,15 +168,6 @@ namespace adchpp
 		bool isAnySet(size_t flag) const { return flags.isAnySet(flag); }
 		void setFlag(size_t flag);
 		void unsetFlag(size_t flag);
-
-		virtual void disconnect(Util::Reason reason, const std::string& info = Util::emptyString) = 0;
-
-		/** The number of bytes in the write buffer */
-		virtual size_t getQueuedBytes() const;
-
-		/** The time that this entity's write buffer size exceeded the maximum buffer
-		 * size, 0 if no overflow */
-		virtual time::ptime getOverflow() const;
 
 	protected:
 		virtual ~Entity();

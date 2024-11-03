@@ -233,7 +233,7 @@ namespace adchpp
 
 		std::list<std::pair<Client*, time::ptime>> logins;
 
-		typedef std::unordered_map<std::string, std::pair<Entity*, time::ptime>> TokenMap;
+		typedef std::unordered_map<std::string, std::pair<Client*, time::ptime>> TokenMap;
 		TokenMap hbriTokens;
 
 		EntityMap entities;
@@ -258,7 +258,7 @@ namespace adchpp
 
 		uint32_t makeSID();
 
-		bool sendHBRI(Entity& c);
+		bool sendHBRI(Client& c);
 		void maybeSend(Entity& c, const AdcCommand& cmd);
 
 		void removeLogins(Entity& c) noexcept;
@@ -302,7 +302,8 @@ namespace adchpp
 		ClientManager(Core& core) noexcept;
 		void onTimerSecond();
 
-		void failHBRI(Client& mainmCC);
+		void failHBRI(Client& cc);
+		void stripProtocolSupports(Client& cc);
 	};
 
 } // namespace adchpp

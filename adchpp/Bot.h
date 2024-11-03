@@ -35,11 +35,8 @@ namespace adchpp
 
 		Bot(ClientManager& cm, uint32_t sid, const SendHandler& handler_);
 
-		virtual void send(const BufferPtr& cmd)
-		{
-			if (handler) handler(*this, cmd);
-		}
-
+		virtual int getType() const { return TYPE_BOT; }
+		virtual void send(const BufferPtr& cmd) { if (handler) handler(*this, cmd); }
 		virtual void disconnect(Util::Reason reason, const std::string& info) noexcept;
 
 		using Entity::send;

@@ -3051,9 +3051,15 @@ SWIGINTERN std::string adchpp_AdcCommand_getParam__SWIG_1(adchpp::AdcCommand *se
 		}
 		return std::string();
 	}
-SWIGINTERN adchpp::Client *adchpp_Entity_asClient(adchpp::Entity *self){ return dynamic_cast<Client*>(self); }
-SWIGINTERN Hub *adchpp_Entity_asHub(adchpp::Entity *self){ return dynamic_cast<Hub*>(self); }
-SWIGINTERN adchpp::Bot *adchpp_Entity_asBot(adchpp::Entity *self){ return dynamic_cast<Bot*>(self); }
+SWIGINTERN adchpp::Client *adchpp_Entity_asClient(adchpp::Entity *self){
+		return self->getType() == Entity::TYPE_CLIENT ? static_cast<Client*>(self) : nullptr;
+	}
+SWIGINTERN Hub *adchpp_Entity_asHub(adchpp::Entity *self){
+		return self->getType() == Entity::TYPE_HUB ? static_cast<Hub*>(self) : nullptr;
+	}
+SWIGINTERN adchpp::Bot *adchpp_Entity_asBot(adchpp::Entity *self){
+		return self->getType() == Entity::TYPE_BOT ? static_cast<Bot*>(self) : nullptr;
+	}
 SWIGINTERN SWIGLUA_REF adchpp_Entity_getPluginData(adchpp::Entity *self,PluginDataHandle const &handle){
 		void* ret = self->getPluginData(handle);
 		if(ret) {

@@ -114,8 +114,7 @@ Script* LuaEngine::loadScript(const string& path, const string& filename, const 
 
 void LuaEngine::unloadScript(Script* s, bool force)
 {
-	if (call("unloading", dynamic_cast<LuaScript*>(s)->filename) && !force) return;
-
+	if (call("unloading", static_cast<LuaScript*>(s)->filename) && !force) return;
 	scripts.erase(remove(scripts.begin(), scripts.end(), s), scripts.end());
 	delete s;
 }

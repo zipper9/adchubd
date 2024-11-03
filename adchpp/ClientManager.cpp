@@ -66,11 +66,11 @@ namespace adchpp
 		if (addHbri) hub.addSupports(AdcCommand::toFourCC("HBRI"));
 	}
 
-	void ClientManager::failHBRI(Client& mainCC)
+	void ClientManager::failHBRI(Client& cc)
 	{
-		mainCC.unsetFlag(Entity::FLAG_VALIDATE_HBRI);
-		mainCC.stripProtocolSupports();
-		if (mainCC.getState() == Entity::STATE_HBRI) enterNormal(mainCC, true, true);
+		cc.unsetFlag(Entity::FLAG_VALIDATE_HBRI);
+		stripProtocolSupports(cc);
+		if (cc.getState() == Entity::STATE_HBRI) enterNormal(cc, true, true);
 	}
 
 	void ClientManager::onTimerSecond()
@@ -81,7 +81,7 @@ namespace adchpp
 		{
 			if (timeoutHbri > i->second.second)
 			{
-				auto cc = dynamic_cast<Client*>(i->second.first);
+				Client* cc = i->second.first;
 				i = hbriTokens.erase(i);
 
 				dcdebug("ClientManager: HBRI timeout in state %d\n", cc->getState());
@@ -97,7 +97,7 @@ namespace adchpp
 
 		// Logins
 		auto timeoutLogin = time::now() - time::millisec(getLogTimeout());
-		while (!logins.empty() && (timeoutLogin > logins.front().second))
+		while (!logins.empty() && timeoutLogin > logins.front().second)
 		{
 			auto cc = logins.front().first;
 			dcdebug("ClientManager: Login timeout in state %d\n", cc->getState());
@@ -312,14 +312,23 @@ namespace adchpp
 			}
 		}
 
-		Client* cc = dynamic_cast<Client*>(&c);
+		Client* cc = c.getType() == Entity::TYPE_CLIENT ? static_cast<Client*>(&c) : nullptr;
 		if (cc && !verifyIp(*cc, cmd, false)) return false;
 		c.updateFields(cmd);
 		string tmp;
-		if (cmd.getParam("SU", 0, tmp) && !c.isSet(Entity::FLAG_VALIDATE_HBRI) && c.getState() != Entity::STATE_HBRI)
-			c.stripProtocolSupports();
+		if (cc && cmd.getParam("SU", 0, tmp) && !c.isSet(Entity::FLAG_VALIDATE_HBRI) && c.getState() != Entity::STATE_HBRI)
+			stripProtocolSupports(*cc);
 
 		return true;
+	}
+
+	void ClientManager::stripProtocolSupports(Client& cc)
+	{
+		char v = cc.isV6() ? '4' : '6';
+		char tcpParam[4] = { 'T', 'C', 'P', v };
+		char udpParam[4] = { 'U', 'D', 'P', v };
+		cc.removeClientSupport(AdcCommand::toFourCC(tcpParam));
+		cc.removeClientSupport(AdcCommand::toFourCC(udpParam));
 	}
 
 	bool ClientManager::verifyPassword(Entity& c, const string& password, const ByteVector& salt, const string& suppliedHash, TigerHash& tiger)
@@ -356,12 +365,12 @@ namespace adchpp
 		return true;
 	}
 
-	bool ClientManager::sendHBRI(Entity& c)
+	bool ClientManager::sendHBRI(Client& c)
 	{
 		if (c.hasSupport(AdcCommand::toFourCC("HBRI")))
 		{
 			AdcCommand cmd(AdcCommand::CMD_TCP);
-			if (!dynamic_cast<Client*>(&c)->getHbriParams(cmd)) return false;
+			if (!c.getHbriParams(cmd)) return false;
 
 			c.setFlag(Entity::FLAG_VALIDATE_HBRI);
 			if (c.getState() != Entity::STATE_NORMAL) c.setState(Entity::STATE_HBRI);
@@ -400,6 +409,8 @@ namespace adchpp
 
 	bool ClientManager::handle(AdcCommand::TCP, Entity& c, AdcCommand& cmd) noexcept
 	{
+		if (c.getType() != Entity::TYPE_CLIENT) return false;
+		Client& cc = static_cast<Client&>(c);
 		dcdebug("Received HBRI TCP: %s", cmd.toString().c_str());
 
 		string error;
@@ -409,8 +420,7 @@ namespace adchpp
 			auto p = hbriTokens.find(token);
 			if (p != hbriTokens.end())
 			{
-				auto mainCC = dynamic_cast<Client*>(p->second.first);
-				auto hbriCC = dynamic_cast<Client*>(&c);
+				auto mainCC = p->second.first;
 				mainCC->unsetFlag(Entity::FLAG_VALIDATE_HBRI);
 
 				if (mainCC->getState() != Entity::STATE_HBRI && mainCC->getState() != Entity::STATE_NORMAL)
@@ -421,20 +431,20 @@ namespace adchpp
 
 				hbriTokens.erase(p);
 
-				if (mainCC->isV6() == hbriCC->isV6())
+				if (mainCC->isV6() == cc.isV6())
 				{
 					// Hmm..
 					AdcCommand sta(AdcCommand::SEV_RECOVERABLE, AdcCommand::ERROR_HBRI_TIMEOUT,
 						"Validation request was received over the wrong IP protocol");
-					hbriCC->send(sta);
-					failHBRI(*hbriCC);
+					cc.send(sta);
+					failHBRI(cc);
 
 					c.disconnect(Util::REASON_INVALID_IP,
 						"Validation request was received over the wrong IP protocol");
 					return false;
 				}
 
-				if (!verifyIp(*hbriCC, cmd, true))
+				if (!verifyIp(cc, cmd, true))
 				{
 					failHBRI(*mainCC);
 					return false;
@@ -448,7 +458,7 @@ namespace adchpp
 				// remove extra parameters
 				auto& params = cmd.getParameters();
 				const char *ipParam, *portParam;
-				if (hbriCC->isV6())
+				if (cc.isV6())
 				{
 					ipParam = "I6";
 					portParam = "U6";
@@ -831,9 +841,9 @@ namespace adchpp
 
 	bool ClientManager::enterNormal(Entity& c, bool sendData, bool sendOwnInf) noexcept
 	{
-		if (c.isSet(Entity::FLAG_VALIDATE_HBRI))
+		if (c.getType() == Entity::TYPE_CLIENT && c.isSet(Entity::FLAG_VALIDATE_HBRI))
 		{
-			if (sendHBRI(c)) return false;
+			if (sendHBRI(static_cast<Client&>(c))) return false;
 			c.unsetFlag(Entity::FLAG_VALIDATE_HBRI);
 		}
 
@@ -863,8 +873,8 @@ namespace adchpp
 
 	void ClientManager::removeLogins(Entity& e) noexcept
 	{
-		Client* c = dynamic_cast<Client*>(&e);
-		if (!c) return;
+		if (e.getType() != Entity::TYPE_CLIENT) return;
+		const Client* c = static_cast<Client*>(&e);
 
 		for (auto i = logins.begin(); i != logins.end(); ++i)
 			if (i->first == c)

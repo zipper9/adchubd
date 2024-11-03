@@ -17,9 +17,7 @@
  */
 
 #include "adchpp.h"
-
 #include "Entity.h"
-
 #include "ClientManager.h"
 
 namespace adchpp
@@ -178,17 +176,6 @@ namespace adchpp
 		if (!infSupports.empty() && infSupports.back() == ',')
 			infSupports.erase(supports.size() - 1);
 		return true;
-	}
-
-	static const int protoSupportCount = 2;
-	static uint32_t supports4[protoSupportCount] = { AdcCommand::toFourCC("TCP4"), AdcCommand::toFourCC("UDP4") };
-	static uint32_t supports6[protoSupportCount] = { AdcCommand::toFourCC("TCP6"), AdcCommand::toFourCC("UDP6") };
-
-	void Entity::stripProtocolSupports() noexcept
-	{
-		const auto& sup = dynamic_cast<Client*>(this)->isV6() ? supports4 : supports6;
-		for (auto i = 0; i < protoSupportCount; ++i)
-			removeClientSupport(sup[i]);
 	}
 
 	bool Entity::isFiltered(const std::string& features) const

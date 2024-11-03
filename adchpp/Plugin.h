@@ -26,8 +26,6 @@ namespace adchpp
 	/**
 	 * Public plugin interface, for plugin intercom.
 	 * Plugins that register a public interface must inherit from this class.
-	 * Plugins requesting another plugins interface will get a pointer to this
-	 * class and must upcast it (using dynamic_cast<> and check NULL to be safe).
 	 */
 	class Plugin
 	{

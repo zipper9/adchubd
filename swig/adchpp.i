@@ -575,9 +575,18 @@ public:
 	void unsetFlag(size_t aFlag);
 
 %extend {
-	Client* asClient() { return dynamic_cast<Client*>($self); }
-	Hub* asHub() { return dynamic_cast<Hub*>($self); }
-	Bot* asBot() { return dynamic_cast<Bot*>($self); }
+	Client* asClient()
+	{
+		return $self->getType() == Entity::TYPE_CLIENT ? static_cast<Client*>($self) : nullptr;
+	}
+	Hub* asHub()
+	{
+		return $self->getType() == Entity::TYPE_HUB ? static_cast<Hub*>($self) : nullptr;
+	}
+	Bot* asBot()
+	{
+		return $self->getType() == Entity::TYPE_BOT ? static_cast<Bot*>($self) : nullptr;
+	}
 }
 
 };

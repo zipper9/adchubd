@@ -40,10 +40,8 @@ namespace adchpp
 
 		using Entity::send;
 
-		virtual void send(const BufferPtr& command)
-		{
-			socket->write(command);
-		}
+		virtual int getType() const { return TYPE_CLIENT; }
+		virtual void send(const BufferPtr& command) { socket->write(command); }
 
 		/** @param reason The statistic to update */
 		virtual void disconnect(Util::Reason reason, const std::string& info = Util::emptyString) noexcept;

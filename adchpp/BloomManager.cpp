@@ -99,12 +99,10 @@ static const uint32_t FEATURE = AdcCommand::toFourCC("BLO0");
 
 void BloomManager::onReceive(Entity& e, AdcCommand& cmd, bool& ok)
 {
+	if (e.getType() != Entity::TYPE_CLIENT) return;
 	string tmp;
 
-	Client* cc = dynamic_cast<Client*>(&e);
-	if (!cc) return;
-
-	Client& c = *cc;
+	Client& c = static_cast<Client&>(e);
 	if (cmd.getCommand() == AdcCommand::CMD_INF && c.hasSupport(FEATURE))
 	{
 		if (cmd.getParam("SF", 0, tmp))

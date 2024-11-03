@@ -31,6 +31,7 @@ namespace adchpp
 	public:
 		Hub(ClientManager& cm);
 
+		virtual int getType() const { return TYPE_HUB; }
 		virtual void send(const BufferPtr& cmd) {}
 		virtual void disconnect(Util::Reason reason, const std::string&) noexcept {}
 	};
