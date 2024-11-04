@@ -134,9 +134,8 @@ void loadXML(Core& core, const string& aFileName)
 #ifndef HAVE_OPENSSL
 					if (server->secure())
 						fprintf(stderr,
-								"Error listening on port %s: This ADCH++ hasn't been "
-								"compiled with support for secure connections\n",
-								server->port.c_str());
+							"Error listening on port %s: This version hasn't been compiled with support for secure connections\n",
+							server->port.c_str());
 					else
 #endif
 						servers.push_back(server);
@@ -165,6 +164,6 @@ void loadXML(Core& core, const string& aFileName)
 	}
 	catch (const Exception& e)
 	{
-		printf("Unable to load adchpp.xml, using defaults: %s\n", e.getError().c_str());
+		printf("Unable to load configuration, using defaults: %s\n", e.getError().c_str());
 	}
 }

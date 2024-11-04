@@ -29,17 +29,14 @@
 #include <locale.h>
 
 using namespace adchpp;
-using namespace std;
+using std::string;
 
-static const string modName = "adchpp";
-
-#define LOGERROR(func) LOG(modName, func " failed: " + Util::translateError(GetLastError()))
-#define PRINTERROR(func)                                            \
+#define PRINTERROR(func) \
 	fprintf(stderr, func " failed: code %lu: %s\n", GetLastError(), \
-			Util::translateError(GetLastError()).c_str())
+	        Util::translateError(GetLastError()).c_str())
 
 bool asService = true;
-static const TCHAR* serviceName = _T("adchpp");
+static const TCHAR* serviceName = _T("adchubd");
 static std::shared_ptr<Core> core;
 static string configPath;
 
@@ -53,7 +50,7 @@ static void installService()
 	}
 
 	string cmdLine = '"' + Util::getAppName() + "\" -c \"" + configPath + "\\\" -d \"" + string(serviceName) + "\"";
-	SC_HANDLE service = CreateService(scm, serviceName, serviceName, SERVICE_ALL_ACCESS,
+	SC_HANDLE service = CreateService(scm, serviceName, _T("ADC Hub Service"), SERVICE_ALL_ACCESS,
 		SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL,
 		cmdLine.c_str(), NULL, NULL, NULL, NULL, NULL);
 
@@ -67,7 +64,7 @@ static void installService()
 	SERVICE_DESCRIPTION description = { const_cast<LPTSTR>(cmdLine.c_str()) };
 	ChangeServiceConfig2(service, SERVICE_CONFIG_DESCRIPTION, &description);
 
-	fprintf(stdout, "ADCH++ service \"%s\" successfully installed; command line:\n%s\n", serviceName, cmdLine.c_str());
+	fprintf(stdout, "Service \"%s\" successfully installed; command line:\n%s\n", serviceName, cmdLine.c_str());
 
 	CloseServiceHandle(service);
 	CloseServiceHandle(scm);
@@ -98,7 +95,7 @@ static void removeService()
 		CloseServiceHandle(scm);
 	}
 
-	fprintf(stdout, "ADCH++ service \"%s\" successfully removed\n", serviceName);
+	fprintf(stdout, "Service \"%s\" successfully removed\n", serviceName);
 
 	CloseServiceHandle(service);
 	CloseServiceHandle(scm);
@@ -111,7 +108,7 @@ static void init()
 	// else
 	// LOG(modName, versionString + " started from console");
 
-	loadXML(*core, File::makeAbsolutePath(core->getConfigPath(), "adchpp.xml"));
+	loadXML(*core, File::makeAbsolutePath(core->getConfigPath(), "config.xml"));
 }
 
 static void uninit()
@@ -227,34 +224,25 @@ BOOL WINAPI HandlerRoutine(DWORD dwCtrlType)
 		core->shutdown();
 		return TRUE;
 	}
-
 	return FALSE;
 }
 
 static void runConsole()
 {
-	SetConsoleCtrlHandler(&HandlerRoutine, TRUE);
+	SetConsoleCtrlHandler(HandlerRoutine, TRUE);
 
-	printf("Starting.");
-	fflush(stdout);
-
+	printf("Starting %s\n", appName.c_str());
 	try
 	{
 		core = Core::create(configPath);
-
-		printf(".");
-		fflush(stdout);
 		init();
-
-		// LOG(modName, versionString + " starting from console");
-		printf(".\n%s running, press ctrl-c to exit...\n", versionString.c_str());
+		printf("%s running, press Ctrl-C to exit...\n", versionString.c_str());
 		core->run();
-
 		core.reset();
 	}
 	catch (const Exception& e)
 	{
-		printf("\n\nFATAL: Can't start ADCH++: %s\n", e.getError().c_str());
+		fprintf(stderr, "\nFATAL: Can't start %s: %s\n", appName.c_str(), e.what());
 	}
 
 	uninit();
@@ -262,12 +250,10 @@ static void runConsole()
 
 static void printUsage()
 {
-	const char* text = "Usage: adchpp [[-c <configdir>] [-i <servicename> | -u "
-		"<servicename>]] | [-v] | [-h]\n\n"
-		"-c Specify the path of the configuration directory "
-		"(default: .\\config)\n"
-		"-i <service name> Install a service instance (name "
-		"defaults to 'adchpp')\n"
+	const char* text =
+		"Usage: " APPNAME " [[-c <configdir>] [-i <servicename> | -u <servicename>]] | [-v] | [-h]\n\n"
+		"-c Specify the path of the configuration directory (default: .\\config)\n"
+		"-i <service name> Install a service instance (name defaults to 'adchubd')\n"
 		"-u <service name> Uninstall a service instance\n"
 		"-v Print version number\n"
 		"-h Show this help message\n";
@@ -275,67 +261,53 @@ static void printUsage()
 	printf(text);
 }
 
-int main(int argc, char* argv[])
+static void checkArg(int argc, char* argv[], int i)
+{
+	if (i + 1 == argc)
+	{
+		fprintf(stderr, "Parameter %s requires an argument\n", argv[i]);
+		exit(1);
+	}
+}
+
+int _tmain(int argc, TCHAR* argv[])
 {
 	setlocale(LC_ALL, "");
-
 	configPath = Util::getAppPath() + "config\\";
-
 	int task = 0;
-
 	for (int i = 1; i < argc; ++i)
 	{
 		if (_tcscmp(argv[i], _T("-d")) == 0)
 		{
-			if (i + 1 == argc)
-			{
-				// Not much to do...
-				return 1;
-			}
-
-			i++;
-			serviceName = argv[i];
+			checkArg(argc, argv, i);
+			serviceName = argv[++i];
 			task = 1;
 		}
 		else if (_tcscmp(argv[i], _T("-c")) == 0)
 		{
-			if ((i + 1) == argc)
-			{
-				printf("-c <directory>\n");
-				return 1;
-			}
-
-			i++;
-			string cfg = argv[i];
+			checkArg(argc, argv, i);
+			string cfg = argv[++i];
 			if (cfg.empty())
 			{
 				printf("-c <directory>\n");
 				return 2;
 			}
-
 			if (!File::isAbsolutePath(cfg))
 			{
 				printf("Config dir must be an absolute path\n");
 				return 2;
 			}
-
-			if (cfg[cfg.length() - 1] != '\\')
-			{
-				cfg += '\\';
-			}
-
-			configPath = cfg;
+			if (cfg[cfg.length() - 1] != '\\') cfg += '\\';
+			configPath = std::move(cfg);
 		}
 		else if (_tcscmp(argv[i], _T("-i")) == 0)
 		{
-			i++;
-			serviceName = (i >= argc) ? serviceName : argv[i];
+			if (++i < argc) serviceName = argv[i];
 			task = 2;
 		}
 		else if (_tcscmp(argv[i], _T("-u")) == 0)
 		{
-			i++;
-			serviceName = (i >= argc) ? serviceName : argv[i];
+			if (++i < argc) serviceName = argv[i];
 			task = 3;
 		}
 		else if (_tcscmp(argv[i], _T("-v")) == 0)

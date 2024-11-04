@@ -20,7 +20,6 @@ local string = base.require("string")
 local table = base.require("table")
 local math = base.require("math")
 
-base.assert(math.ceil(adchpp.versionFloat * 100) >= 280, 'ADCH++ 2.8.0 or later is required to run access.guard.lua')
 base.assert(base['access'], 'access.lua must be loaded and running before ' .. _NAME .. '.lua')
 base.assert(base.access['bans'], 'access.bans.lua must be loaded and running before ' .. _NAME .. '.lua')
 

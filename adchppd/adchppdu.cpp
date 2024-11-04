@@ -75,7 +75,7 @@ static void init()
 		fflush(pidFile);
 	}
 
-	loadXML(*core, File::makeAbsolutePath(core->getConfigPath(), "adchpp.xml"));
+	loadXML(*core, File::makeAbsolutePath(core->getConfigPath(), "config.xml"));
 }
 
 static void installHandler()
@@ -141,7 +141,7 @@ static void run(const string& configPath, bool asDaemon)
 	if (asDaemon)
 		daemonize();
 	else
-		printf("Starting %s\n", versionString.c_str());
+		printf("Starting %s\n", appName.c_str());
 	try
 	{
 		core = Core::create(configPath);
@@ -152,14 +152,14 @@ static void run(const string& configPath, bool asDaemon)
 	}
 	catch (const Exception& e)
 	{
-		fprintf(stderr, "\nFATAL: Can't start ADCH++: %s\n", e.what());
+		fprintf(stderr, "\nFATAL: Can't start %s: %s\n", appName.c_str(), e.what());
 	}
 	uninit(asDaemon);
 }
 
 static void printUsage()
 {
-	printf("Usage: adchpp [[-c <configdir>] [-d]] | [-v] | [-h]\n");
+	printf("Usage: " APPNAME " [[-c <configdir>] [-d]] | [-v] | [-h]\n");
 }
 
 static void checkArg(int argc, char* argv[], int i)
@@ -184,7 +184,7 @@ int main(int argc, char* argv[])
 	}
 
 	Util::setApp(path);
-	string configPath = "/etc/adchpp/";
+	string configPath = "/etc/" APPNAME "/";
 	bool asDaemon = false;
 
 	for (int i = 1; i < argc; i++)

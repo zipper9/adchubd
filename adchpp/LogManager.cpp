@@ -28,7 +28,7 @@ namespace adchpp
 
 	using namespace std;
 
-	LogManager::LogManager(Core& core) : logFile("logs/adchpp%Y%m.log"), enabled(true), core(core)
+	LogManager::LogManager(Core& core) : logFile("logs/adchubd/%Y%m.log"), enabled(true), core(core)
 	{
 	}
 

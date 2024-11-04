@@ -16,19 +16,18 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef ADCHPP_VERSION_H
-#define ADCHPP_VERSION_H
+#ifndef VERSION_H_
+#define VERSION_H_
 
 #include <string>
+
+#define APPNAME "adchubd"
 
 namespace adchpp
 {
 	extern std::string appName;
 	extern std::string versionString;
 	extern float versionFloat;
-} // namespace adchpp
+}
 
-// This should be updated whenever the plugin API changes
-#define PLUGINVERSION 1
-
-#endif // VERSION_H
+#endif // VERSION_H_

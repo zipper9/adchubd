@@ -19,19 +19,8 @@
 #include "version.h"
 #include "adchpp.h"
 
-#ifndef ADCHPP_REVISION
-#define ADCHPP_REVISION 0
-#endif
-
-#define xstrver(s) strver(s)
-#define strver(s) #s
-
-// Version numbers follow Semantic Versioning 2.0.0 <https://semver.org>.
-
-// don't forget to also update the .rc file of adchppd!
-#define APPNAME "ADCH++"
-#define VERSIONSTRING "3.0.0 (r\"" xstrver(ADCHPP_REVISION) "\")"
-#define VERSIONFLOAT 3.0
+#define VERSIONSTRING "1.0.0"
+#define VERSIONFLOAT 1.0F
 
 #ifndef NDEBUG
 #define BUILDSTRING "Debug"
