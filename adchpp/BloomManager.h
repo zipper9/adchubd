@@ -19,8 +19,8 @@
 #ifndef BLOOM_MANAGER_H_
 #define BLOOM_MANAGER_H_
 
+#include <baselib/Exception.h>
 #include "ClientManager.h"
-#include "Exception.h"
 #include "Plugin.h"
 #include "Signal.h"
 #include "HashBloom.h"

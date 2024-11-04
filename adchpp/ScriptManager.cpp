@@ -16,22 +16,20 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "adchpp.h"
 #include "ScriptManager.h"
 #include "Engine.h"
 #include "LuaEngine.h"
 #include "AdcCommand.h"
 #include "Client.h"
 #include "Core.h"
-#include "File.h"
 #include "LogManager.h"
 #include "PluginManager.h"
-#include "SimpleXML.h"
-#include "Util.h"
+#include <baselib/File.h>
+#include <baselib/SimpleXML.h>
 
 using std::string;
 using std::placeholders::_1;
-using namespace adchpp;
+using adchpp::ScriptManager;
 
 const string ScriptManager::className = "ScriptManager";
 
@@ -61,7 +59,7 @@ void ScriptManager::load()
 	{
 		SimpleXML xml;
 
-		xml.fromXML(File(core.getConfigPath() + "Script.xml", File::READ).read());
+		xml.fromXML(File(core.getConfigPath() + "Script.xml", File::READ, File::OPEN).read());
 		xml.stepIn();
 		while (xml.findChild("Engine"))
 		{

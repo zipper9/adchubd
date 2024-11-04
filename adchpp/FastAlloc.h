@@ -19,7 +19,7 @@
 #ifndef ADCHPP_FASTALLOC_H
 #define ADCHPP_FASTALLOC_H
 
-#include "Mutex.h"
+#include <baselib/Locks.h>
 
 namespace adchpp
 {
@@ -27,7 +27,7 @@ namespace adchpp
 #ifdef NDEBUG
 	struct FastAllocBase
 	{
-		static FastMutex mtx;
+		static FastCriticalSection mtx;
 	};
 
 	/**
@@ -57,23 +57,16 @@ namespace adchpp
 		static void operator delete(void* m, size_t s)
 		{
 			if (s != sizeof(T))
-			{
 				::operator delete(m);
-			}
-			else if (m != NULL)
-			{
-				deallocate((uint8_t*)m);
-			}
+			else if (m)
+				deallocate((uint8_t*) m);
 		}
 
 	private:
 		static void* allocate()
 		{
-			FastMutex::Lock l(mtx);
-			if (freeList == NULL)
-			{
-				grow();
-			}
+			LockBase<FastCriticalSection> l(mtx);
+			if (!freeList) grow();
 			void* tmp = freeList;
 			freeList = *((void**)freeList);
 			return tmp;
@@ -81,8 +74,8 @@ namespace adchpp
 
 		static void deallocate(void* p)
 		{
-			FastMutex::Lock l(mtx);
-			*(void**)p = freeList;
+			LockBase<FastCriticalSection> l(mtx);
+			*(void**) p = freeList;
 			freeList = p;
 		}
 
@@ -92,7 +85,7 @@ namespace adchpp
 		{
 			dcassert(sizeof(T) >= sizeof(void*));
 			// We want to grow by approximately 128kb at a time...
-			size_t items = ((128 * 1024 + sizeof(T) - 1) / sizeof(T));
+			size_t items = (128 * 1024 + sizeof(T) - 1) / sizeof(T);
 			freeList = new uint8_t[sizeof(T) * items];
 			uint8_t* tmp = (uint8_t*)freeList;
 			for (size_t i = 0; i < items - 1; i++)
@@ -100,7 +93,7 @@ namespace adchpp
 				*(void**)tmp = tmp + sizeof(T);
 				tmp += sizeof(T);
 			}
-			*(void**)tmp = NULL;
+			*(void**) tmp = nullptr;
 		}
 	};
 	template <class T> void* FastAlloc<T>::freeList = 0;

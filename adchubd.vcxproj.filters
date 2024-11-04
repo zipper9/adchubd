@@ -19,12 +19,12 @@
     <Filter Include="bloom">
       <UniqueIdentifier>{a04fee44-370b-4c26-bb22-bbb3ae14b077}</UniqueIdentifier>
     </Filter>
+    <Filter Include="baselib">
+      <UniqueIdentifier>{1b0ca861-a495-49ae-acc4-f88aed718c15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="adchpp\AdcCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="adchpp\adchpp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="adchpp\Bot.cpp">
@@ -39,19 +39,10 @@
     <ClCompile Include="adchpp\ClientManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="adchpp\common.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="adchpp\Core.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="adchpp\Encoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="adchpp\Entity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="adchpp\File.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="adchpp\Hub.cpp">
@@ -66,22 +57,7 @@
     <ClCompile Include="adchpp\PluginManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="adchpp\SimpleXML.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="adchpp\SocketManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="adchpp\Text.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="adchpp\Thread.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="adchpp\TigerHash.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="adchpp\Util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="adchpp\version.cpp">
@@ -111,12 +87,63 @@
     <ClCompile Include="adchpp\HashBloom.cpp">
       <Filter>bloom</Filter>
     </ClCompile>
+    <ClCompile Include="baselib\Base32.cpp">
+      <Filter>baselib</Filter>
+    </ClCompile>
+    <ClCompile Include="baselib\BaseUtil.cpp">
+      <Filter>baselib</Filter>
+    </ClCompile>
+    <ClCompile Include="baselib\File.cpp">
+      <Filter>baselib</Filter>
+    </ClCompile>
+    <ClCompile Include="baselib\SimpleXML.cpp">
+      <Filter>baselib</Filter>
+    </ClCompile>
+    <ClCompile Include="baselib\SimpleXMLReader.cpp">
+      <Filter>baselib</Filter>
+    </ClCompile>
+    <ClCompile Include="baselib\CompatibilityManager.cpp">
+      <Filter>baselib</Filter>
+    </ClCompile>
+    <ClCompile Include="baselib\Exception.cpp">
+      <Filter>baselib</Filter>
+    </ClCompile>
+    <ClCompile Include="baselib\FormatUtil.cpp">
+      <Filter>baselib</Filter>
+    </ClCompile>
+    <ClCompile Include="baselib\Random.cpp">
+      <Filter>baselib</Filter>
+    </ClCompile>
+    <ClCompile Include="baselib\Text.cpp">
+      <Filter>baselib</Filter>
+    </ClCompile>
+    <ClCompile Include="baselib\Thread.cpp">
+      <Filter>baselib</Filter>
+    </ClCompile>
+    <ClCompile Include="baselib\TigerHash.cpp">
+      <Filter>baselib</Filter>
+    </ClCompile>
+    <ClCompile Include="adchpp\AppPaths.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="baselib\ParamExpander.cpp">
+      <Filter>baselib</Filter>
+    </ClCompile>
+    <ClCompile Include="baselib\debug.cpp">
+      <Filter>baselib</Filter>
+    </ClCompile>
+    <ClCompile Include="adchpp\CID.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="baselib\SysVersion.cpp">
+      <Filter>baselib</Filter>
+    </ClCompile>
+    <ClCompile Include="adchpp\Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="adchpp\AdcCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="adchpp\adchpp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="adchpp\AsyncStream.h">
@@ -137,31 +164,16 @@
     <ClInclude Include="adchpp\ClientManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="adchpp\common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="adchpp\compiler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="adchpp\config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="adchpp\Core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="adchpp\Encoder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="adchpp\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="adchpp\Exception.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="adchpp\FastAlloc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="adchpp\File.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="adchpp\forward.h">
@@ -176,12 +188,6 @@
     <ClInclude Include="adchpp\ManagedSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="adchpp\Mutex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="adchpp\nullptr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="adchpp\Plugin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -194,31 +200,16 @@
     <ClInclude Include="adchpp\ServerInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="adchpp\shared_ptr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="adchpp\Signal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="adchpp\SimpleXML.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="adchpp\SocketManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="adchpp\Text.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="adchpp\Thread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="adchpp\TigerHash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="adchpp\TimeUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="adchpp\Util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="adchpp\version.h">
@@ -245,8 +236,68 @@
     <ClInclude Include="adchpp\HashBloom.h">
       <Filter>bloom</Filter>
     </ClInclude>
-    <ClInclude Include="adchpp\HashValue.h">
-      <Filter>bloom</Filter>
+    <ClInclude Include="baselib\Base32.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\BaseUtil.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\File.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\SimpleXML.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\SimpleXMLException.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\SimpleXMLReader.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\BaseStreams.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\BaseThread.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\CompatibilityManager.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\Exception.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\FormatUtil.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\HashValue.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\Random.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\Text.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\Thread.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\TigerHash.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="adchpp\AppPaths.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\ParamExpander.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\debug.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\SysVersion.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="adchpp\Utils.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

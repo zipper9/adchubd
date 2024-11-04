@@ -16,12 +16,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "adchpp.h"
 #include "PluginManager.h"
 #include "Core.h"
 #include "LogManager.h"
 #include "ScriptManager.h"
 #include "BloomManager.h"
+#include <baselib/StringTokenizer.h>
 
 namespace adchpp
 {
@@ -43,7 +43,7 @@ namespace adchpp
 
 	void PluginManager::load()
 	{
-		for (StringIter i = plugins.begin(); i != plugins.end(); ++i)
+		for (auto i = plugins.begin(); i != plugins.end(); ++i)
 			if (*i == "Script")
 			{
 				auto sm = std::make_shared<ScriptManager>(getCore());
@@ -81,10 +81,11 @@ namespace adchpp
 		if (cmd.getParameters().size() < 1)
 			return;
 
-		StringList l;
-		Util::tokenize(l, cmd.getParameters()[0], ' ');
-		if (l[0] != name)
+		StringTokenizer<string> st(cmd.getParameters()[0], ' ');
+		auto& l = st.getWritableTokens();
+		if (l.empty() || l[0] != name)
 			return;
+
 		l[0] = name.substr(1);
 		if (!pm->handleCommand(e, l))
 			return;

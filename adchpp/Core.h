@@ -20,8 +20,6 @@
 #define ADCHPP_ADCHPP_CORE_H_
 
 #include "TimeUtil.h"
-#include "common.h"
-
 #include "forward.h"
 
 namespace adchpp

@@ -16,17 +16,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "adchpp.h"
-
 #include "ManagedSocket.h"
-
 #include "SocketManager.h"
-
 #include <boost/asio/ip/address.hpp>
 
 namespace adchpp
 {
-
 	using namespace std;
 
 	using namespace boost::asio;
@@ -66,7 +61,7 @@ namespace adchpp
 				return;
 			if (!overflow.is_not_a_date_time() && overflow + time::millisec(sm.getOverflowTimeout()) < time::now())
 			{
-				disconnect(Util::REASON_WRITE_OVERFLOW);
+				disconnect(REASON_WRITE_OVERFLOW);
 				return;
 			}
 			overflow = time::now();
@@ -136,7 +131,7 @@ namespace adchpp
 		}
 		else if (time::now() > lastWrite + time::seconds(60))
 		{
-			disconnect(Util::REASON_WRITE_TIMEOUT);
+			disconnect(REASON_WRITE_TIMEOUT);
 		}
 	}
 
@@ -179,7 +174,7 @@ namespace adchpp
 				prepareWrite();
 		}
 		else
-			fail(Util::REASON_SOCKET_ERROR, ec.message());
+			fail(REASON_SOCKET_ERROR, ec.message());
 	}
 
 	void ManagedSocket::prepareRead() noexcept
@@ -207,7 +202,7 @@ namespace adchpp
 			sock->prepareRead(inBuf, Handler<&ManagedSocket::completeRead>(shared_from_this()));
 		}
 		else
-			fail(Util::REASON_SOCKET_ERROR, ec.message());
+			fail(REASON_SOCKET_ERROR, ec.message());
 	}
 
 	void ManagedSocket::completeRead(const boost::system::error_code& ec, size_t bytes) noexcept
@@ -228,13 +223,13 @@ namespace adchpp
 			}
 			catch (const boost::system::system_error& e)
 			{
-				fail(Util::REASON_SOCKET_ERROR, e.code().message());
+				fail(REASON_SOCKET_ERROR, e.code().message());
 			}
 		}
 		else
 		{
 			inBuf.reset();
-			fail(Util::REASON_SOCKET_ERROR, ec.message());
+			fail(REASON_SOCKET_ERROR, ec.message());
 		}
 	}
 
@@ -246,7 +241,7 @@ namespace adchpp
 			sock->init(std::bind(&ManagedSocket::ready, shared_from_this()));
 		}
 		else
-			fail(Util::REASON_SOCKET_ERROR, ec.message());
+			fail(REASON_SOCKET_ERROR, ec.message());
 	}
 
 	void ManagedSocket::ready() noexcept
@@ -255,7 +250,7 @@ namespace adchpp
 		prepareRead();
 	}
 
-	void ManagedSocket::fail(Util::Reason reason, const std::string& info) noexcept
+	void ManagedSocket::fail(Reason reason, const std::string& info) noexcept
 	{
 		if (failedHandler)
 		{
@@ -271,8 +266,8 @@ namespace adchpp
 	struct Reporter
 	{
 		Reporter(ManagedSocketPtr ms,
-				 void (ManagedSocket::*f)(Util::Reason reason, const std::string& info),
-				 Util::Reason reason,
+				 void (ManagedSocket::*f)(Reason reason, const std::string& info),
+				 Reason reason,
 				 const std::string& info)
 		: ms(ms), f(f), reason(reason), info(info)
 		{
@@ -284,9 +279,9 @@ namespace adchpp
 		}
 
 		ManagedSocketPtr ms;
-		void (ManagedSocket::*f)(Util::Reason reason, const std::string& info);
+		void (ManagedSocket::*f)(Reason reason, const std::string& info);
 
-		Util::Reason reason;
+		Reason reason;
 		std::string info;
 	};
 
@@ -320,7 +315,7 @@ namespace adchpp
 		return true;
 	}
 
-	void ManagedSocket::disconnect(Util::Reason reason, const std::string& info) noexcept
+	void ManagedSocket::disconnect(Reason reason, const std::string& info) noexcept
 	{
 		if (disconnecting()) return;
 		const auto timeout = sm.getDisconnectTimeout();

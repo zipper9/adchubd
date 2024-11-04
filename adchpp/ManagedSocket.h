@@ -19,20 +19,16 @@
 #ifndef ADCHPP_MANAGEDSOCKET_H
 #define ADCHPP_MANAGEDSOCKET_H
 
-#include "common.h"
-
-#include "forward.h"
-
 #include "AdcCommand.h"
 #include "AsyncStream.h"
 #include "Buffer.h"
 #include "Signal.h"
 #include "TimeUtil.h"
-#include "Util.h"
+#include "Reason.h"
+#include "forward.h"
 
 namespace adchpp
 {
-
 	/**
 	 * An asynchronous socket managed by SocketManager.
 	 */
@@ -53,7 +49,7 @@ namespace adchpp
 
 		/** Asynchronous disconnect. Pending data will be written within the limits of
 		 * the DisconnectTimeout setting, but no more data will be read. */
-		void disconnect(Util::Reason reason, const std::string& info = Util::emptyString) noexcept;
+		void disconnect(Reason reason, const std::string& info = Util::emptyString) noexcept;
 
 		const std::string& getIp() const
 		{
@@ -82,7 +78,7 @@ namespace adchpp
 			dataHandler = handler;
 		}
 
-		typedef std::function<void(Util::Reason, const std::string&)> FailedHandler;
+		typedef std::function<void(Reason, const std::string&)> FailedHandler;
 		void setFailedHandler(const FailedHandler& handler)
 		{
 			failedHandler = handler;
@@ -115,7 +111,7 @@ namespace adchpp
 		void prepareRead2(const boost::system::error_code& ec, size_t bytes) noexcept;
 		void completeRead(const boost::system::error_code& ec, size_t bytes) noexcept;
 
-		void fail(Util::Reason reason, const std::string& info) noexcept;
+		void fail(Reason reason, const std::string& info) noexcept;
 
 		bool disconnecting() const;
 		bool writing() const;

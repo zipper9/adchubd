@@ -6,6 +6,10 @@ find_package(OpenSSL)
 
 add_subdirectory(lua)
 
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Release")
+endif()
+
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DNDEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 
@@ -14,18 +18,31 @@ if(APPLE)
 endif()
 
 set(SOURCES
+baselib/Base32.cpp
+baselib/BaseUtil.cpp
+baselib/CompatibilityManager.cpp
+baselib/debug.cpp
+baselib/Exception.cpp
+baselib/File.cpp
+baselib/FormatUtil.cpp
+baselib/ParamExpander.cpp
+baselib/Random.cpp
+baselib/SimpleXML.cpp
+baselib/SimpleXMLReader.cpp
+baselib/SysVersion.cpp
+baselib/Text.cpp
+baselib/Thread.cpp
+baselib/TigerHash.cpp
 adchpp/AdcCommand.cpp
-adchpp/adchpp.cpp
+adchpp/AppPaths.cpp
 adchpp/BloomManager.cpp
 adchpp/Bot.cpp
 adchpp/Buffer.cpp
+adchpp/CID.cpp
 adchpp/Client.cpp
 adchpp/ClientManager.cpp
-adchpp/common.cpp
 adchpp/Core.cpp
-adchpp/Encoder.cpp
 adchpp/Entity.cpp
-adchpp/File.cpp
 adchpp/HashBloom.cpp
 adchpp/Hub.cpp
 adchpp/LogManager.cpp
@@ -34,12 +51,8 @@ adchpp/LuaScript.cpp
 adchpp/ManagedSocket.cpp
 adchpp/PluginManager.cpp
 adchpp/ScriptManager.cpp
-adchpp/SimpleXML.cpp
 adchpp/SocketManager.cpp
-adchpp/Text.cpp
-adchpp/Thread.cpp
-adchpp/TigerHash.cpp
-adchpp/Util.cpp
+adchpp/Utils.cpp
 adchpp/version.cpp
 swig/lua_wrap.cxx
 adchppd/adchppd.cpp

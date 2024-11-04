@@ -20,6 +20,7 @@
 #define LUASCRIPT_H_
 
 #include "Script.h"
+#include <string>
 
 namespace adchpp
 {

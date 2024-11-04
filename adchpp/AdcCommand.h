@@ -19,10 +19,9 @@
 #ifndef ADCHPP_ADC_COMMAND_H
 #define ADCHPP_ADC_COMMAND_H
 
+#include <baselib/Exception.h>
+#include <baselib/BaseUtil.h>
 #include "Buffer.h"
-#include "Exception.h"
-#include "Util.h"
-#include "common.h"
 
 namespace adchpp
 {
@@ -63,12 +62,14 @@ namespace adchpp
 			ERROR_FEATURE_MISSING = 45,
 			ERROR_BAD_IP = 46,
 			ERROR_NO_HUB_HASH = 47,
+			ERROR_INVALID_FEATURE = 48,
 			ERROR_TRANSFER_GENERIC = 50,
 			ERROR_FILE_NOT_AVAILABLE = 51,
 			ERROR_FILE_PART_NOT_AVAILABLE = 52,
 			ERROR_SLOTS_FULL = 53,
 			ERROR_NO_CLIENT_HASH = 54,
-			ERROR_HBRI_TIMEOUT = 55
+			ERROR_HBRI_TIMEOUT = 55,
+			ERROR_ADCS_REQUIRED = 62
 		};
 
 		enum Severity
@@ -80,10 +81,9 @@ namespace adchpp
 
 		enum Priority
 		{
-			PRIORITY_NORMAL, ///< Default priority, command will be sent out normally
-			PRIORITY_LOW,	 ///< Low priority, command will only be sent if connection
-			                 ///< isn't saturated
-			PRIORITY_IGNORE	 ///< Ignore, command will not be put in send queue
+			PRIORITY_NORMAL, // Default priority, command will be sent out normally
+			PRIORITY_LOW,	 // Low priority, command will only be sent if connection isn't saturated
+			PRIORITY_IGNORE	 // Ignore, command will not be put in send queue
 		};
 
 		static const char TYPE_BROADCAST = 'B';

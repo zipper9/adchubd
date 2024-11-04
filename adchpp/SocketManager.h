@@ -19,13 +19,14 @@
 #ifndef ADCHPP_SOCKETMANAGER_H
 #define ADCHPP_SOCKETMANAGER_H
 
-#include "common.h"
-
+#include <baselib/BaseUtil.h>
 #include "ServerInfo.h"
 #include "forward.h"
 
 #include <boost/asio/deadline_timer.hpp>
 #include <boost/asio/io_service.hpp>
+
+class SimpleXML;
 
 namespace adchpp
 {

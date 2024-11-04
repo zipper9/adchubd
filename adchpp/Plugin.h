@@ -19,6 +19,7 @@
 #define ADCHPP_PLUGIN_H_
 
 #include "forward.h"
+#include <functional>
 
 namespace adchpp
 {

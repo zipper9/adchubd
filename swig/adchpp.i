@@ -1,22 +1,19 @@
 %runtime %{
 
-#include <adchpp/adchpp.h>
-#include <adchpp/common.h>
-
 #include <adchpp/Signal.h>
 #include <adchpp/Client.h>
 #include <adchpp/ClientManager.h>
 #include <adchpp/LogManager.h>
-#include <adchpp/SimpleXML.h>
-#include <adchpp/Exception.h>
 #include <adchpp/PluginManager.h>
-#include <adchpp/TigerHash.h>
 #include <adchpp/SocketManager.h>
 #include <adchpp/Hub.h>
 #include <adchpp/Bot.h>
-#include <adchpp/Text.h>
-#include <adchpp/version.h>
 #include <adchpp/Core.h>
+#include <adchpp/Utils.h>
+#include <adchpp/version.h>
+#include <baselib/TigerHash.h>
+#include <baselib/Text.h>
+#include <baselib/SimpleXML.h>
 
 using namespace adchpp;
 using std::shared_ptr;
@@ -74,9 +71,10 @@ namespace adchpp {
 	class Bot;
 	class Client;
 	class Entity;
-	typedef std::vector<std::string> StringList;
-	typedef std::vector<uint8_t> ByteVector;
 }
+
+typedef std::vector<std::string> StringList;
+typedef std::vector<uint8_t> ByteVector;
 
 %template(TServerInfoPtr) shared_ptr<adchpp::ServerInfo>;
 %template(TManagedConnectionPtr) shared_ptr<adchpp::ManagedConnection>;
@@ -103,13 +101,76 @@ struct TLSInfo {
 typedef ServerInfo::TLSInfo TLSInfo;
 %}
 
-namespace adchpp {
+class Exception : public std::exception
+{
+public:
+	Exception();
+	Exception(const std::string& aError) throw();
+	virtual ~Exception() throw();
+	const std::string& getError() const throw();
+
+	virtual const char* what();
+};
+
+class SimpleXML
+{
+public:
+	SimpleXML();
+	~SimpleXML();
+
+	void addTag(const std::string& name, const std::string& data = Util::emptyString);
+	void addAttrib(const std::string& name, const std::string& data);
+	void addChildAttrib(const std::string& name, const std::string& data);
+
+	const std::string& getData() const;
+	void stepIn();
+	void stepOut();
+
+	void resetCurrentChild();
+	bool findChild(const std::string& name) noexcept;
+
+	const std::string& getChildTag() const;
+	const std::string& getChildData() const;
+
+	const std::string& getChildAttrib(const std::string& name, const std::string& defValue = Util::emptyString);
+
+	int getIntChildAttrib(const std::string& name, const string& defValue);
+	int64_t getInt64ChildAttrib(const std::string& name, const string& defValue);
+	bool getBoolChildAttrib(const std::string& name);
+	void fromXML(const std::string& xml);
+	std::string toXML() const;
+
+	static const std::string& escape(const std::string& str, std::string& tmp, bool isAttrib, bool isLoading = false, int encoding = Text::CHARSET_UTF8);
+	static bool needsEscape(const std::string& str, bool isAttrib, bool isLoading, int encoding = Text::CHARSET_UTF8);
+};
+
+class TigerHash
+{
+public:
+	/** Hash size in bytes */
+	enum { BITS = 192, BYTES = BITS / 8 }; // Keep old name for a while
+
+	TigerHash();
+
+	%extend {
+		void update(const std::string& data) {
+			self->update(data.data(), data.size());
+		}
+		std::string finalize() {
+			return std::string(reinterpret_cast<const char*>(self->finalize()), TigerHash::BYTES);
+		}
+	}
+};
+
+namespace adchpp
+{
 
 extern std::string appName;
 extern std::string versionString;
 extern float versionFloat;
 
-class Buffer {
+class Buffer
+{
 public:
 	%extend {
 		static shared_ptr<Buffer> create(const std::string& s) {
@@ -213,100 +274,13 @@ struct SignalTraits {
 	typedef adchpp::ManagedConnectionPtr ManagedConnection;
 };
 
-class Exception : public std::exception
-{
-public:
-	Exception();
-	Exception(const std::string& aError) throw();
-	virtual ~Exception() throw();
-	const std::string& getError() const throw();
-
-	virtual const char* what();
-};
-
-class Text {
-public:
-	static std::string acpToUtf8(const std::string& str) throw();
-	static std::wstring acpToWide(const std::string& str) throw();
-	static std::string utf8ToAcp(const std::string& str) throw();
-	static std::wstring utf8ToWide(const std::string& str) throw();
-	static std::string wideToAcp(const std::wstring& str) throw();
-	static std::string wideToUtf8(const std::wstring& str) throw();
-	static bool validateUtf8(const std::string& str) throw();
-};
-
-class Util
-{
-public:
-	enum Reason {
-		REASON_BAD_STATE,
-		REASON_CID_CHANGE,
-		REASON_CID_TAKEN,
-		REASON_FLOODING,
-		REASON_HUB_FULL,
-		REASON_INVALID_COMMAND_TYPE,
-		REASON_INVALID_IP,
-		REASON_INVALID_SID,
-		REASON_LOGIN_TIMEOUT,
-		REASON_MAX_COMMAND_SIZE,
-		REASON_NICK_INVALID,
-		REASON_NICK_TAKEN,
-		REASON_NO_BASE_SUPPORT,
-		REASON_NO_TIGR_SUPPORT,
-		REASON_PID_MISSING,
-		REASON_PID_CID_LENGTH,
-		REASON_PID_CID_MISMATCH,
-		REASON_PID_WITHOUT_CID,
-		REASON_PLUGIN,
-		REASON_WRITE_OVERFLOW,
-		REASON_NO_BANDWIDTH,
-		REASON_INVALID_DESCRIPTION,
-		REASON_WRITE_TIMEOUT,
-		REASON_SOCKET_ERROR,
-		REASON_LAST,
-	};
-
-	static std::string emptyString;
-
-	static std::string getOsVersion();
-	static void decodeUrl(const std::string& aUrl, std::string& aServer, short& aPort, std::string& aFile);
-	static std::string formatTime(const std::string& msg, time_t t = time(NULL));
-
-	static std::string getAppPath();
-	static std::string getAppName();
-
-	static std::string translateError(int aError);
-
-	static std::string formatBytes(const std::string& aString);
-
-	static std::string getShortTimeString();
-	static std::string getTimeString();
-
-	static std::string formatBytes(int64_t aBytes);
-
-	static void tokenize(StringList& lst, const std::string& str, char sep, std::string::size_type j = 0);
-
-	static std::string formatSeconds(int64_t aSec);
-
-	/** Avoid this! Use the one of a connected socket instead... */
-	static std::string getLocalIp();
-
-	static uint32_t rand();
-	static uint32_t rand(uint32_t high);
-	static uint32_t rand(uint32_t low, uint32_t high);
-	static double randd();
-	
-	static bool isPrivateIp(std::string const& ip, bool v6);
-	static bool validateCharset(std::string const& field, int p);
-
-};
-
 // SWIG doesn't like nested classes
 %{
-typedef Util::Reason DCReason;
+typedef adchpp::Reason DCReason;
 %}
 
-class CID {
+class CID
+{
 public:
 	enum { SIZE = 192 / 8 };
 	enum { BASE32_SIZE = 39 };
@@ -334,20 +308,11 @@ public:
 
 };
 
-class ParseException : public Exception {
+class AdcCommand
+{
 public:
-	ParseException() throw();
-	ParseException(const std::string&) throw();
-};
-
-class AdcCommand {
-public:
-/*	template<uint32_t T>
-	struct Type {
-		enum { CMD = T };
-	};
-*/
-	enum Error {
+	enum Error
+	{
 		ERROR_GENERIC = 0,
 		ERROR_HUB_GENERIC = 10,
 		ERROR_HUB_FULL = 11,
@@ -375,13 +340,15 @@ public:
 		ERROR_SLOTS_FULL = 53
 	};
 
-	enum Severity {
+	enum Severity
+	{
 		SEV_SUCCESS = 0,
 		SEV_RECOVERABLE = 1,
 		SEV_FATAL = 2
 	};
 
-	enum Priority {
+	enum Priority
+	{
 		PRIORITY_NORMAL,
 		PRIORITY_LOW,
 		PRIORITY_IGNORE
@@ -428,7 +395,7 @@ public:
 	explicit AdcCommand(Severity sev, Error err, const std::string& desc, char aType);
 	explicit AdcCommand(uint32_t cmd, char aType, uint32_t aFrom);
 	explicit AdcCommand(const std::string& aLine) throw(ParseException);
-    explicit AdcCommand(const BufferPtr& buffer_) throw(ParseException);
+	explicit AdcCommand(const BufferPtr& buffer_) throw(ParseException);
 	
 	static uint32_t toSID(const std::string& aSID);
 	static std::string fromSID(const uint32_t aSID);
@@ -459,7 +426,7 @@ public:
 
 	const std::string& getFeatures() const;
 
-    const BufferPtr& getBuffer() const;
+	const BufferPtr& getBuffer() const;
 
 #ifndef SWIGLUA
 	bool getParam(const char* name, size_t start, std::string& OUTPUT) const;
@@ -533,9 +500,8 @@ public:
 		FLAG_GHOST = 0x800
 	};
 
-	Entity(uint32_t sid_) : sid(sid_) {
+	Entity(uint32_t sid_) : sid(sid_) {}
 
-	}
 	void send(const AdcCommand& cmd) { send(cmd.getBuffer()); }
 	virtual void send(const BufferPtr& cmd) = 0;
 
@@ -764,75 +730,6 @@ public:
 	size_t getLogTimeout() const;
 
 	//virtual ~ClientManager() throw() { }
-};
-
-class SimpleXML
-{
-public:
-	SimpleXML(int numAttribs = 0);
-	~SimpleXML();
-
-	void addTag(const std::string& aName, const std::string& aData = Util::emptyString) throw(SimpleXMLException);
-	void addAttrib(const std::string& aName, const std::string& aData) throw(SimpleXMLException);
-	void addChildAttrib(const std::string& aName, const std::string& aData) throw(SimpleXMLException);
-
-	const std::string& getData() const;
-	void stepIn() const throw(SimpleXMLException);
-	void stepOut() const throw(SimpleXMLException);
-
-	void resetCurrentChild() const throw();
-	bool findChild(const std::string& aName) const throw();
-
-	const std::string& getChildName() const throw(SimpleXMLException);
-	const std::string& getChildData() const throw(SimpleXMLException);
-
-	const std::string& getChildAttrib(const std::string& aName, const std::string& aDefault = Util::emptyString) const throw(SimpleXMLException);
-
-	int getIntChildAttrib(const std::string& aName) throw(SimpleXMLException);
-	int64_t getLongLongChildAttrib(const std::string& aName) throw(SimpleXMLException);
-	bool getBoolChildAttrib(const std::string& aName) throw(SimpleXMLException);
-	void fromXML(const std::string& aXML) throw(SimpleXMLException);
-	std::string toXML();
-
-	static void escape(std::string& aString, bool aAttrib, bool aLoading = false);
-	/**
-	 * This is a heurestic for whether escape needs to be called or not. The results are
- 	 * only guaranteed for false, i e sometimes true might be returned even though escape
-	 * was not needed...
-	 */
-	static bool needsEscape(const std::string& aString, bool aAttrib, bool aLoading = false);
-};
-
-class TigerHash {
-public:
-	/** Hash size in bytes */
-	enum { BITS = 192, BYTES = BITS / 8 }; // Keep old name for a while
-
-	TigerHash();
-
-	%extend {
-		void update(const std::string& data) {
-			self->update(data.data(), data.size());
-		}
-		std::string finalize() {
-			return std::string(reinterpret_cast<const char*>(self->finalize()), TigerHash::BYTES);
-		}
-	}
-};
-
-class Encoder
-{
-public:
-	%extend {
-		static std::string toBase32(const std::string& src) {
-			return Encoder::toBase32(reinterpret_cast<const uint8_t*>(src.data()), src.size());
-		}
-		static std::string fromBase32(const std::string& src) {
-			std::string result((src.length()*5)/8, 0);
-			Encoder::fromBase32(src.data(), reinterpret_cast<uint8_t*>(&result[0]), result.size());
-			return result;
-		}
-	}
 };
 
 class Plugin {

@@ -16,14 +16,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "adchpp.h"
 #include "BloomManager.h"
 #include "AdcCommand.h"
 #include "Client.h"
 #include "Core.h"
 #include "LogManager.h"
 #include "PluginManager.h"
-#include "Util.h"
+#include <baselib/StrUtil.h>
+#include <baselib/FormatUtil.h>
 
 using std::string;
 using namespace std::placeholders;
@@ -115,7 +115,7 @@ void BloomManager::onReceive(Entity& e, AdcCommand& cmd, bool& ok)
 				return;
 			}
 
-			size_t n = adchpp::Util::toInt(tmp);
+			size_t n = Util::toInt(tmp);
 			if (n == 0) return;
 
 			e.clearPluginData(bloomHandle);
@@ -147,7 +147,7 @@ void BloomManager::onReceive(Entity& e, AdcCommand& cmd, bool& ok)
 		if (!pending)
 		{
 			c.send(AdcCommand(AdcCommand::SEV_FATAL, AdcCommand::ERROR_BAD_STATE, "Unexpected bloom filter update"));
-			c.disconnect(Util::REASON_BAD_STATE);
+			c.disconnect(REASON_BAD_STATE);
 			ok = false;
 			return;
 		}
@@ -158,7 +158,7 @@ void BloomManager::onReceive(Entity& e, AdcCommand& cmd, bool& ok)
 		{
 			dcdebug("Disconnecting for invalid number of bytes: %d, %d\n", (int)bytes, (int)pending->m / 8);
 			c.send(AdcCommand(AdcCommand::SEV_FATAL, AdcCommand::ERROR_PROTOCOL_GENERIC, "Invalid number of bytes"));
-			c.disconnect(Util::REASON_PLUGIN);
+			c.disconnect(REASON_PLUGIN);
 			ok = false;
 			e.clearPluginData(pendingHandle);
 			return;
@@ -180,7 +180,7 @@ void BloomManager::onSend(Entity& c, const AdcCommand& cmd, bool& ok)
 		if (cmd.getParam("TR", 0, tmp))
 		{
 			tthSearches++;
-			if (!hasTTH(c, TTHValue(tmp)) || !adchpp::Util::toInt(c.getField("SF")))
+			if (!hasTTH(c, TTHValue(tmp)) || !Util::toInt(c.getField("SF")))
 			{
 				ok = false;
 				stopped++;

@@ -19,8 +19,8 @@
 #ifndef SCRIPT_MANAGER_H_
 #define SCRIPT_MANAGER_H_
 
+#include <baselib/Exception.h>
 #include "ClientManager.h"
-#include "Exception.h"
 #include "Plugin.h"
 
 namespace adchpp
@@ -29,7 +29,6 @@ namespace adchpp
 STANDARD_EXCEPTION(ScriptException);
 
 class Engine;
-class SimpleXML;
 class Client;
 class AdcCommand;
 

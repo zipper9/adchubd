@@ -20,7 +20,6 @@
 #define BOT_H_
 
 #include "forward.h"
-
 #include "Entity.h"
 
 namespace adchpp
@@ -37,7 +36,7 @@ namespace adchpp
 
 		virtual int getType() const { return TYPE_BOT; }
 		virtual void send(const BufferPtr& cmd) { if (handler) handler(*this, cmd); }
-		virtual void disconnect(Util::Reason reason, const std::string& info) noexcept;
+		virtual void disconnect(Reason reason, const std::string& info) noexcept;
 
 		using Entity::send;
 
@@ -47,7 +46,7 @@ namespace adchpp
 		SendHandler handler;
 		bool disconnecting;
 
-		void die(Util::Reason reason, const std::string& info);
+		void die(Reason reason, const std::string& info);
 	};
 
 } // namespace adchpp

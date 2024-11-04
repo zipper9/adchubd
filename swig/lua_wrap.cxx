@@ -2696,23 +2696,20 @@ SWIG_Lua_dostring(lua_State *L, const char *str) {
 
 
 
-#include <adchpp/adchpp.h>
-#include <adchpp/common.h>
-
 #include <adchpp/Signal.h>
 #include <adchpp/Client.h>
 #include <adchpp/ClientManager.h>
 #include <adchpp/LogManager.h>
-#include <adchpp/SimpleXML.h>
-#include <adchpp/Exception.h>
 #include <adchpp/PluginManager.h>
-#include <adchpp/TigerHash.h>
 #include <adchpp/SocketManager.h>
 #include <adchpp/Hub.h>
 #include <adchpp/Bot.h>
-#include <adchpp/Text.h>
-#include <adchpp/version.h>
 #include <adchpp/Core.h>
+#include <adchpp/Utils.h>
+#include <adchpp/version.h>
+#include <baselib/TigerHash.h>
+#include <baselib/Text.h>
+#include <baselib/SimpleXML.h>
 
 using namespace adchpp;
 using std::shared_ptr;
@@ -2739,12 +2736,12 @@ using std::make_shared;
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_SimpleXMLException swig_types[0]
-#define SWIGTYPE_adchpp__ParseException swig_types[1]
-#define SWIGTYPE_p_Callback swig_types[2]
-#define SWIGTYPE_p_CommandSignal swig_types[3]
-#define SWIGTYPE_p_CommandSlot swig_types[4]
-#define SWIGTYPE_p_DataFunction swig_types[5]
+#define SWIGTYPE_ParseException swig_types[0]
+#define SWIGTYPE_p_Callback swig_types[1]
+#define SWIGTYPE_p_CommandSignal swig_types[2]
+#define SWIGTYPE_p_CommandSlot swig_types[3]
+#define SWIGTYPE_p_DataFunction swig_types[4]
+#define SWIGTYPE_p_Exception swig_types[5]
 #define SWIGTYPE_p_Hub swig_types[6]
 #define SWIGTYPE_p_ManagedConnection swig_types[7]
 #define SWIGTYPE_p_PluginDataHandle swig_types[8]
@@ -2759,23 +2756,23 @@ using std::make_shared;
 #define SWIGTYPE_p_SignalReceive swig_types[17]
 #define SWIGTYPE_p_SignalSend swig_types[18]
 #define SWIGTYPE_p_SignalState swig_types[19]
-#define SWIGTYPE_p_TLSInfo swig_types[20]
-#define SWIGTYPE_p_adchpp__AdcCommand swig_types[21]
-#define SWIGTYPE_p_adchpp__Bot swig_types[22]
-#define SWIGTYPE_p_adchpp__Buffer swig_types[23]
-#define SWIGTYPE_p_adchpp__CID swig_types[24]
-#define SWIGTYPE_p_adchpp__Client swig_types[25]
-#define SWIGTYPE_p_adchpp__ClientManager swig_types[26]
-#define SWIGTYPE_p_adchpp__Encoder swig_types[27]
-#define SWIGTYPE_p_adchpp__Entity swig_types[28]
-#define SWIGTYPE_p_adchpp__Exception swig_types[29]
+#define SWIGTYPE_p_SimpleXML swig_types[20]
+#define SWIGTYPE_p_TLSInfo swig_types[21]
+#define SWIGTYPE_p_TigerHash swig_types[22]
+#define SWIGTYPE_p_adchpp__AdcCommand swig_types[23]
+#define SWIGTYPE_p_adchpp__Bot swig_types[24]
+#define SWIGTYPE_p_adchpp__Buffer swig_types[25]
+#define SWIGTYPE_p_adchpp__CID swig_types[26]
+#define SWIGTYPE_p_adchpp__Client swig_types[27]
+#define SWIGTYPE_p_adchpp__ClientManager swig_types[28]
+#define SWIGTYPE_p_adchpp__Entity swig_types[29]
 #define SWIGTYPE_p_adchpp__Hub swig_types[30]
 #define SWIGTYPE_p_adchpp__LogManager swig_types[31]
 #define SWIGTYPE_p_adchpp__ManagedConnection swig_types[32]
-#define SWIGTYPE_p_adchpp__ParseException swig_types[33]
-#define SWIGTYPE_p_adchpp__Plugin swig_types[34]
-#define SWIGTYPE_p_adchpp__PluginManager swig_types[35]
-#define SWIGTYPE_p_adchpp__ServerInfo swig_types[36]
+#define SWIGTYPE_p_adchpp__Plugin swig_types[33]
+#define SWIGTYPE_p_adchpp__PluginManager swig_types[34]
+#define SWIGTYPE_p_adchpp__ServerInfo swig_types[35]
+#define SWIGTYPE_p_adchpp__SignalT_void_fSimpleXML_const_RF_t swig_types[36]
 #define SWIGTYPE_p_adchpp__SignalT_void_fadchpp__Entity_RF_t swig_types[37]
 #define SWIGTYPE_p_adchpp__SignalT_void_fadchpp__Entity_R_DCReason_std__string_const_RF_t swig_types[38]
 #define SWIGTYPE_p_adchpp__SignalT_void_fadchpp__Entity_R_adchpp__AdcCommand_R_bool_RF_t swig_types[39]
@@ -2784,8 +2781,8 @@ using std::make_shared;
 #define SWIGTYPE_p_adchpp__SignalT_void_fadchpp__Entity_R_std__string_const_RF_t swig_types[42]
 #define SWIGTYPE_p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t swig_types[43]
 #define SWIGTYPE_p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t__Slot swig_types[44]
-#define SWIGTYPE_p_adchpp__SignalT_void_fadchpp__SimpleXML_const_RF_t swig_types[45]
-#define SWIGTYPE_p_adchpp__SignalT_void_fstd__string_const_RF_t swig_types[46]
+#define SWIGTYPE_p_adchpp__SignalT_void_fstd__string_const_RF_t swig_types[45]
+#define SWIGTYPE_p_adchpp__SignalTraitsT_void_fSimpleXML_const_RF_t swig_types[46]
 #define SWIGTYPE_p_adchpp__SignalTraitsT_void_fadchpp__Entity_RF_t swig_types[47]
 #define SWIGTYPE_p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_DCReason_std__string_const_RF_t swig_types[48]
 #define SWIGTYPE_p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_adchpp__AdcCommand_R_bool_RF_t swig_types[49]
@@ -2793,52 +2790,45 @@ using std::make_shared;
 #define SWIGTYPE_p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_intF_t swig_types[51]
 #define SWIGTYPE_p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_std__string_const_RF_t swig_types[52]
 #define SWIGTYPE_p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t swig_types[53]
-#define SWIGTYPE_p_adchpp__SignalTraitsT_void_fadchpp__SimpleXML_const_RF_t swig_types[54]
-#define SWIGTYPE_p_adchpp__SignalTraitsT_void_fstd__string_const_RF_t swig_types[55]
-#define SWIGTYPE_p_adchpp__SimpleXML swig_types[56]
-#define SWIGTYPE_p_adchpp__SocketManager swig_types[57]
-#define SWIGTYPE_p_adchpp__SocketStats swig_types[58]
-#define SWIGTYPE_p_adchpp__Text swig_types[59]
-#define SWIGTYPE_p_adchpp__TigerHash swig_types[60]
-#define SWIGTYPE_p_adchpp__Util swig_types[61]
-#define SWIGTYPE_p_difference_type swig_types[62]
-#define SWIGTYPE_p_int swig_types[63]
-#define SWIGTYPE_p_long_long swig_types[64]
-#define SWIGTYPE_p_lua_State swig_types[65]
-#define SWIGTYPE_p_shared_ptrT_adchpp__Buffer_t swig_types[66]
-#define SWIGTYPE_p_shared_ptrT_adchpp__ManagedConnection_t swig_types[67]
-#define SWIGTYPE_p_shared_ptrT_adchpp__Plugin_t swig_types[68]
-#define SWIGTYPE_p_shared_ptrT_adchpp__ServerInfo_t swig_types[69]
-#define SWIGTYPE_p_short swig_types[70]
-#define SWIGTYPE_p_signed_char swig_types[71]
-#define SWIGTYPE_p_size_type swig_types[72]
-#define SWIGTYPE_p_std__exception swig_types[73]
-#define SWIGTYPE_p_std__functionT_void_fF_t swig_types[74]
-#define SWIGTYPE_p_std__functionT_void_fSimpleXML_const_RF_t swig_types[75]
-#define SWIGTYPE_p_std__functionT_void_fadchpp__Bot_R_shared_ptrT_adchpp__Buffer_t_const_RF_t swig_types[76]
-#define SWIGTYPE_p_std__functionT_void_fadchpp__Client_R_unsigned_char_const_p_unsigned_intF_t swig_types[77]
-#define SWIGTYPE_p_std__functionT_void_fadchpp__Entity_RF_t swig_types[78]
-#define SWIGTYPE_p_std__functionT_void_fadchpp__Entity_R_DCReason_std__string_const_RF_t swig_types[79]
-#define SWIGTYPE_p_std__functionT_void_fadchpp__Entity_R_adchpp__AdcCommand_R_bool_RF_t swig_types[80]
-#define SWIGTYPE_p_std__functionT_void_fadchpp__Entity_R_adchpp__AdcCommand_const_R_bool_RF_t swig_types[81]
-#define SWIGTYPE_p_std__functionT_void_fadchpp__Entity_R_intF_t swig_types[82]
-#define SWIGTYPE_p_std__functionT_void_fadchpp__Entity_R_std__string_const_RF_t swig_types[83]
-#define SWIGTYPE_p_std__functionT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t swig_types[84]
-#define SWIGTYPE_p_std__functionT_void_fstd__string_const_RF_t swig_types[85]
-#define SWIGTYPE_p_std__string swig_types[86]
-#define SWIGTYPE_p_std__string__size_type swig_types[87]
-#define SWIGTYPE_p_std__vectorT_adchpp__Entity_p_t swig_types[88]
-#define SWIGTYPE_p_std__vectorT_shared_ptrT_adchpp__ServerInfo_t_t swig_types[89]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[90]
-#define SWIGTYPE_p_std__vectorT_unsigned_char_t swig_types[91]
-#define SWIGTYPE_p_std__wstring swig_types[92]
-#define SWIGTYPE_p_unsigned_char swig_types[93]
-#define SWIGTYPE_p_unsigned_int swig_types[94]
-#define SWIGTYPE_p_unsigned_long_long swig_types[95]
-#define SWIGTYPE_p_unsigned_short swig_types[96]
-#define SWIGTYPE_p_value_type swig_types[97]
-static swig_type_info *swig_types[99];
-static swig_module_info swig_module = {swig_types, 98, 0, 0, 0, 0};
+#define SWIGTYPE_p_adchpp__SignalTraitsT_void_fstd__string_const_RF_t swig_types[54]
+#define SWIGTYPE_p_adchpp__SocketManager swig_types[55]
+#define SWIGTYPE_p_adchpp__SocketStats swig_types[56]
+#define SWIGTYPE_p_difference_type swig_types[57]
+#define SWIGTYPE_p_int swig_types[58]
+#define SWIGTYPE_p_long_long swig_types[59]
+#define SWIGTYPE_p_lua_State swig_types[60]
+#define SWIGTYPE_p_shared_ptrT_adchpp__Buffer_t swig_types[61]
+#define SWIGTYPE_p_shared_ptrT_adchpp__ManagedConnection_t swig_types[62]
+#define SWIGTYPE_p_shared_ptrT_adchpp__Plugin_t swig_types[63]
+#define SWIGTYPE_p_shared_ptrT_adchpp__ServerInfo_t swig_types[64]
+#define SWIGTYPE_p_short swig_types[65]
+#define SWIGTYPE_p_signed_char swig_types[66]
+#define SWIGTYPE_p_size_type swig_types[67]
+#define SWIGTYPE_p_std__exception swig_types[68]
+#define SWIGTYPE_p_std__functionT_void_fF_t swig_types[69]
+#define SWIGTYPE_p_std__functionT_void_fSimpleXML_const_RF_t swig_types[70]
+#define SWIGTYPE_p_std__functionT_void_fadchpp__Bot_R_shared_ptrT_adchpp__Buffer_t_const_RF_t swig_types[71]
+#define SWIGTYPE_p_std__functionT_void_fadchpp__Client_R_unsigned_char_const_p_unsigned_intF_t swig_types[72]
+#define SWIGTYPE_p_std__functionT_void_fadchpp__Entity_RF_t swig_types[73]
+#define SWIGTYPE_p_std__functionT_void_fadchpp__Entity_R_DCReason_std__string_const_RF_t swig_types[74]
+#define SWIGTYPE_p_std__functionT_void_fadchpp__Entity_R_adchpp__AdcCommand_R_bool_RF_t swig_types[75]
+#define SWIGTYPE_p_std__functionT_void_fadchpp__Entity_R_adchpp__AdcCommand_const_R_bool_RF_t swig_types[76]
+#define SWIGTYPE_p_std__functionT_void_fadchpp__Entity_R_intF_t swig_types[77]
+#define SWIGTYPE_p_std__functionT_void_fadchpp__Entity_R_std__string_const_RF_t swig_types[78]
+#define SWIGTYPE_p_std__functionT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t swig_types[79]
+#define SWIGTYPE_p_std__functionT_void_fstd__string_const_RF_t swig_types[80]
+#define SWIGTYPE_p_std__string swig_types[81]
+#define SWIGTYPE_p_std__vectorT_adchpp__Entity_p_t swig_types[82]
+#define SWIGTYPE_p_std__vectorT_shared_ptrT_adchpp__ServerInfo_t_t swig_types[83]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[84]
+#define SWIGTYPE_p_std__vectorT_unsigned_char_t swig_types[85]
+#define SWIGTYPE_p_unsigned_char swig_types[86]
+#define SWIGTYPE_p_unsigned_int swig_types[87]
+#define SWIGTYPE_p_unsigned_long_long swig_types[88]
+#define SWIGTYPE_p_unsigned_short swig_types[89]
+#define SWIGTYPE_p_value_type swig_types[90]
+static swig_type_info *swig_types[92];
+static swig_module_info swig_module = {swig_types, 91, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3006,6 +2996,12 @@ SWIGINTERN void std_vector_Sl_shared_ptr_Sl_adchpp_ServerInfo_Sg__Sg____setitem_
 
 typedef ServerInfo::TLSInfo TLSInfo;
 
+SWIGINTERN void TigerHash_update(TigerHash *self,std::string const &data){
+			self->update(data.data(), data.size());
+		}
+SWIGINTERN std::string TigerHash_finalize(TigerHash *self){
+			return std::string(reinterpret_cast<const char*>(self->finalize()), TigerHash::BYTES);
+		}
 SWIGINTERN shared_ptr< adchpp::Buffer > adchpp_Buffer_create(std::string const &s){
 			return make_shared<Buffer>(s);
 		}
@@ -3024,9 +3020,8 @@ SWIGINTERN adchpp::SocketManager::Callback adchpp_SocketManager_addTimedJob(adch
 SWIGINTERN adchpp::SocketManager::Callback adchpp_SocketManager_addTimedJob_str(adchpp::SocketManager *self,std::string const &time,adchpp::SocketManager::Callback callback){
 			return self->addTimedJob(time, callback);
 		}
-SWIGINTERN std::string const &adchpp_Util_getCfgPath(lua_State *l){ return adchpp::getConfigPath(l); }
 
-typedef Util::Reason DCReason;
+typedef adchpp::Reason DCReason;
 
 SWIGINTERN std::string adchpp_CID_data(adchpp::CID const *self){ return std::string(reinterpret_cast<const char*>(self->data()), CID::SIZE); }
 SWIGINTERN std::string adchpp_CID___str__(adchpp::CID *self){ return self->toBase32(); }
@@ -3103,7 +3098,7 @@ SWIGINTERN adchpp::ManagedConnectionPtr adchpp_Signal_Sl_void_Sp_adchpp_Entity_S
 SWIGINTERN adchpp::ManagedConnectionPtr adchpp_Signal_Sl_void_Sp_adchpp_Entity_SA__Sc_DCReason_Sc_std_string_SS_const_SA__SP__Sg__connect(adchpp::Signal< void (adchpp::Entity &,DCReason,std::string const &) > *self,std::function< void (adchpp::Entity &,DCReason,std::string const &) > f){
 		return manage(self, f);
 	}
-SWIGINTERN adchpp::ManagedConnectionPtr adchpp_Signal_Sl_void_Sp_adchpp_Entity_SA__Sc_adchpp_StringList_SS_const_SA__Sc_bool_SA__SP__Sg__connect(adchpp::Signal< void (adchpp::Entity &,adchpp::StringList const &,bool &) > *self,std::function< void (adchpp::Entity &,adchpp::StringList const &,bool &) > f){
+SWIGINTERN adchpp::ManagedConnectionPtr adchpp_Signal_Sl_void_Sp_adchpp_Entity_SA__Sc_StringList_SS_const_SA__Sc_bool_SA__SP__Sg__connect(adchpp::Signal< void (adchpp::Entity &,StringList const &,bool &) > *self,std::function< void (adchpp::Entity &,StringList const &,bool &) > f){
 		return manage(self, f);
 	}
 SWIGINTERN adchpp::ManagedConnectionPtr adchpp_Signal_Sl_void_Sp_SimpleXML_SS_const_SA__SP__Sg__connect(adchpp::Signal< void (SimpleXML const &) > *self,std::function< void (SimpleXML const &) > f){
@@ -3137,20 +3132,6 @@ SWIGINTERN time_t adchpp_ClientManager_getStartTime(adchpp::ClientManager const 
 SWIGINTERN uint32_t adchpp_ClientManager_getUpTime(adchpp::ClientManager const *self){
 		return (time::now() - self->getCore().getStartTime()).total_seconds();
 	}
-SWIGINTERN void adchpp_TigerHash_update(adchpp::TigerHash *self,std::string const &data){
-			self->update(data.data(), data.size());
-		}
-SWIGINTERN std::string adchpp_TigerHash_finalize(adchpp::TigerHash *self){
-			return std::string(reinterpret_cast<const char*>(self->finalize()), TigerHash::BYTES);
-		}
-SWIGINTERN std::string adchpp_Encoder_toBase32(std::string const &src){
-			return Encoder::toBase32(reinterpret_cast<const uint8_t*>(src.data()), src.size());
-		}
-SWIGINTERN std::string adchpp_Encoder_fromBase32(std::string const &src){
-			std::string result((src.length()*5)/8, 0);
-			Encoder::fromBase32(src.data(), reinterpret_cast<uint8_t*>(&result[0]), result.size());
-			return result;
-		}
 SWIGINTERN void adchpp_PluginManager_attention(adchpp::PluginManager *self,std::function< void () > f){
 			self->attention(f);
 		}
@@ -3169,6 +3150,8 @@ namespace adchpp {
 	SocketManager* getSM(lua_State* l) { return &getCurrentCore(l)->getSocketManager(); }
 
 	const std::string &getConfigPath(lua_State *l) { return getCurrentCore(l)->getConfigPath(); }
+	const std::string &Util_getCfgPath(lua_State *l) { return getConfigPath(l); }
+	std::string Util_getLocalIp(lua_State *l) { return Utils::getLocalIp(); }
 }
 
 
@@ -3307,14 +3290,14 @@ public:
 		lua_pop(L, 1);
 	}
 
-	void operator()(const adchpp::SimpleXML& s) {
+	void operator()(const SimpleXML& s) {
 		pushFunction();
 
-		SWIG_NewPointerObj(L, &s, SWIGTYPE_p_adchpp__SimpleXML, 0);
+		SWIG_NewPointerObj(L, &s, SWIGTYPE_p_SimpleXML, 0);
 		docall(1, 0);
 	}
 
-	void operator()(adchpp::Entity& c, const adchpp::StringList& cmd, bool& i) {
+	void operator()(adchpp::Entity& c, const StringList& cmd, bool& i) {
 		pushFunction();
 
 		SWIG_NewPointerObj(L, &c, SWIGTYPE_p_adchpp__Entity, 0);
@@ -6894,6 +6877,1490 @@ static swig_lua_class *swig_TLSInfo_bases[] = {0};
 static const char *swig_TLSInfo_base_names[] = {0};
 static swig_lua_class _wrap_class_TLSInfo = { "TLSInfo", "TLSInfo", &SWIGTYPE_p_TLSInfo,0, swig_delete_TLSInfo, swig_TLSInfo_methods, swig_TLSInfo_attributes, &swig_TLSInfo_Sf_SwigStatic, swig_TLSInfo_meta, swig_TLSInfo_bases, swig_TLSInfo_base_names };
 
+static int _wrap_new_Exception__SWIG_0(lua_State* L) {
+  int SWIG_arg = 0;
+  Exception *result = 0 ;
+  
+  SWIG_check_num_args("Exception::Exception",0,0)
+  {
+    try {
+      result = (Exception *)new Exception();
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_Exception,1); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_new_Exception__SWIG_1(lua_State* L) {
+  int SWIG_arg = 0;
+  std::string *arg1 = 0 ;
+  std::string temp1 ;
+  Exception *result = 0 ;
+  
+  SWIG_check_num_args("Exception::Exception",1,1)
+  if(!lua_isstring(L,1)) SWIG_fail_arg("Exception::Exception",1,"std::string const &");
+  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
+  {
+    try {
+      result = (Exception *)new Exception((std::string const &)*arg1);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_Exception,1); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_new_Exception(lua_State* L) {
+  int argc;
+  int argv[2]={
+    1,2
+  };
+  
+  argc = lua_gettop(L);
+  if (argc == 0) {
+    return _wrap_new_Exception__SWIG_0(L);
+  }
+  if (argc == 1) {
+    int _v;
+    {
+      _v = lua_isstring(L,argv[0]);
+    }
+    if (_v) {
+      return _wrap_new_Exception__SWIG_1(L);
+    }
+  }
+  
+  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'new_Exception'\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    Exception::Exception()\n"
+    "    Exception::Exception(std::string const &)\n");
+  lua_error(L);return 0;
+}
+
+
+static int _wrap_Exception_getError(lua_State* L) {
+  int SWIG_arg = 0;
+  Exception *arg1 = (Exception *) 0 ;
+  std::string *result = 0 ;
+  
+  SWIG_check_num_args("Exception::getError",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Exception::getError",1,"Exception const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Exception,0))){
+    SWIG_fail_ptr("Exception_getError",1,SWIGTYPE_p_Exception);
+  }
+  
+  {
+    try {
+      result = (std::string *) &((Exception const *)arg1)->getError();
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Exception_what(lua_State* L) {
+  int SWIG_arg = 0;
+  Exception *arg1 = (Exception *) 0 ;
+  char *result = 0 ;
+  
+  SWIG_check_num_args("Exception::what",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("Exception::what",1,"Exception *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_Exception,0))){
+    SWIG_fail_ptr("Exception_what",1,SWIGTYPE_p_Exception);
+  }
+  
+  {
+    try {
+      result = (char *)(arg1)->what();
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushstring(L,(const char *)result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static void swig_delete_Exception(void *obj) {
+Exception *arg1 = (Exception *) obj;
+delete arg1;
+}
+static int _proxy__wrap_new_Exception(lua_State *L) {
+    assert(lua_istable(L,1));
+    lua_pushcfunction(L,_wrap_new_Exception);
+    assert(!lua_isnil(L,-1));
+    lua_replace(L,1); /* replace our table with real constructor */
+    lua_call(L,lua_gettop(L)-1,1);
+    return 1;
+}
+static swig_lua_attribute swig_Exception_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_method swig_Exception_methods[]= {
+    { "getError", _wrap_Exception_getError},
+    { "what", _wrap_Exception_what},
+    {0,0}
+};
+static swig_lua_method swig_Exception_meta[] = {
+    {0,0}
+};
+
+static swig_lua_attribute swig_Exception_Sf_SwigStatic_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_const_info swig_Exception_Sf_SwigStatic_constants[]= {
+    {0,0,0,0,0,0}
+};
+static swig_lua_method swig_Exception_Sf_SwigStatic_methods[]= {
+    {0,0}
+};
+static swig_lua_class* swig_Exception_Sf_SwigStatic_classes[]= {
+    0
+};
+
+static swig_lua_namespace swig_Exception_Sf_SwigStatic = {
+    "Exception",
+    swig_Exception_Sf_SwigStatic_methods,
+    swig_Exception_Sf_SwigStatic_attributes,
+    swig_Exception_Sf_SwigStatic_constants,
+    swig_Exception_Sf_SwigStatic_classes,
+    0
+};
+static swig_lua_class *swig_Exception_bases[] = {0};
+static const char *swig_Exception_base_names[] = {0};
+static swig_lua_class _wrap_class_Exception = { "Exception", "Exception", &SWIGTYPE_p_Exception,_proxy__wrap_new_Exception, swig_delete_Exception, swig_Exception_methods, swig_Exception_attributes, &swig_Exception_Sf_SwigStatic, swig_Exception_meta, swig_Exception_bases, swig_Exception_base_names };
+
+static int _wrap_new_SimpleXML(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *result = 0 ;
+  
+  SWIG_check_num_args("SimpleXML::SimpleXML",0,0)
+  {
+    try {
+      result = (SimpleXML *)new SimpleXML();
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_SimpleXML,1); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_addTag__SWIG_0(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  
+  SWIG_check_num_args("SimpleXML::addTag",3,3)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::addTag",1,"SimpleXML *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("SimpleXML::addTag",2,"std::string const &");
+  if(!lua_isstring(L,3)) SWIG_fail_arg("SimpleXML::addTag",3,"std::string const &");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_addTag",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
+  temp3.assign(lua_tostring(L,3),lua_rawlen(L,3)); arg3=&temp3;
+  {
+    try {
+      (arg1)->addTag((std::string const &)*arg2,(std::string const &)*arg3);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_addTag__SWIG_1(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  
+  SWIG_check_num_args("SimpleXML::addTag",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::addTag",1,"SimpleXML *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("SimpleXML::addTag",2,"std::string const &");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_addTag",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
+  {
+    try {
+      (arg1)->addTag((std::string const &)*arg2);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_addTag(lua_State* L) {
+  int argc;
+  int argv[4]={
+    1,2,3,4
+  };
+  
+  argc = lua_gettop(L);
+  if (argc == 2) {
+    int _v;
+    {
+      void *ptr;
+      if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_SimpleXML, 0)) {
+        _v = 0;
+      } else {
+        _v = 1;
+      }
+    }
+    if (_v) {
+      {
+        _v = lua_isstring(L,argv[1]);
+      }
+      if (_v) {
+        return _wrap_SimpleXML_addTag__SWIG_1(L);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    {
+      void *ptr;
+      if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_SimpleXML, 0)) {
+        _v = 0;
+      } else {
+        _v = 1;
+      }
+    }
+    if (_v) {
+      {
+        _v = lua_isstring(L,argv[1]);
+      }
+      if (_v) {
+        {
+          _v = lua_isstring(L,argv[2]);
+        }
+        if (_v) {
+          return _wrap_SimpleXML_addTag__SWIG_0(L);
+        }
+      }
+    }
+  }
+  
+  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'SimpleXML_addTag'\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    SimpleXML::addTag(std::string const &,std::string const &)\n"
+    "    SimpleXML::addTag(std::string const &)\n");
+  lua_error(L);return 0;
+}
+
+
+static int _wrap_SimpleXML_addAttrib(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  
+  SWIG_check_num_args("SimpleXML::addAttrib",3,3)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::addAttrib",1,"SimpleXML *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("SimpleXML::addAttrib",2,"std::string const &");
+  if(!lua_isstring(L,3)) SWIG_fail_arg("SimpleXML::addAttrib",3,"std::string const &");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_addAttrib",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
+  temp3.assign(lua_tostring(L,3),lua_rawlen(L,3)); arg3=&temp3;
+  {
+    try {
+      (arg1)->addAttrib((std::string const &)*arg2,(std::string const &)*arg3);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_addChildAttrib(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  
+  SWIG_check_num_args("SimpleXML::addChildAttrib",3,3)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::addChildAttrib",1,"SimpleXML *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("SimpleXML::addChildAttrib",2,"std::string const &");
+  if(!lua_isstring(L,3)) SWIG_fail_arg("SimpleXML::addChildAttrib",3,"std::string const &");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_addChildAttrib",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
+  temp3.assign(lua_tostring(L,3),lua_rawlen(L,3)); arg3=&temp3;
+  {
+    try {
+      (arg1)->addChildAttrib((std::string const &)*arg2,(std::string const &)*arg3);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_getData(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  std::string *result = 0 ;
+  
+  SWIG_check_num_args("SimpleXML::getData",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::getData",1,"SimpleXML const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_getData",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  {
+    try {
+      result = (std::string *) &((SimpleXML const *)arg1)->getData();
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_stepIn(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  
+  SWIG_check_num_args("SimpleXML::stepIn",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::stepIn",1,"SimpleXML *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_stepIn",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  {
+    try {
+      (arg1)->stepIn();
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_stepOut(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  
+  SWIG_check_num_args("SimpleXML::stepOut",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::stepOut",1,"SimpleXML *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_stepOut",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  {
+    try {
+      (arg1)->stepOut();
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_resetCurrentChild(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  
+  SWIG_check_num_args("SimpleXML::resetCurrentChild",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::resetCurrentChild",1,"SimpleXML *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_resetCurrentChild",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  {
+    try {
+      (arg1)->resetCurrentChild();
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_findChild(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  bool result;
+  
+  SWIG_check_num_args("SimpleXML::findChild",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::findChild",1,"SimpleXML *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("SimpleXML::findChild",2,"std::string const &");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_findChild",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
+  {
+    try {
+      result = (bool)(arg1)->findChild((std::string const &)*arg2);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_getChildTag(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  std::string *result = 0 ;
+  
+  SWIG_check_num_args("SimpleXML::getChildTag",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::getChildTag",1,"SimpleXML const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_getChildTag",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  {
+    try {
+      result = (std::string *) &((SimpleXML const *)arg1)->getChildTag();
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_getChildData(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  std::string *result = 0 ;
+  
+  SWIG_check_num_args("SimpleXML::getChildData",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::getChildData",1,"SimpleXML const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_getChildData",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  {
+    try {
+      result = (std::string *) &((SimpleXML const *)arg1)->getChildData();
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_getChildAttrib__SWIG_0(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  std::string *result = 0 ;
+  
+  SWIG_check_num_args("SimpleXML::getChildAttrib",3,3)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::getChildAttrib",1,"SimpleXML *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("SimpleXML::getChildAttrib",2,"std::string const &");
+  if(!lua_isstring(L,3)) SWIG_fail_arg("SimpleXML::getChildAttrib",3,"std::string const &");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_getChildAttrib",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
+  temp3.assign(lua_tostring(L,3),lua_rawlen(L,3)); arg3=&temp3;
+  {
+    try {
+      result = (std::string *) &(arg1)->getChildAttrib((std::string const &)*arg2,(std::string const &)*arg3);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_getChildAttrib__SWIG_1(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  std::string *result = 0 ;
+  
+  SWIG_check_num_args("SimpleXML::getChildAttrib",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::getChildAttrib",1,"SimpleXML *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("SimpleXML::getChildAttrib",2,"std::string const &");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_getChildAttrib",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
+  {
+    try {
+      result = (std::string *) &(arg1)->getChildAttrib((std::string const &)*arg2);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_getChildAttrib(lua_State* L) {
+  int argc;
+  int argv[4]={
+    1,2,3,4
+  };
+  
+  argc = lua_gettop(L);
+  if (argc == 2) {
+    int _v;
+    {
+      void *ptr;
+      if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_SimpleXML, 0)) {
+        _v = 0;
+      } else {
+        _v = 1;
+      }
+    }
+    if (_v) {
+      {
+        _v = lua_isstring(L,argv[1]);
+      }
+      if (_v) {
+        return _wrap_SimpleXML_getChildAttrib__SWIG_1(L);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    {
+      void *ptr;
+      if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_SimpleXML, 0)) {
+        _v = 0;
+      } else {
+        _v = 1;
+      }
+    }
+    if (_v) {
+      {
+        _v = lua_isstring(L,argv[1]);
+      }
+      if (_v) {
+        {
+          _v = lua_isstring(L,argv[2]);
+        }
+        if (_v) {
+          return _wrap_SimpleXML_getChildAttrib__SWIG_0(L);
+        }
+      }
+    }
+  }
+  
+  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'SimpleXML_getChildAttrib'\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    SimpleXML::getChildAttrib(std::string const &,std::string const &)\n"
+    "    SimpleXML::getChildAttrib(std::string const &)\n");
+  lua_error(L);return 0;
+}
+
+
+static int _wrap_SimpleXML_getIntChildAttrib(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  int result;
+  
+  SWIG_check_num_args("SimpleXML::getIntChildAttrib",3,3)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::getIntChildAttrib",1,"SimpleXML *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("SimpleXML::getIntChildAttrib",2,"std::string const &");
+  if(!lua_isstring(L,3)) SWIG_fail_arg("SimpleXML::getIntChildAttrib",3,"std::string const &");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_getIntChildAttrib",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
+  temp3.assign(lua_tostring(L,3),lua_rawlen(L,3)); arg3=&temp3;
+  {
+    try {
+      result = (int)(arg1)->getIntChildAttrib((std::string const &)*arg2,(std::string const &)*arg3);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_getInt64ChildAttrib(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string temp2 ;
+  std::string temp3 ;
+  int64_t result;
+  
+  SWIG_check_num_args("SimpleXML::getInt64ChildAttrib",3,3)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::getInt64ChildAttrib",1,"SimpleXML *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("SimpleXML::getInt64ChildAttrib",2,"std::string const &");
+  if(!lua_isstring(L,3)) SWIG_fail_arg("SimpleXML::getInt64ChildAttrib",3,"std::string const &");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_getInt64ChildAttrib",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
+  temp3.assign(lua_tostring(L,3),lua_rawlen(L,3)); arg3=&temp3;
+  {
+    try {
+      result = (int64_t)(arg1)->getInt64ChildAttrib((std::string const &)*arg2,(std::string const &)*arg3);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  {
+    lua_pushnumber(L, (lua_Number)result); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_getBoolChildAttrib(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  bool result;
+  
+  SWIG_check_num_args("SimpleXML::getBoolChildAttrib",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::getBoolChildAttrib",1,"SimpleXML *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("SimpleXML::getBoolChildAttrib",2,"std::string const &");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_getBoolChildAttrib",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
+  {
+    try {
+      result = (bool)(arg1)->getBoolChildAttrib((std::string const &)*arg2);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_fromXML(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  
+  SWIG_check_num_args("SimpleXML::fromXML",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::fromXML",1,"SimpleXML *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("SimpleXML::fromXML",2,"std::string const &");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_fromXML",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
+  {
+    try {
+      (arg1)->fromXML((std::string const &)*arg2);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_toXML(lua_State* L) {
+  int SWIG_arg = 0;
+  SimpleXML *arg1 = (SimpleXML *) 0 ;
+  std::string result;
+  
+  SWIG_check_num_args("SimpleXML::toXML",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("SimpleXML::toXML",1,"SimpleXML const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_SimpleXML,0))){
+    SWIG_fail_ptr("SimpleXML_toXML",1,SWIGTYPE_p_SimpleXML);
+  }
+  
+  {
+    try {
+      result = ((SimpleXML const *)arg1)->toXML();
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_escape__SWIG_0(lua_State* L) {
+  int SWIG_arg = 0;
+  std::string *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  bool arg3 ;
+  bool arg4 ;
+  int arg5 ;
+  std::string temp1 ;
+  std::string *result = 0 ;
+  
+  SWIG_check_num_args("SimpleXML::escape",5,5)
+  if(!lua_isstring(L,1)) SWIG_fail_arg("SimpleXML::escape",1,"std::string const &");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("SimpleXML::escape",2,"std::string &");
+  if(!lua_isboolean(L,3)) SWIG_fail_arg("SimpleXML::escape",3,"bool");
+  if(!lua_isboolean(L,4)) SWIG_fail_arg("SimpleXML::escape",4,"bool");
+  if(!lua_isnumber(L,5)) SWIG_fail_arg("SimpleXML::escape",5,"int");
+  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_std__string,0))){
+    SWIG_fail_ptr("SimpleXML_escape",2,SWIGTYPE_p_std__string);
+  }
+  
+  arg3 = (lua_toboolean(L, 3)!=0);
+  arg4 = (lua_toboolean(L, 4)!=0);
+  arg5 = (int)lua_tonumber(L, 5);
+  {
+    try {
+      result = (std::string *) &SimpleXML::escape((std::string const &)*arg1,*arg2,arg3,arg4,arg5);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_escape__SWIG_1(lua_State* L) {
+  int SWIG_arg = 0;
+  std::string *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  bool arg3 ;
+  bool arg4 ;
+  std::string temp1 ;
+  std::string *result = 0 ;
+  
+  SWIG_check_num_args("SimpleXML::escape",4,4)
+  if(!lua_isstring(L,1)) SWIG_fail_arg("SimpleXML::escape",1,"std::string const &");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("SimpleXML::escape",2,"std::string &");
+  if(!lua_isboolean(L,3)) SWIG_fail_arg("SimpleXML::escape",3,"bool");
+  if(!lua_isboolean(L,4)) SWIG_fail_arg("SimpleXML::escape",4,"bool");
+  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_std__string,0))){
+    SWIG_fail_ptr("SimpleXML_escape",2,SWIGTYPE_p_std__string);
+  }
+  
+  arg3 = (lua_toboolean(L, 3)!=0);
+  arg4 = (lua_toboolean(L, 4)!=0);
+  {
+    try {
+      result = (std::string *) &SimpleXML::escape((std::string const &)*arg1,*arg2,arg3,arg4);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_escape__SWIG_2(lua_State* L) {
+  int SWIG_arg = 0;
+  std::string *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  bool arg3 ;
+  std::string temp1 ;
+  std::string *result = 0 ;
+  
+  SWIG_check_num_args("SimpleXML::escape",3,3)
+  if(!lua_isstring(L,1)) SWIG_fail_arg("SimpleXML::escape",1,"std::string const &");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("SimpleXML::escape",2,"std::string &");
+  if(!lua_isboolean(L,3)) SWIG_fail_arg("SimpleXML::escape",3,"bool");
+  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_std__string,0))){
+    SWIG_fail_ptr("SimpleXML_escape",2,SWIGTYPE_p_std__string);
+  }
+  
+  arg3 = (lua_toboolean(L, 3)!=0);
+  {
+    try {
+      result = (std::string *) &SimpleXML::escape((std::string const &)*arg1,*arg2,arg3);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_escape(lua_State* L) {
+  int argc;
+  int argv[6]={
+    1,2,3,4,5,6
+  };
+  
+  argc = lua_gettop(L);
+  if (argc == 3) {
+    int _v;
+    {
+      _v = lua_isstring(L,argv[0]);
+    }
+    if (_v) {
+      {
+        void *ptr;
+        if (lua_isuserdata(L,argv[1])==0 || SWIG_ConvertPtr(L,argv[1], (void **) &ptr, SWIGTYPE_p_std__string, SWIG_POINTER_NO_NULL)) {
+          _v = 0;
+        } else {
+          _v = 1;
+        }
+      }
+      if (_v) {
+        {
+          _v = lua_isboolean(L,argv[2]);
+        }
+        if (_v) {
+          return _wrap_SimpleXML_escape__SWIG_2(L);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v;
+    {
+      _v = lua_isstring(L,argv[0]);
+    }
+    if (_v) {
+      {
+        void *ptr;
+        if (lua_isuserdata(L,argv[1])==0 || SWIG_ConvertPtr(L,argv[1], (void **) &ptr, SWIGTYPE_p_std__string, SWIG_POINTER_NO_NULL)) {
+          _v = 0;
+        } else {
+          _v = 1;
+        }
+      }
+      if (_v) {
+        {
+          _v = lua_isboolean(L,argv[2]);
+        }
+        if (_v) {
+          {
+            _v = lua_isboolean(L,argv[3]);
+          }
+          if (_v) {
+            return _wrap_SimpleXML_escape__SWIG_1(L);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v;
+    {
+      _v = lua_isstring(L,argv[0]);
+    }
+    if (_v) {
+      {
+        void *ptr;
+        if (lua_isuserdata(L,argv[1])==0 || SWIG_ConvertPtr(L,argv[1], (void **) &ptr, SWIGTYPE_p_std__string, SWIG_POINTER_NO_NULL)) {
+          _v = 0;
+        } else {
+          _v = 1;
+        }
+      }
+      if (_v) {
+        {
+          _v = lua_isboolean(L,argv[2]);
+        }
+        if (_v) {
+          {
+            _v = lua_isboolean(L,argv[3]);
+          }
+          if (_v) {
+            {
+              _v = lua_isnumber(L,argv[4]);
+            }
+            if (_v) {
+              return _wrap_SimpleXML_escape__SWIG_0(L);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'SimpleXML_escape'\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    SimpleXML::escape(std::string const &,std::string &,bool,bool,int)\n"
+    "    SimpleXML::escape(std::string const &,std::string &,bool,bool)\n"
+    "    SimpleXML::escape(std::string const &,std::string &,bool)\n");
+  lua_error(L);return 0;
+}
+
+
+static int _wrap_SimpleXML_needsEscape__SWIG_0(lua_State* L) {
+  int SWIG_arg = 0;
+  std::string *arg1 = 0 ;
+  bool arg2 ;
+  bool arg3 ;
+  int arg4 ;
+  std::string temp1 ;
+  bool result;
+  
+  SWIG_check_num_args("SimpleXML::needsEscape",4,4)
+  if(!lua_isstring(L,1)) SWIG_fail_arg("SimpleXML::needsEscape",1,"std::string const &");
+  if(!lua_isboolean(L,2)) SWIG_fail_arg("SimpleXML::needsEscape",2,"bool");
+  if(!lua_isboolean(L,3)) SWIG_fail_arg("SimpleXML::needsEscape",3,"bool");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("SimpleXML::needsEscape",4,"int");
+  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
+  arg2 = (lua_toboolean(L, 2)!=0);
+  arg3 = (lua_toboolean(L, 3)!=0);
+  arg4 = (int)lua_tonumber(L, 4);
+  {
+    try {
+      result = (bool)SimpleXML::needsEscape((std::string const &)*arg1,arg2,arg3,arg4);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_needsEscape__SWIG_1(lua_State* L) {
+  int SWIG_arg = 0;
+  std::string *arg1 = 0 ;
+  bool arg2 ;
+  bool arg3 ;
+  std::string temp1 ;
+  bool result;
+  
+  SWIG_check_num_args("SimpleXML::needsEscape",3,3)
+  if(!lua_isstring(L,1)) SWIG_fail_arg("SimpleXML::needsEscape",1,"std::string const &");
+  if(!lua_isboolean(L,2)) SWIG_fail_arg("SimpleXML::needsEscape",2,"bool");
+  if(!lua_isboolean(L,3)) SWIG_fail_arg("SimpleXML::needsEscape",3,"bool");
+  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
+  arg2 = (lua_toboolean(L, 2)!=0);
+  arg3 = (lua_toboolean(L, 3)!=0);
+  {
+    try {
+      result = (bool)SimpleXML::needsEscape((std::string const &)*arg1,arg2,arg3);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_SimpleXML_needsEscape(lua_State* L) {
+  int argc;
+  int argv[5]={
+    1,2,3,4,5
+  };
+  
+  argc = lua_gettop(L);
+  if (argc == 3) {
+    int _v;
+    {
+      _v = lua_isstring(L,argv[0]);
+    }
+    if (_v) {
+      {
+        _v = lua_isboolean(L,argv[1]);
+      }
+      if (_v) {
+        {
+          _v = lua_isboolean(L,argv[2]);
+        }
+        if (_v) {
+          return _wrap_SimpleXML_needsEscape__SWIG_1(L);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v;
+    {
+      _v = lua_isstring(L,argv[0]);
+    }
+    if (_v) {
+      {
+        _v = lua_isboolean(L,argv[1]);
+      }
+      if (_v) {
+        {
+          _v = lua_isboolean(L,argv[2]);
+        }
+        if (_v) {
+          {
+            _v = lua_isnumber(L,argv[3]);
+          }
+          if (_v) {
+            return _wrap_SimpleXML_needsEscape__SWIG_0(L);
+          }
+        }
+      }
+    }
+  }
+  
+  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'SimpleXML_needsEscape'\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    SimpleXML::needsEscape(std::string const &,bool,bool,int)\n"
+    "    SimpleXML::needsEscape(std::string const &,bool,bool)\n");
+  lua_error(L);return 0;
+}
+
+
+static void swig_delete_SimpleXML(void *obj) {
+SimpleXML *arg1 = (SimpleXML *) obj;
+delete arg1;
+}
+static int _proxy__wrap_new_SimpleXML(lua_State *L) {
+    assert(lua_istable(L,1));
+    lua_pushcfunction(L,_wrap_new_SimpleXML);
+    assert(!lua_isnil(L,-1));
+    lua_replace(L,1); /* replace our table with real constructor */
+    lua_call(L,lua_gettop(L)-1,1);
+    return 1;
+}
+static swig_lua_attribute swig_SimpleXML_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_method swig_SimpleXML_methods[]= {
+    { "addTag", _wrap_SimpleXML_addTag},
+    { "addAttrib", _wrap_SimpleXML_addAttrib},
+    { "addChildAttrib", _wrap_SimpleXML_addChildAttrib},
+    { "getData", _wrap_SimpleXML_getData},
+    { "stepIn", _wrap_SimpleXML_stepIn},
+    { "stepOut", _wrap_SimpleXML_stepOut},
+    { "resetCurrentChild", _wrap_SimpleXML_resetCurrentChild},
+    { "findChild", _wrap_SimpleXML_findChild},
+    { "getChildTag", _wrap_SimpleXML_getChildTag},
+    { "getChildData", _wrap_SimpleXML_getChildData},
+    { "getChildAttrib", _wrap_SimpleXML_getChildAttrib},
+    { "getIntChildAttrib", _wrap_SimpleXML_getIntChildAttrib},
+    { "getInt64ChildAttrib", _wrap_SimpleXML_getInt64ChildAttrib},
+    { "getBoolChildAttrib", _wrap_SimpleXML_getBoolChildAttrib},
+    { "fromXML", _wrap_SimpleXML_fromXML},
+    { "toXML", _wrap_SimpleXML_toXML},
+    {0,0}
+};
+static swig_lua_method swig_SimpleXML_meta[] = {
+    {0,0}
+};
+
+static swig_lua_attribute swig_SimpleXML_Sf_SwigStatic_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_const_info swig_SimpleXML_Sf_SwigStatic_constants[]= {
+    {0,0,0,0,0,0}
+};
+static swig_lua_method swig_SimpleXML_Sf_SwigStatic_methods[]= {
+    { "escape", _wrap_SimpleXML_escape},
+    { "needsEscape", _wrap_SimpleXML_needsEscape},
+    {0,0}
+};
+static swig_lua_class* swig_SimpleXML_Sf_SwigStatic_classes[]= {
+    0
+};
+
+static swig_lua_namespace swig_SimpleXML_Sf_SwigStatic = {
+    "SimpleXML",
+    swig_SimpleXML_Sf_SwigStatic_methods,
+    swig_SimpleXML_Sf_SwigStatic_attributes,
+    swig_SimpleXML_Sf_SwigStatic_constants,
+    swig_SimpleXML_Sf_SwigStatic_classes,
+    0
+};
+static swig_lua_class *swig_SimpleXML_bases[] = {0};
+static const char *swig_SimpleXML_base_names[] = {0};
+static swig_lua_class _wrap_class_SimpleXML = { "SimpleXML", "SimpleXML", &SWIGTYPE_p_SimpleXML,_proxy__wrap_new_SimpleXML, swig_delete_SimpleXML, swig_SimpleXML_methods, swig_SimpleXML_attributes, &swig_SimpleXML_Sf_SwigStatic, swig_SimpleXML_meta, swig_SimpleXML_bases, swig_SimpleXML_base_names };
+
+static int _wrap_new_TigerHash(lua_State* L) {
+  int SWIG_arg = 0;
+  TigerHash *result = 0 ;
+  
+  SWIG_check_num_args("TigerHash::TigerHash",0,0)
+  {
+    try {
+      result = (TigerHash *)new TigerHash();
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_TigerHash,1); SWIG_arg++; 
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_TigerHash_update(lua_State* L) {
+  int SWIG_arg = 0;
+  TigerHash *arg1 = (TigerHash *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string temp2 ;
+  
+  SWIG_check_num_args("TigerHash::update",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("TigerHash::update",1,"TigerHash *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("TigerHash::update",2,"std::string const &");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TigerHash,0))){
+    SWIG_fail_ptr("TigerHash_update",1,SWIGTYPE_p_TigerHash);
+  }
+  
+  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
+  {
+    try {
+      TigerHash_update(arg1,(std::string const &)*arg2);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_TigerHash_finalize(lua_State* L) {
+  int SWIG_arg = 0;
+  TigerHash *arg1 = (TigerHash *) 0 ;
+  std::string result;
+  
+  SWIG_check_num_args("TigerHash::finalize",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("TigerHash::finalize",1,"TigerHash *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_TigerHash,0))){
+    SWIG_fail_ptr("TigerHash_finalize",1,SWIGTYPE_p_TigerHash);
+  }
+  
+  {
+    try {
+      result = TigerHash_finalize(arg1);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static void swig_delete_TigerHash(void *obj) {
+TigerHash *arg1 = (TigerHash *) obj;
+delete arg1;
+}
+static int _proxy__wrap_new_TigerHash(lua_State *L) {
+    assert(lua_istable(L,1));
+    lua_pushcfunction(L,_wrap_new_TigerHash);
+    assert(!lua_isnil(L,-1));
+    lua_replace(L,1); /* replace our table with real constructor */
+    lua_call(L,lua_gettop(L)-1,1);
+    return 1;
+}
+static swig_lua_attribute swig_TigerHash_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_method swig_TigerHash_methods[]= {
+    { "update", _wrap_TigerHash_update},
+    { "finalize", _wrap_TigerHash_finalize},
+    {0,0}
+};
+static swig_lua_method swig_TigerHash_meta[] = {
+    {0,0}
+};
+
+static swig_lua_attribute swig_TigerHash_Sf_SwigStatic_attributes[] = {
+    {0,0,0}
+};
+static swig_lua_const_info swig_TigerHash_Sf_SwigStatic_constants[]= {
+    {SWIG_LUA_CONSTTAB_INT("BITS", TigerHash::BITS)},
+    {SWIG_LUA_CONSTTAB_INT("BYTES", TigerHash::BYTES)},
+    {0,0,0,0,0,0}
+};
+static swig_lua_method swig_TigerHash_Sf_SwigStatic_methods[]= {
+    {0,0}
+};
+static swig_lua_class* swig_TigerHash_Sf_SwigStatic_classes[]= {
+    0
+};
+
+static swig_lua_namespace swig_TigerHash_Sf_SwigStatic = {
+    "TigerHash",
+    swig_TigerHash_Sf_SwigStatic_methods,
+    swig_TigerHash_Sf_SwigStatic_attributes,
+    swig_TigerHash_Sf_SwigStatic_constants,
+    swig_TigerHash_Sf_SwigStatic_classes,
+    0
+};
+static swig_lua_class *swig_TigerHash_bases[] = {0};
+static const char *swig_TigerHash_base_names[] = {0};
+static swig_lua_class _wrap_class_TigerHash = { "TigerHash", "TigerHash", &SWIGTYPE_p_TigerHash,_proxy__wrap_new_TigerHash, swig_delete_TigerHash, swig_TigerHash_methods, swig_TigerHash_attributes, &swig_TigerHash_Sf_SwigStatic, swig_TigerHash_meta, swig_TigerHash_bases, swig_TigerHash_base_names };
+
 static int _wrap_appName_set(lua_State* L) {
   int SWIG_arg = 0;
   std::string *arg1 = 0 ;
@@ -8502,1366 +9969,6 @@ static swig_lua_class *swig_SocketManager_bases[] = {0};
 static const char *swig_SocketManager_base_names[] = {0};
 static swig_lua_class _wrap_class_SocketManager = { "SocketManager", "SocketManager", &SWIGTYPE_p_adchpp__SocketManager,0,0, swig_SocketManager_methods, swig_SocketManager_attributes, &swig_SocketManager_Sf_SwigStatic, swig_SocketManager_meta, swig_SocketManager_bases, swig_SocketManager_base_names };
 
-static int _wrap_new_Exception__SWIG_0(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::Exception *result = 0 ;
-  
-  SWIG_check_num_args("adchpp::Exception::Exception",0,0)
-  {
-    try {
-      result = (adchpp::Exception *)new adchpp::Exception();
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_adchpp__Exception,1); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_new_Exception__SWIG_1(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  std::string temp1 ;
-  adchpp::Exception *result = 0 ;
-  
-  SWIG_check_num_args("adchpp::Exception::Exception",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::Exception::Exception",1,"std::string const &");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  {
-    try {
-      result = (adchpp::Exception *)new adchpp::Exception((std::string const &)*arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_adchpp__Exception,1); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_new_Exception(lua_State* L) {
-  int argc;
-  int argv[2]={
-    1,2
-  };
-  
-  argc = lua_gettop(L);
-  if (argc == 0) {
-    return _wrap_new_Exception__SWIG_0(L);
-  }
-  if (argc == 1) {
-    int _v;
-    {
-      _v = lua_isstring(L,argv[0]);
-    }
-    if (_v) {
-      return _wrap_new_Exception__SWIG_1(L);
-    }
-  }
-  
-  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'new_Exception'\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    adchpp::Exception::Exception()\n"
-    "    adchpp::Exception::Exception(std::string const &)\n");
-  lua_error(L);return 0;
-}
-
-
-static int _wrap_Exception_getError(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::Exception *arg1 = (adchpp::Exception *) 0 ;
-  std::string *result = 0 ;
-  
-  SWIG_check_num_args("adchpp::Exception::getError",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::Exception::getError",1,"adchpp::Exception const *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__Exception,0))){
-    SWIG_fail_ptr("Exception_getError",1,SWIGTYPE_p_adchpp__Exception);
-  }
-  
-  {
-    try {
-      result = (std::string *) &((adchpp::Exception const *)arg1)->getError();
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Exception_what(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::Exception *arg1 = (adchpp::Exception *) 0 ;
-  char *result = 0 ;
-  
-  SWIG_check_num_args("adchpp::Exception::what",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::Exception::what",1,"adchpp::Exception *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__Exception,0))){
-    SWIG_fail_ptr("Exception_what",1,SWIGTYPE_p_adchpp__Exception);
-  }
-  
-  {
-    try {
-      result = (char *)(arg1)->what();
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushstring(L,(const char *)result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static void swig_delete_Exception(void *obj) {
-adchpp::Exception *arg1 = (adchpp::Exception *) obj;
-delete arg1;
-}
-static int _proxy__wrap_new_Exception(lua_State *L) {
-    assert(lua_istable(L,1));
-    lua_pushcfunction(L,_wrap_new_Exception);
-    assert(!lua_isnil(L,-1));
-    lua_replace(L,1); /* replace our table with real constructor */
-    lua_call(L,lua_gettop(L)-1,1);
-    return 1;
-}
-static swig_lua_attribute swig_Exception_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_method swig_Exception_methods[]= {
-    { "getError", _wrap_Exception_getError},
-    { "what", _wrap_Exception_what},
-    {0,0}
-};
-static swig_lua_method swig_Exception_meta[] = {
-    {0,0}
-};
-
-static swig_lua_attribute swig_Exception_Sf_SwigStatic_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_const_info swig_Exception_Sf_SwigStatic_constants[]= {
-    {0,0,0,0,0,0}
-};
-static swig_lua_method swig_Exception_Sf_SwigStatic_methods[]= {
-    {0,0}
-};
-static swig_lua_class* swig_Exception_Sf_SwigStatic_classes[]= {
-    0
-};
-
-static swig_lua_namespace swig_Exception_Sf_SwigStatic = {
-    "Exception",
-    swig_Exception_Sf_SwigStatic_methods,
-    swig_Exception_Sf_SwigStatic_attributes,
-    swig_Exception_Sf_SwigStatic_constants,
-    swig_Exception_Sf_SwigStatic_classes,
-    0
-};
-static swig_lua_class *swig_Exception_bases[] = {0};
-static const char *swig_Exception_base_names[] = {0};
-static swig_lua_class _wrap_class_Exception = { "Exception", "Exception", &SWIGTYPE_p_adchpp__Exception,_proxy__wrap_new_Exception, swig_delete_Exception, swig_Exception_methods, swig_Exception_attributes, &swig_Exception_Sf_SwigStatic, swig_Exception_meta, swig_Exception_bases, swig_Exception_base_names };
-
-static int _wrap_Text_acpToUtf8(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  std::string temp1 ;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Text::acpToUtf8",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::Text::acpToUtf8",1,"std::string const &");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  {
-    try {
-      result = adchpp::Text::acpToUtf8((std::string const &)*arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Text_acpToWide(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  std::string temp1 ;
-  std::wstring result;
-  
-  SWIG_check_num_args("adchpp::Text::acpToWide",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::Text::acpToWide",1,"std::string const &");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  {
-    try {
-      result = adchpp::Text::acpToWide((std::string const &)*arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  {
-    std::wstring * resultptr = new std::wstring((const std::wstring &) result);
-    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_std__wstring,1); SWIG_arg++;
-  }
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Text_utf8ToAcp(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  std::string temp1 ;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Text::utf8ToAcp",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::Text::utf8ToAcp",1,"std::string const &");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  {
-    try {
-      result = adchpp::Text::utf8ToAcp((std::string const &)*arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Text_utf8ToWide(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  std::string temp1 ;
-  std::wstring result;
-  
-  SWIG_check_num_args("adchpp::Text::utf8ToWide",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::Text::utf8ToWide",1,"std::string const &");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  {
-    try {
-      result = adchpp::Text::utf8ToWide((std::string const &)*arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  {
-    std::wstring * resultptr = new std::wstring((const std::wstring &) result);
-    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_std__wstring,1); SWIG_arg++;
-  }
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Text_wideToAcp(lua_State* L) {
-  int SWIG_arg = 0;
-  std::wstring *arg1 = 0 ;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Text::wideToAcp",1,1)
-  if(!lua_isuserdata(L,1)) SWIG_fail_arg("adchpp::Text::wideToAcp",1,"std::wstring const &");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_std__wstring,0))){
-    SWIG_fail_ptr("Text_wideToAcp",1,SWIGTYPE_p_std__wstring);
-  }
-  
-  {
-    try {
-      result = adchpp::Text::wideToAcp((std::wstring const &)*arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Text_wideToUtf8(lua_State* L) {
-  int SWIG_arg = 0;
-  std::wstring *arg1 = 0 ;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Text::wideToUtf8",1,1)
-  if(!lua_isuserdata(L,1)) SWIG_fail_arg("adchpp::Text::wideToUtf8",1,"std::wstring const &");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_std__wstring,0))){
-    SWIG_fail_ptr("Text_wideToUtf8",1,SWIGTYPE_p_std__wstring);
-  }
-  
-  {
-    try {
-      result = adchpp::Text::wideToUtf8((std::wstring const &)*arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Text_validateUtf8(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  std::string temp1 ;
-  bool result;
-  
-  SWIG_check_num_args("adchpp::Text::validateUtf8",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::Text::validateUtf8",1,"std::string const &");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  {
-    try {
-      result = (bool)adchpp::Text::validateUtf8((std::string const &)*arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static swig_lua_attribute swig_Text_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_method swig_Text_methods[]= {
-    {0,0}
-};
-static swig_lua_method swig_Text_meta[] = {
-    {0,0}
-};
-
-static swig_lua_attribute swig_Text_Sf_SwigStatic_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_const_info swig_Text_Sf_SwigStatic_constants[]= {
-    {0,0,0,0,0,0}
-};
-static swig_lua_method swig_Text_Sf_SwigStatic_methods[]= {
-    { "acpToUtf8", _wrap_Text_acpToUtf8},
-    { "acpToWide", _wrap_Text_acpToWide},
-    { "utf8ToAcp", _wrap_Text_utf8ToAcp},
-    { "utf8ToWide", _wrap_Text_utf8ToWide},
-    { "wideToAcp", _wrap_Text_wideToAcp},
-    { "wideToUtf8", _wrap_Text_wideToUtf8},
-    { "validateUtf8", _wrap_Text_validateUtf8},
-    {0,0}
-};
-static swig_lua_class* swig_Text_Sf_SwigStatic_classes[]= {
-    0
-};
-
-static swig_lua_namespace swig_Text_Sf_SwigStatic = {
-    "Text",
-    swig_Text_Sf_SwigStatic_methods,
-    swig_Text_Sf_SwigStatic_attributes,
-    swig_Text_Sf_SwigStatic_constants,
-    swig_Text_Sf_SwigStatic_classes,
-    0
-};
-static swig_lua_class *swig_Text_bases[] = {0};
-static const char *swig_Text_base_names[] = {0};
-static swig_lua_class _wrap_class_Text = { "Text", "Text", &SWIGTYPE_p_adchpp__Text,0,0, swig_Text_methods, swig_Text_attributes, &swig_Text_Sf_SwigStatic, swig_Text_meta, swig_Text_bases, swig_Text_base_names };
-
-static int _wrap_Util_emptyString_set(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  std::string temp1 ;
-  
-  SWIG_check_num_args("adchpp::Util::emptyString",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::Util::emptyString",1,"std::string const &");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  adchpp::Util::emptyString = *arg1;
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_emptyString_get(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *result = 0 ;
-  
-  SWIG_check_num_args("adchpp::Util::emptyString",0,0)
-  result = (std::string *) &adchpp::Util::emptyString;
-  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_getOsVersion(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Util::getOsVersion",0,0)
-  {
-    try {
-      result = adchpp::Util::getOsVersion();
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_decodeUrl(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  std::string *arg2 = 0 ;
-  short *arg3 = 0 ;
-  std::string *arg4 = 0 ;
-  std::string temp1 ;
-  
-  SWIG_check_num_args("adchpp::Util::decodeUrl",4,4)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::Util::decodeUrl",1,"std::string const &");
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg("adchpp::Util::decodeUrl",2,"std::string &");
-  if(!lua_isuserdata(L,3)) SWIG_fail_arg("adchpp::Util::decodeUrl",3,"short &");
-  if(!lua_isuserdata(L,4)) SWIG_fail_arg("adchpp::Util::decodeUrl",4,"std::string &");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_std__string,0))){
-    SWIG_fail_ptr("Util_decodeUrl",2,SWIGTYPE_p_std__string);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&arg3,SWIGTYPE_p_short,0))){
-    SWIG_fail_ptr("Util_decodeUrl",3,SWIGTYPE_p_short);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,4,(void**)&arg4,SWIGTYPE_p_std__string,0))){
-    SWIG_fail_ptr("Util_decodeUrl",4,SWIGTYPE_p_std__string);
-  }
-  
-  {
-    try {
-      adchpp::Util::decodeUrl((std::string const &)*arg1,*arg2,*arg3,*arg4);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_formatTime__SWIG_0(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  time_t arg2 ;
-  std::string temp1 ;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Util::formatTime",2,2)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::Util::formatTime",1,"std::string const &");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("adchpp::Util::formatTime",2,"time_t");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  SWIG_contract_assert((lua_tonumber(L,2)>=0),"number must not be negative")
-  arg2 = (time_t)lua_tonumber(L, 2);
-  {
-    try {
-      result = adchpp::Util::formatTime((std::string const &)*arg1,arg2);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_formatTime__SWIG_1(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  std::string temp1 ;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Util::formatTime",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::Util::formatTime",1,"std::string const &");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  {
-    try {
-      result = adchpp::Util::formatTime((std::string const &)*arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_formatTime(lua_State* L) {
-  int argc;
-  int argv[3]={
-    1,2,3
-  };
-  
-  argc = lua_gettop(L);
-  if (argc == 1) {
-    int _v;
-    {
-      _v = lua_isstring(L,argv[0]);
-    }
-    if (_v) {
-      return _wrap_Util_formatTime__SWIG_1(L);
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    {
-      _v = lua_isstring(L,argv[0]);
-    }
-    if (_v) {
-      {
-        _v = lua_isnumber(L,argv[1]);
-      }
-      if (_v) {
-        return _wrap_Util_formatTime__SWIG_0(L);
-      }
-    }
-  }
-  
-  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'Util_formatTime'\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    adchpp::Util::formatTime(std::string const &,time_t)\n"
-    "    adchpp::Util::formatTime(std::string const &)\n");
-  lua_error(L);return 0;
-}
-
-
-static int _wrap_Util_getAppPath(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Util::getAppPath",0,0)
-  {
-    try {
-      result = adchpp::Util::getAppPath();
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_getAppName(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Util::getAppName",0,0)
-  {
-    try {
-      result = adchpp::Util::getAppName();
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_translateError(lua_State* L) {
-  int SWIG_arg = 0;
-  int arg1 ;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Util::translateError",1,1)
-  if(!lua_isnumber(L,1)) SWIG_fail_arg("adchpp::Util::translateError",1,"int");
-  arg1 = (int)lua_tonumber(L, 1);
-  {
-    try {
-      result = adchpp::Util::translateError(arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_formatBytes__SWIG_0(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  std::string temp1 ;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Util::formatBytes",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::Util::formatBytes",1,"std::string const &");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  {
-    try {
-      result = adchpp::Util::formatBytes((std::string const &)*arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_getShortTimeString(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Util::getShortTimeString",0,0)
-  {
-    try {
-      result = adchpp::Util::getShortTimeString();
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_getTimeString(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Util::getTimeString",0,0)
-  {
-    try {
-      result = adchpp::Util::getTimeString();
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_formatBytes__SWIG_1(lua_State* L) {
-  int SWIG_arg = 0;
-  int64_t arg1 ;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Util::formatBytes",1,1)
-  if(!lua_isnumber(L,1)) SWIG_fail_arg("adchpp::Util::formatBytes",1,"int64_t");
-  {
-    arg1 = (int64_t)lua_tonumber(L,1);
-  }
-  {
-    try {
-      result = adchpp::Util::formatBytes(arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_formatBytes(lua_State* L) {
-  int argc;
-  int argv[2]={
-    1,2
-  };
-  
-  argc = lua_gettop(L);
-  if (argc == 1) {
-    int _v;
-    {
-      _v = lua_isnumber(L,argv[0]);
-    }
-    if (_v) {
-      return _wrap_Util_formatBytes__SWIG_1(L);
-    }
-  }
-  if (argc == 1) {
-    int _v;
-    {
-      _v = lua_isstring(L,argv[0]);
-    }
-    if (_v) {
-      return _wrap_Util_formatBytes__SWIG_0(L);
-    }
-  }
-  
-  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'Util_formatBytes'\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    adchpp::Util::formatBytes(std::string const &)\n"
-    "    adchpp::Util::formatBytes(int64_t)\n");
-  lua_error(L);return 0;
-}
-
-
-static int _wrap_Util_tokenize__SWIG_0(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::StringList *arg1 = 0 ;
-  std::string *arg2 = 0 ;
-  char arg3 ;
-  std::string::size_type arg4 ;
-  std::string temp2 ;
-  std::string::size_type *argp4 ;
-  
-  SWIG_check_num_args("adchpp::Util::tokenize",4,4)
-  if(!lua_isuserdata(L,1)) SWIG_fail_arg("adchpp::Util::tokenize",1,"adchpp::StringList &");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("adchpp::Util::tokenize",2,"std::string const &");
-  if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("adchpp::Util::tokenize",3,"char");
-  if(!lua_isuserdata(L,4)) SWIG_fail_arg("adchpp::Util::tokenize",4,"std::string::size_type");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_std__vectorT_std__string_t,0))){
-    SWIG_fail_ptr("Util_tokenize",1,SWIGTYPE_p_std__vectorT_std__string_t);
-  }
-  
-  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
-  arg3 = (lua_tostring(L, 3))[0];
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,4,(void**)&argp4,SWIGTYPE_p_std__string__size_type,0))){
-    SWIG_fail_ptr("Util_tokenize",4,SWIGTYPE_p_std__string__size_type);
-  }
-  arg4 = *argp4;
-  
-  {
-    try {
-      adchpp::Util::tokenize(*arg1,(std::string const &)*arg2,arg3,arg4);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_tokenize__SWIG_1(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::StringList *arg1 = 0 ;
-  std::string *arg2 = 0 ;
-  char arg3 ;
-  std::string temp2 ;
-  
-  SWIG_check_num_args("adchpp::Util::tokenize",3,3)
-  if(!lua_isuserdata(L,1)) SWIG_fail_arg("adchpp::Util::tokenize",1,"adchpp::StringList &");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("adchpp::Util::tokenize",2,"std::string const &");
-  if(!SWIG_lua_isnilstring(L,3)) SWIG_fail_arg("adchpp::Util::tokenize",3,"char");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_std__vectorT_std__string_t,0))){
-    SWIG_fail_ptr("Util_tokenize",1,SWIGTYPE_p_std__vectorT_std__string_t);
-  }
-  
-  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
-  arg3 = (lua_tostring(L, 3))[0];
-  {
-    try {
-      adchpp::Util::tokenize(*arg1,(std::string const &)*arg2,arg3);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_tokenize(lua_State* L) {
-  int argc;
-  int argv[5]={
-    1,2,3,4,5
-  };
-  
-  argc = lua_gettop(L);
-  if (argc == 3) {
-    int _v;
-    {
-      void *ptr;
-      if (lua_isuserdata(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_std__vectorT_std__string_t, SWIG_POINTER_NO_NULL)) {
-        _v = 0;
-      } else {
-        _v = 1;
-      }
-    }
-    if (_v) {
-      {
-        _v = lua_isstring(L,argv[1]);
-      }
-      if (_v) {
-        {
-          _v = SWIG_lua_isnilstring(L,argv[2]) && (lua_rawlen(L,argv[2])==1);
-        }
-        if (_v) {
-          return _wrap_Util_tokenize__SWIG_1(L);
-        }
-      }
-    }
-  }
-  if (argc == 4) {
-    int _v;
-    {
-      void *ptr;
-      if (lua_isuserdata(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_std__vectorT_std__string_t, SWIG_POINTER_NO_NULL)) {
-        _v = 0;
-      } else {
-        _v = 1;
-      }
-    }
-    if (_v) {
-      {
-        _v = lua_isstring(L,argv[1]);
-      }
-      if (_v) {
-        {
-          _v = SWIG_lua_isnilstring(L,argv[2]) && (lua_rawlen(L,argv[2])==1);
-        }
-        if (_v) {
-          {
-            void *ptr;
-            if (lua_isuserdata(L,argv[3])==0 || SWIG_ConvertPtr(L,argv[3], (void **) &ptr, SWIGTYPE_p_std__string__size_type, SWIG_POINTER_NO_NULL)) {
-              _v = 0;
-            } else {
-              _v = 1;
-            }
-          }
-          if (_v) {
-            return _wrap_Util_tokenize__SWIG_0(L);
-          }
-        }
-      }
-    }
-  }
-  
-  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'Util_tokenize'\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    adchpp::Util::tokenize(adchpp::StringList &,std::string const &,char,std::string::size_type)\n"
-    "    adchpp::Util::tokenize(adchpp::StringList &,std::string const &,char)\n");
-  lua_error(L);return 0;
-}
-
-
-static int _wrap_Util_formatSeconds(lua_State* L) {
-  int SWIG_arg = 0;
-  int64_t arg1 ;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Util::formatSeconds",1,1)
-  if(!lua_isnumber(L,1)) SWIG_fail_arg("adchpp::Util::formatSeconds",1,"int64_t");
-  {
-    arg1 = (int64_t)lua_tonumber(L,1);
-  }
-  {
-    try {
-      result = adchpp::Util::formatSeconds(arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_getLocalIp(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Util::getLocalIp",0,0)
-  {
-    try {
-      result = adchpp::Util::getLocalIp();
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_rand__SWIG_0(lua_State* L) {
-  int SWIG_arg = 0;
-  uint32_t result;
-  
-  SWIG_check_num_args("adchpp::Util::rand",0,0)
-  {
-    try {
-      result = (uint32_t)adchpp::Util::rand();
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_rand__SWIG_1(lua_State* L) {
-  int SWIG_arg = 0;
-  uint32_t arg1 ;
-  uint32_t result;
-  
-  SWIG_check_num_args("adchpp::Util::rand",1,1)
-  if(!lua_isnumber(L,1)) SWIG_fail_arg("adchpp::Util::rand",1,"uint32_t");
-  {
-    arg1 = (uint32_t)lua_tonumber(L,1);
-  }
-  {
-    try {
-      result = (uint32_t)adchpp::Util::rand(arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_rand__SWIG_2(lua_State* L) {
-  int SWIG_arg = 0;
-  uint32_t arg1 ;
-  uint32_t arg2 ;
-  uint32_t result;
-  
-  SWIG_check_num_args("adchpp::Util::rand",2,2)
-  if(!lua_isnumber(L,1)) SWIG_fail_arg("adchpp::Util::rand",1,"uint32_t");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("adchpp::Util::rand",2,"uint32_t");
-  {
-    arg1 = (uint32_t)lua_tonumber(L,1);
-  }
-  {
-    arg2 = (uint32_t)lua_tonumber(L,2);
-  }
-  {
-    try {
-      result = (uint32_t)adchpp::Util::rand(arg1,arg2);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_rand(lua_State* L) {
-  int argc;
-  int argv[3]={
-    1,2,3
-  };
-  
-  argc = lua_gettop(L);
-  if (argc == 0) {
-    return _wrap_Util_rand__SWIG_0(L);
-  }
-  if (argc == 1) {
-    int _v;
-    {
-      _v = lua_isnumber(L,argv[0]);
-    }
-    if (_v) {
-      return _wrap_Util_rand__SWIG_1(L);
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    {
-      _v = lua_isnumber(L,argv[0]);
-    }
-    if (_v) {
-      {
-        _v = lua_isnumber(L,argv[1]);
-      }
-      if (_v) {
-        return _wrap_Util_rand__SWIG_2(L);
-      }
-    }
-  }
-  
-  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'Util_rand'\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    adchpp::Util::rand()\n"
-    "    adchpp::Util::rand(uint32_t)\n"
-    "    adchpp::Util::rand(uint32_t,uint32_t)\n");
-  lua_error(L);return 0;
-}
-
-
-static int _wrap_Util_randd(lua_State* L) {
-  int SWIG_arg = 0;
-  double result;
-  
-  SWIG_check_num_args("adchpp::Util::randd",0,0)
-  {
-    try {
-      result = (double)adchpp::Util::randd();
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_isPrivateIp(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  bool arg2 ;
-  std::string temp1 ;
-  bool result;
-  
-  SWIG_check_num_args("adchpp::Util::isPrivateIp",2,2)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::Util::isPrivateIp",1,"std::string const &");
-  if(!lua_isboolean(L,2)) SWIG_fail_arg("adchpp::Util::isPrivateIp",2,"bool");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  arg2 = (lua_toboolean(L, 2)!=0);
-  {
-    try {
-      result = (bool)adchpp::Util::isPrivateIp((std::string const &)*arg1,arg2);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_validateCharset(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  int arg2 ;
-  std::string temp1 ;
-  bool result;
-  
-  SWIG_check_num_args("adchpp::Util::validateCharset",2,2)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::Util::validateCharset",1,"std::string const &");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("adchpp::Util::validateCharset",2,"int");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  arg2 = (int)lua_tonumber(L, 2);
-  {
-    try {
-      result = (bool)adchpp::Util::validateCharset((std::string const &)*arg1,arg2);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Util_getCfgPath(lua_State* L) {
-  int SWIG_arg = 0;
-  lua_State *arg1 = (lua_State *) 0 ;
-  std::string *result = 0 ;
-  
-  arg1 = L;
-  SWIG_check_num_args("adchpp::Util::adchpp_Util_getCfgPath",0,0)
-  {
-    try {
-      result = (std::string *) &adchpp_Util_getCfgPath(arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static swig_lua_attribute swig_Util_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_method swig_Util_methods[]= {
-    {0,0}
-};
-static swig_lua_method swig_Util_meta[] = {
-    {0,0}
-};
-
-static swig_lua_attribute swig_Util_Sf_SwigStatic_attributes[] = {
-    { "emptyString", _wrap_Util_emptyString_get, _wrap_Util_emptyString_set },
-    {0,0,0}
-};
-static swig_lua_const_info swig_Util_Sf_SwigStatic_constants[]= {
-    {SWIG_LUA_CONSTTAB_INT("REASON_BAD_STATE", adchpp::Util::REASON_BAD_STATE)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_CID_CHANGE", adchpp::Util::REASON_CID_CHANGE)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_CID_TAKEN", adchpp::Util::REASON_CID_TAKEN)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_FLOODING", adchpp::Util::REASON_FLOODING)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_HUB_FULL", adchpp::Util::REASON_HUB_FULL)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_INVALID_COMMAND_TYPE", adchpp::Util::REASON_INVALID_COMMAND_TYPE)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_INVALID_IP", adchpp::Util::REASON_INVALID_IP)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_INVALID_SID", adchpp::Util::REASON_INVALID_SID)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_LOGIN_TIMEOUT", adchpp::Util::REASON_LOGIN_TIMEOUT)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_MAX_COMMAND_SIZE", adchpp::Util::REASON_MAX_COMMAND_SIZE)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_NICK_INVALID", adchpp::Util::REASON_NICK_INVALID)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_NICK_TAKEN", adchpp::Util::REASON_NICK_TAKEN)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_NO_BASE_SUPPORT", adchpp::Util::REASON_NO_BASE_SUPPORT)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_NO_TIGR_SUPPORT", adchpp::Util::REASON_NO_TIGR_SUPPORT)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_PID_MISSING", adchpp::Util::REASON_PID_MISSING)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_PID_CID_LENGTH", adchpp::Util::REASON_PID_CID_LENGTH)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_PID_CID_MISMATCH", adchpp::Util::REASON_PID_CID_MISMATCH)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_PID_WITHOUT_CID", adchpp::Util::REASON_PID_WITHOUT_CID)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_PLUGIN", adchpp::Util::REASON_PLUGIN)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_WRITE_OVERFLOW", adchpp::Util::REASON_WRITE_OVERFLOW)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_NO_BANDWIDTH", adchpp::Util::REASON_NO_BANDWIDTH)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_INVALID_DESCRIPTION", adchpp::Util::REASON_INVALID_DESCRIPTION)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_WRITE_TIMEOUT", adchpp::Util::REASON_WRITE_TIMEOUT)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_SOCKET_ERROR", adchpp::Util::REASON_SOCKET_ERROR)},
-    {SWIG_LUA_CONSTTAB_INT("REASON_LAST", adchpp::Util::REASON_LAST)},
-    {0,0,0,0,0,0}
-};
-static swig_lua_method swig_Util_Sf_SwigStatic_methods[]= {
-    { "getOsVersion", _wrap_Util_getOsVersion},
-    { "decodeUrl", _wrap_Util_decodeUrl},
-    { "formatTime", _wrap_Util_formatTime},
-    { "getAppPath", _wrap_Util_getAppPath},
-    { "getAppName", _wrap_Util_getAppName},
-    { "translateError", _wrap_Util_translateError},
-    { "getShortTimeString", _wrap_Util_getShortTimeString},
-    { "getTimeString", _wrap_Util_getTimeString},
-    { "formatBytes", _wrap_Util_formatBytes},
-    { "tokenize", _wrap_Util_tokenize},
-    { "formatSeconds", _wrap_Util_formatSeconds},
-    { "getLocalIp", _wrap_Util_getLocalIp},
-    { "rand", _wrap_Util_rand},
-    { "randd", _wrap_Util_randd},
-    { "isPrivateIp", _wrap_Util_isPrivateIp},
-    { "validateCharset", _wrap_Util_validateCharset},
-    { "getCfgPath", _wrap_Util_getCfgPath},
-    {0,0}
-};
-static swig_lua_class* swig_Util_Sf_SwigStatic_classes[]= {
-    0
-};
-
-static swig_lua_namespace swig_Util_Sf_SwigStatic = {
-    "Util",
-    swig_Util_Sf_SwigStatic_methods,
-    swig_Util_Sf_SwigStatic_attributes,
-    swig_Util_Sf_SwigStatic_constants,
-    swig_Util_Sf_SwigStatic_classes,
-    0
-};
-static swig_lua_class *swig_Util_bases[] = {0};
-static const char *swig_Util_base_names[] = {0};
-static swig_lua_class _wrap_class_Util = { "Util", "Util", &SWIGTYPE_p_adchpp__Util,0,0, swig_Util_methods, swig_Util_attributes, &swig_Util_Sf_SwigStatic, swig_Util_meta, swig_Util_bases, swig_Util_base_names };
-
 static int _wrap_new_CID__SWIG_0(lua_State* L) {
   int SWIG_arg = 0;
   adchpp::CID *result = 0 ;
@@ -10295,131 +10402,6 @@ static swig_lua_class *swig_CID_bases[] = {0};
 static const char *swig_CID_base_names[] = {0};
 static swig_lua_class _wrap_class_CID = { "CID", "CID", &SWIGTYPE_p_adchpp__CID,_proxy__wrap_new_CID, swig_delete_CID, swig_CID_methods, swig_CID_attributes, &swig_CID_Sf_SwigStatic, swig_CID_meta, swig_CID_bases, swig_CID_base_names };
 
-static int _wrap_new_ParseException__SWIG_0(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::ParseException *result = 0 ;
-  
-  SWIG_check_num_args("adchpp::ParseException::ParseException",0,0)
-  {
-    try {
-      result = (adchpp::ParseException *)new adchpp::ParseException();
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_adchpp__ParseException,1); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_new_ParseException__SWIG_1(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  std::string temp1 ;
-  adchpp::ParseException *result = 0 ;
-  
-  SWIG_check_num_args("adchpp::ParseException::ParseException",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::ParseException::ParseException",1,"std::string const &");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  {
-    try {
-      result = (adchpp::ParseException *)new adchpp::ParseException((std::string const &)*arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_adchpp__ParseException,1); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_new_ParseException(lua_State* L) {
-  int argc;
-  int argv[2]={
-    1,2
-  };
-  
-  argc = lua_gettop(L);
-  if (argc == 0) {
-    return _wrap_new_ParseException__SWIG_0(L);
-  }
-  if (argc == 1) {
-    int _v;
-    {
-      _v = lua_isstring(L,argv[0]);
-    }
-    if (_v) {
-      return _wrap_new_ParseException__SWIG_1(L);
-    }
-  }
-  
-  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'new_ParseException'\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    adchpp::ParseException::ParseException()\n"
-    "    adchpp::ParseException::ParseException(std::string const &)\n");
-  lua_error(L);return 0;
-}
-
-
-static void swig_delete_ParseException(void *obj) {
-adchpp::ParseException *arg1 = (adchpp::ParseException *) obj;
-delete arg1;
-}
-static int _proxy__wrap_new_ParseException(lua_State *L) {
-    assert(lua_istable(L,1));
-    lua_pushcfunction(L,_wrap_new_ParseException);
-    assert(!lua_isnil(L,-1));
-    lua_replace(L,1); /* replace our table with real constructor */
-    lua_call(L,lua_gettop(L)-1,1);
-    return 1;
-}
-static swig_lua_attribute swig_ParseException_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_method swig_ParseException_methods[]= {
-    {0,0}
-};
-static swig_lua_method swig_ParseException_meta[] = {
-    {0,0}
-};
-
-static swig_lua_attribute swig_ParseException_Sf_SwigStatic_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_const_info swig_ParseException_Sf_SwigStatic_constants[]= {
-    {0,0,0,0,0,0}
-};
-static swig_lua_method swig_ParseException_Sf_SwigStatic_methods[]= {
-    {0,0}
-};
-static swig_lua_class* swig_ParseException_Sf_SwigStatic_classes[]= {
-    0
-};
-
-static swig_lua_namespace swig_ParseException_Sf_SwigStatic = {
-    "ParseException",
-    swig_ParseException_Sf_SwigStatic_methods,
-    swig_ParseException_Sf_SwigStatic_attributes,
-    swig_ParseException_Sf_SwigStatic_constants,
-    swig_ParseException_Sf_SwigStatic_classes,
-    0
-};
-static swig_lua_class *swig_ParseException_bases[] = {0,0};
-static const char *swig_ParseException_base_names[] = {"adchpp::Exception *",0};
-static swig_lua_class _wrap_class_ParseException = { "ParseException", "ParseException", &SWIGTYPE_p_adchpp__ParseException,_proxy__wrap_new_ParseException, swig_delete_ParseException, swig_ParseException_methods, swig_ParseException_attributes, &swig_ParseException_Sf_SwigStatic, swig_ParseException_meta, swig_ParseException_bases, swig_ParseException_base_names };
-
 static int _wrap_AdcCommand_HUB_SID_get(lua_State* L) {
   int SWIG_arg = 0;
   uint32_t result;
@@ -10562,9 +10544,9 @@ static int _wrap_new_AdcCommand__SWIG_3(lua_State* L) {
     try {
       try {
         result = (adchpp::AdcCommand *)new adchpp::AdcCommand((std::string const &)*arg1);
-      } catch(adchpp::ParseException &_e) {
+      } catch(ParseException &_e) {
         (void)_e; /* ignore it */
-        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_adchpp__ParseException));
+        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_ParseException));
         SWIG_fail;
       }
     } catch(const std::exception& e) {
@@ -10598,9 +10580,9 @@ static int _wrap_new_AdcCommand__SWIG_4(lua_State* L) {
     try {
       try {
         result = (adchpp::AdcCommand *)new adchpp::AdcCommand((adchpp::BufferPtr const &)*arg1);
-      } catch(adchpp::ParseException &_e) {
+      } catch(ParseException &_e) {
         (void)_e; /* ignore it */
-        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_adchpp__ParseException));
+        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_ParseException));
         SWIG_fail;
       }
     } catch(const std::exception& e) {
@@ -10956,9 +10938,9 @@ static int _wrap_AdcCommand_parse(lua_State* L) {
     try {
       try {
         (arg1)->parse((std::string const &)*arg2);
-      } catch(adchpp::ParseException &_e) {
+      } catch(ParseException &_e) {
         (void)_e; /* ignore it */
-        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_adchpp__ParseException));
+        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_ParseException));
         SWIG_fail;
       }
     } catch(const std::exception& e) {
@@ -11069,7 +11051,7 @@ fail:
 static int _wrap_AdcCommand_getParameters(lua_State* L) {
   int SWIG_arg = 0;
   adchpp::AdcCommand *arg1 = (adchpp::AdcCommand *) 0 ;
-  adchpp::StringList *result = 0 ;
+  StringList *result = 0 ;
   
   SWIG_check_num_args("adchpp::AdcCommand::getParameters",1,1)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::AdcCommand::getParameters",1,"adchpp::AdcCommand *");
@@ -11080,7 +11062,7 @@ static int _wrap_AdcCommand_getParameters(lua_State* L) {
   
   {
     try {
-      result = (adchpp::StringList *) &(arg1)->getParameters();
+      result = (StringList *) &(arg1)->getParameters();
     } catch(const std::exception& e) {
       SWIG_exception(SWIG_UnknownError, e.what());
     }
@@ -12463,7 +12445,7 @@ fail:
 static int _wrap_Entity_getSupportList(lua_State* L) {
   int SWIG_arg = 0;
   adchpp::Entity *arg1 = (adchpp::Entity *) 0 ;
-  adchpp::StringList result;
+  StringList result;
   
   SWIG_check_num_args("adchpp::Entity::getSupportList",1,1)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::Entity::getSupportList",1,"adchpp::Entity const *");
@@ -12480,7 +12462,7 @@ static int _wrap_Entity_getSupportList(lua_State* L) {
     }
   }
   {
-    adchpp::StringList * resultptr = new adchpp::StringList((const adchpp::StringList &) result);
+    StringList * resultptr = new StringList((const StringList &) result);
     SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_std__vectorT_std__string_t,1); SWIG_arg++;
   }
   return SWIG_arg;
@@ -14883,12 +14865,12 @@ static swig_lua_class _wrap_class_SignalTraitsERS = { "SignalTraitsERS", "Signal
 
 static int _wrap_SignalESB_connect(lua_State* L) {
   int SWIG_arg = 0;
-  adchpp::Signal< void (adchpp::Entity &,adchpp::StringList const &,bool &) > *arg1 = (adchpp::Signal< void (adchpp::Entity &,adchpp::StringList const &,bool &) > *) 0 ;
-  std::function< void (adchpp::Entity &,adchpp::StringList const &,bool &) > arg2 ;
+  adchpp::Signal< void (adchpp::Entity &,StringList const &,bool &) > *arg1 = (adchpp::Signal< void (adchpp::Entity &,StringList const &,bool &) > *) 0 ;
+  std::function< void (adchpp::Entity &,StringList const &,bool &) > arg2 ;
   adchpp::ManagedConnectionPtr result;
   
-  SWIG_check_num_args("adchpp::Signal< void (adchpp::Entity &,adchpp::StringList const &,bool &) >::connect",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::Signal< void (adchpp::Entity &,adchpp::StringList const &,bool &) >::connect",1,"adchpp::Signal< void (adchpp::Entity &,adchpp::StringList const &,bool &) > *");
+  SWIG_check_num_args("adchpp::Signal< void (adchpp::Entity &,StringList const &,bool &) >::connect",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::Signal< void (adchpp::Entity &,StringList const &,bool &) >::connect",1,"adchpp::Signal< void (adchpp::Entity &,StringList const &,bool &) > *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t,0))){
     SWIG_fail_ptr("SignalESB_connect",1,SWIGTYPE_p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t);
@@ -14899,7 +14881,7 @@ static int _wrap_SignalESB_connect(lua_State* L) {
   }
   {
     try {
-      result = adchpp_Signal_Sl_void_Sp_adchpp_Entity_SA__Sc_adchpp_StringList_SS_const_SA__Sc_bool_SA__SP__Sg__connect(arg1,arg2);
+      result = adchpp_Signal_Sl_void_Sp_adchpp_Entity_SA__Sc_StringList_SS_const_SA__Sc_bool_SA__SP__Sg__connect(arg1,arg2);
     } catch(const std::exception& e) {
       SWIG_exception(SWIG_UnknownError, e.what());
     }
@@ -14919,7 +14901,7 @@ fail:
 
 
 static void swig_delete_SignalESB(void *obj) {
-adchpp::Signal< void (adchpp::Entity &,adchpp::StringList const &,bool &) > *arg1 = (adchpp::Signal< void (adchpp::Entity &,adchpp::StringList const &,bool &) > *) obj;
+adchpp::Signal< void (adchpp::Entity &,StringList const &,bool &) > *arg1 = (adchpp::Signal< void (adchpp::Entity &,StringList const &,bool &) > *) obj;
 delete arg1;
 }
 static swig_lua_attribute swig_SignalESB_attributes[] = {
@@ -14959,7 +14941,7 @@ static const char *swig_SignalESB_base_names[] = {0};
 static swig_lua_class _wrap_class_SignalESB = { "SignalESB", "SignalESB", &SWIGTYPE_p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t,0, swig_delete_SignalESB, swig_SignalESB_methods, swig_SignalESB_attributes, &swig_SignalESB_Sf_SwigStatic, swig_SignalESB_meta, swig_SignalESB_bases, swig_SignalESB_base_names };
 
 static void swig_delete_SignalTraitsESB(void *obj) {
-adchpp::SignalTraits< void (adchpp::Entity &,adchpp::StringList const &,bool &) > *arg1 = (adchpp::SignalTraits< void (adchpp::Entity &,adchpp::StringList const &,bool &) > *) obj;
+adchpp::SignalTraits< void (adchpp::Entity &,StringList const &,bool &) > *arg1 = (adchpp::SignalTraits< void (adchpp::Entity &,StringList const &,bool &) > *) obj;
 delete arg1;
 }
 static swig_lua_attribute swig_SignalTraitsESB_attributes[] = {
@@ -15000,14 +14982,14 @@ static swig_lua_class _wrap_class_SignalTraitsESB = { "SignalTraitsESB", "Signal
 static int _wrap_SignalS_connect(lua_State* L) {
   int SWIG_arg = 0;
   adchpp::Signal< void (SimpleXML const &) > *arg1 = (adchpp::Signal< void (SimpleXML const &) > *) 0 ;
-  std::function< void (SimpleXML const &) > arg2 ;
+  SwigValueWrapper< std::function< void (SimpleXML const &) > > arg2 ;
   adchpp::ManagedConnectionPtr result;
   
   SWIG_check_num_args("adchpp::Signal< void (SimpleXML const &) >::connect",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::Signal< void (SimpleXML const &) >::connect",1,"adchpp::Signal< void (SimpleXML const &) > *");
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SignalT_void_fadchpp__SimpleXML_const_RF_t,0))){
-    SWIG_fail_ptr("SignalS_connect",1,SWIGTYPE_p_adchpp__SignalT_void_fadchpp__SimpleXML_const_RF_t);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SignalT_void_fSimpleXML_const_RF_t,0))){
+    SWIG_fail_ptr("SignalS_connect",1,SWIGTYPE_p_adchpp__SignalT_void_fSimpleXML_const_RF_t);
   }
   
   {
@@ -15072,7 +15054,7 @@ static swig_lua_namespace swig_SignalS_Sf_SwigStatic = {
 };
 static swig_lua_class *swig_SignalS_bases[] = {0};
 static const char *swig_SignalS_base_names[] = {0};
-static swig_lua_class _wrap_class_SignalS = { "SignalS", "SignalS", &SWIGTYPE_p_adchpp__SignalT_void_fadchpp__SimpleXML_const_RF_t,0, swig_delete_SignalS, swig_SignalS_methods, swig_SignalS_attributes, &swig_SignalS_Sf_SwigStatic, swig_SignalS_meta, swig_SignalS_bases, swig_SignalS_base_names };
+static swig_lua_class _wrap_class_SignalS = { "SignalS", "SignalS", &SWIGTYPE_p_adchpp__SignalT_void_fSimpleXML_const_RF_t,0, swig_delete_SignalS, swig_SignalS_methods, swig_SignalS_attributes, &swig_SignalS_Sf_SwigStatic, swig_SignalS_meta, swig_SignalS_bases, swig_SignalS_base_names };
 
 static void swig_delete_SignalTraitsS(void *obj) {
 adchpp::SignalTraits< void (SimpleXML const &) > *arg1 = (adchpp::SignalTraits< void (SimpleXML const &) > *) obj;
@@ -15111,7 +15093,7 @@ static swig_lua_namespace swig_SignalTraitsS_Sf_SwigStatic = {
 };
 static swig_lua_class *swig_SignalTraitsS_bases[] = {0};
 static const char *swig_SignalTraitsS_base_names[] = {0};
-static swig_lua_class _wrap_class_SignalTraitsS = { "SignalTraitsS", "SignalTraitsS", &SWIGTYPE_p_adchpp__SignalTraitsT_void_fadchpp__SimpleXML_const_RF_t,0, swig_delete_SignalTraitsS, swig_SignalTraitsS_methods, swig_SignalTraitsS_attributes, &swig_SignalTraitsS_Sf_SwigStatic, swig_SignalTraitsS_meta, swig_SignalTraitsS_bases, swig_SignalTraitsS_base_names };
+static swig_lua_class _wrap_class_SignalTraitsS = { "SignalTraitsS", "SignalTraitsS", &SWIGTYPE_p_adchpp__SignalTraitsT_void_fSimpleXML_const_RF_t,0, swig_delete_SignalTraitsS, swig_SignalTraitsS_methods, swig_SignalTraitsS_attributes, &swig_SignalTraitsS_Sf_SwigStatic, swig_SignalTraitsS_meta, swig_SignalTraitsS_bases, swig_SignalTraitsS_base_names };
 
 static int _wrap_SignalSt_connect(lua_State* L) {
   int SWIG_arg = 0;
@@ -15863,7 +15845,7 @@ static int _wrap_ClientManager_enterVerify(lua_State* L) {
   adchpp::ClientManager *arg1 = (adchpp::ClientManager *) 0 ;
   adchpp::Entity *arg2 = 0 ;
   bool arg3 ;
-  adchpp::ByteVector result;
+  ByteVector result;
   
   SWIG_check_num_args("adchpp::ClientManager::enterVerify",3,3)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::ClientManager::enterVerify",1,"adchpp::ClientManager *");
@@ -15888,7 +15870,7 @@ static int _wrap_ClientManager_enterVerify(lua_State* L) {
     }
   }
   {
-    adchpp::ByteVector * resultptr = new adchpp::ByteVector((const adchpp::ByteVector &) result);
+    ByteVector * resultptr = new ByteVector((const ByteVector &) result);
     SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_std__vectorT_unsigned_char_t,1); SWIG_arg++;
   }
   return SWIG_arg;
@@ -16081,7 +16063,7 @@ static int _wrap_ClientManager_verifyPassword(lua_State* L) {
   adchpp::ClientManager *arg1 = (adchpp::ClientManager *) 0 ;
   adchpp::Entity *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  adchpp::ByteVector *arg4 = 0 ;
+  ByteVector *arg4 = 0 ;
   std::string *arg5 = 0 ;
   std::string temp3 ;
   std::string temp5 ;
@@ -16091,7 +16073,7 @@ static int _wrap_ClientManager_verifyPassword(lua_State* L) {
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::ClientManager::verifyPassword",1,"adchpp::ClientManager *");
   if(!lua_isuserdata(L,2)) SWIG_fail_arg("adchpp::ClientManager::verifyPassword",2,"adchpp::Entity &");
   if(!lua_isstring(L,3)) SWIG_fail_arg("adchpp::ClientManager::verifyPassword",3,"std::string const &");
-  if(!lua_isuserdata(L,4)) SWIG_fail_arg("adchpp::ClientManager::verifyPassword",4,"adchpp::ByteVector const &");
+  if(!lua_isuserdata(L,4)) SWIG_fail_arg("adchpp::ClientManager::verifyPassword",4,"ByteVector const &");
   if(!lua_isstring(L,5)) SWIG_fail_arg("adchpp::ClientManager::verifyPassword",5,"std::string const &");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__ClientManager,0))){
@@ -16112,7 +16094,7 @@ static int _wrap_ClientManager_verifyPassword(lua_State* L) {
   temp5.assign(lua_tostring(L,5),lua_rawlen(L,5)); arg5=&temp5;
   {
     try {
-      result = (bool)(arg1)->verifyPassword(*arg2,(std::string const &)*arg3,(adchpp::ByteVector const &)*arg4,(std::string const &)*arg5);
+      result = (bool)(arg1)->verifyPassword(*arg2,(std::string const &)*arg3,(ByteVector const &)*arg4,(std::string const &)*arg5);
     } catch(const std::exception& e) {
       SWIG_exception(SWIG_UnknownError, e.what());
     }
@@ -16791,1414 +16773,6 @@ static swig_lua_class *swig_ClientManager_bases[] = {0};
 static const char *swig_ClientManager_base_names[] = {0};
 static swig_lua_class _wrap_class_ClientManager = { "ClientManager", "ClientManager", &SWIGTYPE_p_adchpp__ClientManager,0,0, swig_ClientManager_methods, swig_ClientManager_attributes, &swig_ClientManager_Sf_SwigStatic, swig_ClientManager_meta, swig_ClientManager_bases, swig_ClientManager_base_names };
 
-static int _wrap_new_SimpleXML__SWIG_0(lua_State* L) {
-  int SWIG_arg = 0;
-  int arg1 ;
-  adchpp::SimpleXML *result = 0 ;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::SimpleXML",1,1)
-  if(!lua_isnumber(L,1)) SWIG_fail_arg("adchpp::SimpleXML::SimpleXML",1,"int");
-  arg1 = (int)lua_tonumber(L, 1);
-  {
-    try {
-      result = (adchpp::SimpleXML *)new adchpp::SimpleXML(arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_adchpp__SimpleXML,1); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_new_SimpleXML__SWIG_1(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *result = 0 ;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::SimpleXML",0,0)
-  {
-    try {
-      result = (adchpp::SimpleXML *)new adchpp::SimpleXML();
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_adchpp__SimpleXML,1); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_new_SimpleXML(lua_State* L) {
-  int argc;
-  int argv[2]={
-    1,2
-  };
-  
-  argc = lua_gettop(L);
-  if (argc == 0) {
-    return _wrap_new_SimpleXML__SWIG_1(L);
-  }
-  if (argc == 1) {
-    int _v;
-    {
-      _v = lua_isnumber(L,argv[0]);
-    }
-    if (_v) {
-      return _wrap_new_SimpleXML__SWIG_0(L);
-    }
-  }
-  
-  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'new_SimpleXML'\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    adchpp::SimpleXML::SimpleXML(int)\n"
-    "    adchpp::SimpleXML::SimpleXML()\n");
-  lua_error(L);return 0;
-}
-
-
-static int _wrap_SimpleXML_addTag__SWIG_0(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  std::string *arg2 = 0 ;
-  std::string *arg3 = 0 ;
-  std::string temp2 ;
-  std::string temp3 ;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::addTag",3,3)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::addTag",1,"adchpp::SimpleXML *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("adchpp::SimpleXML::addTag",2,"std::string const &");
-  if(!lua_isstring(L,3)) SWIG_fail_arg("adchpp::SimpleXML::addTag",3,"std::string const &");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_addTag",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
-  temp3.assign(lua_tostring(L,3),lua_rawlen(L,3)); arg3=&temp3;
-  {
-    try {
-      try {
-        (arg1)->addTag((std::string const &)*arg2,(std::string const &)*arg3);
-      } catch(SimpleXMLException &_e) {
-        (void)_e; /* ignore it */
-        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_SimpleXMLException));
-        SWIG_fail;
-      }
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_addTag__SWIG_1(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  std::string *arg2 = 0 ;
-  std::string temp2 ;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::addTag",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::addTag",1,"adchpp::SimpleXML *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("adchpp::SimpleXML::addTag",2,"std::string const &");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_addTag",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
-  {
-    try {
-      try {
-        (arg1)->addTag((std::string const &)*arg2);
-      } catch(SimpleXMLException &_e) {
-        (void)_e; /* ignore it */
-        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_SimpleXMLException));
-        SWIG_fail;
-      }
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_addTag(lua_State* L) {
-  int argc;
-  int argv[4]={
-    1,2,3,4
-  };
-  
-  argc = lua_gettop(L);
-  if (argc == 2) {
-    int _v;
-    {
-      void *ptr;
-      if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_adchpp__SimpleXML, 0)) {
-        _v = 0;
-      } else {
-        _v = 1;
-      }
-    }
-    if (_v) {
-      {
-        _v = lua_isstring(L,argv[1]);
-      }
-      if (_v) {
-        return _wrap_SimpleXML_addTag__SWIG_1(L);
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v;
-    {
-      void *ptr;
-      if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_adchpp__SimpleXML, 0)) {
-        _v = 0;
-      } else {
-        _v = 1;
-      }
-    }
-    if (_v) {
-      {
-        _v = lua_isstring(L,argv[1]);
-      }
-      if (_v) {
-        {
-          _v = lua_isstring(L,argv[2]);
-        }
-        if (_v) {
-          return _wrap_SimpleXML_addTag__SWIG_0(L);
-        }
-      }
-    }
-  }
-  
-  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'SimpleXML_addTag'\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    adchpp::SimpleXML::addTag(std::string const &,std::string const &)\n"
-    "    adchpp::SimpleXML::addTag(std::string const &)\n");
-  lua_error(L);return 0;
-}
-
-
-static int _wrap_SimpleXML_addAttrib(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  std::string *arg2 = 0 ;
-  std::string *arg3 = 0 ;
-  std::string temp2 ;
-  std::string temp3 ;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::addAttrib",3,3)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::addAttrib",1,"adchpp::SimpleXML *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("adchpp::SimpleXML::addAttrib",2,"std::string const &");
-  if(!lua_isstring(L,3)) SWIG_fail_arg("adchpp::SimpleXML::addAttrib",3,"std::string const &");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_addAttrib",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
-  temp3.assign(lua_tostring(L,3),lua_rawlen(L,3)); arg3=&temp3;
-  {
-    try {
-      try {
-        (arg1)->addAttrib((std::string const &)*arg2,(std::string const &)*arg3);
-      } catch(SimpleXMLException &_e) {
-        (void)_e; /* ignore it */
-        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_SimpleXMLException));
-        SWIG_fail;
-      }
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_addChildAttrib(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  std::string *arg2 = 0 ;
-  std::string *arg3 = 0 ;
-  std::string temp2 ;
-  std::string temp3 ;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::addChildAttrib",3,3)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::addChildAttrib",1,"adchpp::SimpleXML *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("adchpp::SimpleXML::addChildAttrib",2,"std::string const &");
-  if(!lua_isstring(L,3)) SWIG_fail_arg("adchpp::SimpleXML::addChildAttrib",3,"std::string const &");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_addChildAttrib",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
-  temp3.assign(lua_tostring(L,3),lua_rawlen(L,3)); arg3=&temp3;
-  {
-    try {
-      try {
-        (arg1)->addChildAttrib((std::string const &)*arg2,(std::string const &)*arg3);
-      } catch(SimpleXMLException &_e) {
-        (void)_e; /* ignore it */
-        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_SimpleXMLException));
-        SWIG_fail;
-      }
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_getData(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  std::string *result = 0 ;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::getData",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::getData",1,"adchpp::SimpleXML const *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_getData",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  {
-    try {
-      result = (std::string *) &((adchpp::SimpleXML const *)arg1)->getData();
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_stepIn(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::stepIn",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::stepIn",1,"adchpp::SimpleXML const *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_stepIn",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  {
-    try {
-      try {
-        ((adchpp::SimpleXML const *)arg1)->stepIn();
-      } catch(SimpleXMLException &_e) {
-        (void)_e; /* ignore it */
-        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_SimpleXMLException));
-        SWIG_fail;
-      }
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_stepOut(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::stepOut",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::stepOut",1,"adchpp::SimpleXML const *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_stepOut",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  {
-    try {
-      try {
-        ((adchpp::SimpleXML const *)arg1)->stepOut();
-      } catch(SimpleXMLException &_e) {
-        (void)_e; /* ignore it */
-        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_SimpleXMLException));
-        SWIG_fail;
-      }
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_resetCurrentChild(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::resetCurrentChild",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::resetCurrentChild",1,"adchpp::SimpleXML const *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_resetCurrentChild",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  {
-    try {
-      ((adchpp::SimpleXML const *)arg1)->resetCurrentChild();
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_findChild(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  std::string *arg2 = 0 ;
-  std::string temp2 ;
-  bool result;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::findChild",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::findChild",1,"adchpp::SimpleXML const *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("adchpp::SimpleXML::findChild",2,"std::string const &");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_findChild",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
-  {
-    try {
-      result = (bool)((adchpp::SimpleXML const *)arg1)->findChild((std::string const &)*arg2);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_getChildName(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  std::string *result = 0 ;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::getChildName",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::getChildName",1,"adchpp::SimpleXML const *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_getChildName",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  {
-    try {
-      try {
-        result = (std::string *) &((adchpp::SimpleXML const *)arg1)->getChildName();
-      } catch(SimpleXMLException &_e) {
-        (void)_e; /* ignore it */
-        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_SimpleXMLException));
-        SWIG_fail;
-      }
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_getChildData(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  std::string *result = 0 ;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::getChildData",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::getChildData",1,"adchpp::SimpleXML const *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_getChildData",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  {
-    try {
-      try {
-        result = (std::string *) &((adchpp::SimpleXML const *)arg1)->getChildData();
-      } catch(SimpleXMLException &_e) {
-        (void)_e; /* ignore it */
-        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_SimpleXMLException));
-        SWIG_fail;
-      }
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_getChildAttrib__SWIG_0(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  std::string *arg2 = 0 ;
-  std::string *arg3 = 0 ;
-  std::string temp2 ;
-  std::string temp3 ;
-  std::string *result = 0 ;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::getChildAttrib",3,3)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::getChildAttrib",1,"adchpp::SimpleXML const *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("adchpp::SimpleXML::getChildAttrib",2,"std::string const &");
-  if(!lua_isstring(L,3)) SWIG_fail_arg("adchpp::SimpleXML::getChildAttrib",3,"std::string const &");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_getChildAttrib",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
-  temp3.assign(lua_tostring(L,3),lua_rawlen(L,3)); arg3=&temp3;
-  {
-    try {
-      try {
-        result = (std::string *) &((adchpp::SimpleXML const *)arg1)->getChildAttrib((std::string const &)*arg2,(std::string const &)*arg3);
-      } catch(SimpleXMLException &_e) {
-        (void)_e; /* ignore it */
-        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_SimpleXMLException));
-        SWIG_fail;
-      }
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_getChildAttrib__SWIG_1(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  std::string *arg2 = 0 ;
-  std::string temp2 ;
-  std::string *result = 0 ;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::getChildAttrib",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::getChildAttrib",1,"adchpp::SimpleXML const *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("adchpp::SimpleXML::getChildAttrib",2,"std::string const &");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_getChildAttrib",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
-  {
-    try {
-      try {
-        result = (std::string *) &((adchpp::SimpleXML const *)arg1)->getChildAttrib((std::string const &)*arg2);
-      } catch(SimpleXMLException &_e) {
-        (void)_e; /* ignore it */
-        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_SimpleXMLException));
-        SWIG_fail;
-      }
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_getChildAttrib(lua_State* L) {
-  int argc;
-  int argv[4]={
-    1,2,3,4
-  };
-  
-  argc = lua_gettop(L);
-  if (argc == 2) {
-    int _v;
-    {
-      void *ptr;
-      if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_adchpp__SimpleXML, 0)) {
-        _v = 0;
-      } else {
-        _v = 1;
-      }
-    }
-    if (_v) {
-      {
-        _v = lua_isstring(L,argv[1]);
-      }
-      if (_v) {
-        return _wrap_SimpleXML_getChildAttrib__SWIG_1(L);
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v;
-    {
-      void *ptr;
-      if (SWIG_isptrtype(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_adchpp__SimpleXML, 0)) {
-        _v = 0;
-      } else {
-        _v = 1;
-      }
-    }
-    if (_v) {
-      {
-        _v = lua_isstring(L,argv[1]);
-      }
-      if (_v) {
-        {
-          _v = lua_isstring(L,argv[2]);
-        }
-        if (_v) {
-          return _wrap_SimpleXML_getChildAttrib__SWIG_0(L);
-        }
-      }
-    }
-  }
-  
-  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'SimpleXML_getChildAttrib'\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    adchpp::SimpleXML::getChildAttrib(std::string const &,std::string const &) const\n"
-    "    adchpp::SimpleXML::getChildAttrib(std::string const &) const\n");
-  lua_error(L);return 0;
-}
-
-
-static int _wrap_SimpleXML_getIntChildAttrib(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  std::string *arg2 = 0 ;
-  std::string temp2 ;
-  int result;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::getIntChildAttrib",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::getIntChildAttrib",1,"adchpp::SimpleXML *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("adchpp::SimpleXML::getIntChildAttrib",2,"std::string const &");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_getIntChildAttrib",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
-  {
-    try {
-      try {
-        result = (int)(arg1)->getIntChildAttrib((std::string const &)*arg2);
-      } catch(SimpleXMLException &_e) {
-        (void)_e; /* ignore it */
-        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_SimpleXMLException));
-        SWIG_fail;
-      }
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_getLongLongChildAttrib(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  std::string *arg2 = 0 ;
-  std::string temp2 ;
-  int64_t result;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::getLongLongChildAttrib",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::getLongLongChildAttrib",1,"adchpp::SimpleXML *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("adchpp::SimpleXML::getLongLongChildAttrib",2,"std::string const &");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_getLongLongChildAttrib",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
-  {
-    try {
-      try {
-        result = (int64_t)(arg1)->getLongLongChildAttrib((std::string const &)*arg2);
-      } catch(SimpleXMLException &_e) {
-        (void)_e; /* ignore it */
-        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_SimpleXMLException));
-        SWIG_fail;
-      }
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  {
-    lua_pushnumber(L, (lua_Number)result); SWIG_arg++;
-  }
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_getBoolChildAttrib(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  std::string *arg2 = 0 ;
-  std::string temp2 ;
-  bool result;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::getBoolChildAttrib",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::getBoolChildAttrib",1,"adchpp::SimpleXML *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("adchpp::SimpleXML::getBoolChildAttrib",2,"std::string const &");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_getBoolChildAttrib",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
-  {
-    try {
-      try {
-        result = (bool)(arg1)->getBoolChildAttrib((std::string const &)*arg2);
-      } catch(SimpleXMLException &_e) {
-        (void)_e; /* ignore it */
-        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_SimpleXMLException));
-        SWIG_fail;
-      }
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_fromXML(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  std::string *arg2 = 0 ;
-  std::string temp2 ;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::fromXML",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::fromXML",1,"adchpp::SimpleXML *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("adchpp::SimpleXML::fromXML",2,"std::string const &");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_fromXML",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
-  {
-    try {
-      try {
-        (arg1)->fromXML((std::string const &)*arg2);
-      } catch(SimpleXMLException &_e) {
-        (void)_e; /* ignore it */
-        lua_pushfstring(L,"object exception:%s",SWIG_TypePrettyName(SWIGTYPE_SimpleXMLException));
-        SWIG_fail;
-      }
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_toXML(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) 0 ;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::toXML",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::SimpleXML::toXML",1,"adchpp::SimpleXML *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__SimpleXML,0))){
-    SWIG_fail_ptr("SimpleXML_toXML",1,SWIGTYPE_p_adchpp__SimpleXML);
-  }
-  
-  {
-    try {
-      result = (arg1)->toXML();
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_escape__SWIG_0(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  bool arg2 ;
-  bool arg3 ;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::escape",3,3)
-  if(!lua_isuserdata(L,1)) SWIG_fail_arg("adchpp::SimpleXML::escape",1,"std::string &");
-  if(!lua_isboolean(L,2)) SWIG_fail_arg("adchpp::SimpleXML::escape",2,"bool");
-  if(!lua_isboolean(L,3)) SWIG_fail_arg("adchpp::SimpleXML::escape",3,"bool");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_std__string,0))){
-    SWIG_fail_ptr("SimpleXML_escape",1,SWIGTYPE_p_std__string);
-  }
-  
-  arg2 = (lua_toboolean(L, 2)!=0);
-  arg3 = (lua_toboolean(L, 3)!=0);
-  {
-    try {
-      adchpp::SimpleXML::escape(*arg1,arg2,arg3);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_escape__SWIG_1(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  bool arg2 ;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::escape",2,2)
-  if(!lua_isuserdata(L,1)) SWIG_fail_arg("adchpp::SimpleXML::escape",1,"std::string &");
-  if(!lua_isboolean(L,2)) SWIG_fail_arg("adchpp::SimpleXML::escape",2,"bool");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_std__string,0))){
-    SWIG_fail_ptr("SimpleXML_escape",1,SWIGTYPE_p_std__string);
-  }
-  
-  arg2 = (lua_toboolean(L, 2)!=0);
-  {
-    try {
-      adchpp::SimpleXML::escape(*arg1,arg2);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_escape(lua_State* L) {
-  int argc;
-  int argv[4]={
-    1,2,3,4
-  };
-  
-  argc = lua_gettop(L);
-  if (argc == 2) {
-    int _v;
-    {
-      void *ptr;
-      if (lua_isuserdata(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_std__string, SWIG_POINTER_NO_NULL)) {
-        _v = 0;
-      } else {
-        _v = 1;
-      }
-    }
-    if (_v) {
-      {
-        _v = lua_isboolean(L,argv[1]);
-      }
-      if (_v) {
-        return _wrap_SimpleXML_escape__SWIG_1(L);
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v;
-    {
-      void *ptr;
-      if (lua_isuserdata(L,argv[0])==0 || SWIG_ConvertPtr(L,argv[0], (void **) &ptr, SWIGTYPE_p_std__string, SWIG_POINTER_NO_NULL)) {
-        _v = 0;
-      } else {
-        _v = 1;
-      }
-    }
-    if (_v) {
-      {
-        _v = lua_isboolean(L,argv[1]);
-      }
-      if (_v) {
-        {
-          _v = lua_isboolean(L,argv[2]);
-        }
-        if (_v) {
-          return _wrap_SimpleXML_escape__SWIG_0(L);
-        }
-      }
-    }
-  }
-  
-  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'SimpleXML_escape'\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    adchpp::SimpleXML::escape(std::string &,bool,bool)\n"
-    "    adchpp::SimpleXML::escape(std::string &,bool)\n");
-  lua_error(L);return 0;
-}
-
-
-static int _wrap_SimpleXML_needsEscape__SWIG_0(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  bool arg2 ;
-  bool arg3 ;
-  std::string temp1 ;
-  bool result;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::needsEscape",3,3)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::SimpleXML::needsEscape",1,"std::string const &");
-  if(!lua_isboolean(L,2)) SWIG_fail_arg("adchpp::SimpleXML::needsEscape",2,"bool");
-  if(!lua_isboolean(L,3)) SWIG_fail_arg("adchpp::SimpleXML::needsEscape",3,"bool");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  arg2 = (lua_toboolean(L, 2)!=0);
-  arg3 = (lua_toboolean(L, 3)!=0);
-  {
-    try {
-      result = (bool)adchpp::SimpleXML::needsEscape((std::string const &)*arg1,arg2,arg3);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_needsEscape__SWIG_1(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  bool arg2 ;
-  std::string temp1 ;
-  bool result;
-  
-  SWIG_check_num_args("adchpp::SimpleXML::needsEscape",2,2)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::SimpleXML::needsEscape",1,"std::string const &");
-  if(!lua_isboolean(L,2)) SWIG_fail_arg("adchpp::SimpleXML::needsEscape",2,"bool");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  arg2 = (lua_toboolean(L, 2)!=0);
-  {
-    try {
-      result = (bool)adchpp::SimpleXML::needsEscape((std::string const &)*arg1,arg2);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_SimpleXML_needsEscape(lua_State* L) {
-  int argc;
-  int argv[4]={
-    1,2,3,4
-  };
-  
-  argc = lua_gettop(L);
-  if (argc == 2) {
-    int _v;
-    {
-      _v = lua_isstring(L,argv[0]);
-    }
-    if (_v) {
-      {
-        _v = lua_isboolean(L,argv[1]);
-      }
-      if (_v) {
-        return _wrap_SimpleXML_needsEscape__SWIG_1(L);
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v;
-    {
-      _v = lua_isstring(L,argv[0]);
-    }
-    if (_v) {
-      {
-        _v = lua_isboolean(L,argv[1]);
-      }
-      if (_v) {
-        {
-          _v = lua_isboolean(L,argv[2]);
-        }
-        if (_v) {
-          return _wrap_SimpleXML_needsEscape__SWIG_0(L);
-        }
-      }
-    }
-  }
-  
-  SWIG_Lua_pusherrstring(L,"Wrong arguments for overloaded function 'SimpleXML_needsEscape'\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    adchpp::SimpleXML::needsEscape(std::string const &,bool,bool)\n"
-    "    adchpp::SimpleXML::needsEscape(std::string const &,bool)\n");
-  lua_error(L);return 0;
-}
-
-
-static void swig_delete_SimpleXML(void *obj) {
-adchpp::SimpleXML *arg1 = (adchpp::SimpleXML *) obj;
-delete arg1;
-}
-static int _proxy__wrap_new_SimpleXML(lua_State *L) {
-    assert(lua_istable(L,1));
-    lua_pushcfunction(L,_wrap_new_SimpleXML);
-    assert(!lua_isnil(L,-1));
-    lua_replace(L,1); /* replace our table with real constructor */
-    lua_call(L,lua_gettop(L)-1,1);
-    return 1;
-}
-static swig_lua_attribute swig_SimpleXML_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_method swig_SimpleXML_methods[]= {
-    { "addTag", _wrap_SimpleXML_addTag},
-    { "addAttrib", _wrap_SimpleXML_addAttrib},
-    { "addChildAttrib", _wrap_SimpleXML_addChildAttrib},
-    { "getData", _wrap_SimpleXML_getData},
-    { "stepIn", _wrap_SimpleXML_stepIn},
-    { "stepOut", _wrap_SimpleXML_stepOut},
-    { "resetCurrentChild", _wrap_SimpleXML_resetCurrentChild},
-    { "findChild", _wrap_SimpleXML_findChild},
-    { "getChildName", _wrap_SimpleXML_getChildName},
-    { "getChildData", _wrap_SimpleXML_getChildData},
-    { "getChildAttrib", _wrap_SimpleXML_getChildAttrib},
-    { "getIntChildAttrib", _wrap_SimpleXML_getIntChildAttrib},
-    { "getLongLongChildAttrib", _wrap_SimpleXML_getLongLongChildAttrib},
-    { "getBoolChildAttrib", _wrap_SimpleXML_getBoolChildAttrib},
-    { "fromXML", _wrap_SimpleXML_fromXML},
-    { "toXML", _wrap_SimpleXML_toXML},
-    {0,0}
-};
-static swig_lua_method swig_SimpleXML_meta[] = {
-    {0,0}
-};
-
-static swig_lua_attribute swig_SimpleXML_Sf_SwigStatic_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_const_info swig_SimpleXML_Sf_SwigStatic_constants[]= {
-    {0,0,0,0,0,0}
-};
-static swig_lua_method swig_SimpleXML_Sf_SwigStatic_methods[]= {
-    { "escape", _wrap_SimpleXML_escape},
-    { "needsEscape", _wrap_SimpleXML_needsEscape},
-    {0,0}
-};
-static swig_lua_class* swig_SimpleXML_Sf_SwigStatic_classes[]= {
-    0
-};
-
-static swig_lua_namespace swig_SimpleXML_Sf_SwigStatic = {
-    "SimpleXML",
-    swig_SimpleXML_Sf_SwigStatic_methods,
-    swig_SimpleXML_Sf_SwigStatic_attributes,
-    swig_SimpleXML_Sf_SwigStatic_constants,
-    swig_SimpleXML_Sf_SwigStatic_classes,
-    0
-};
-static swig_lua_class *swig_SimpleXML_bases[] = {0};
-static const char *swig_SimpleXML_base_names[] = {0};
-static swig_lua_class _wrap_class_SimpleXML = { "SimpleXML", "SimpleXML", &SWIGTYPE_p_adchpp__SimpleXML,_proxy__wrap_new_SimpleXML, swig_delete_SimpleXML, swig_SimpleXML_methods, swig_SimpleXML_attributes, &swig_SimpleXML_Sf_SwigStatic, swig_SimpleXML_meta, swig_SimpleXML_bases, swig_SimpleXML_base_names };
-
-static int _wrap_new_TigerHash(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::TigerHash *result = 0 ;
-  
-  SWIG_check_num_args("adchpp::TigerHash::TigerHash",0,0)
-  {
-    try {
-      result = (adchpp::TigerHash *)new adchpp::TigerHash();
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_adchpp__TigerHash,1); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_TigerHash_update(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::TigerHash *arg1 = (adchpp::TigerHash *) 0 ;
-  std::string *arg2 = 0 ;
-  std::string temp2 ;
-  
-  SWIG_check_num_args("adchpp::TigerHash::update",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::TigerHash::update",1,"adchpp::TigerHash *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("adchpp::TigerHash::update",2,"std::string const &");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__TigerHash,0))){
-    SWIG_fail_ptr("TigerHash_update",1,SWIGTYPE_p_adchpp__TigerHash);
-  }
-  
-  temp2.assign(lua_tostring(L,2),lua_rawlen(L,2)); arg2=&temp2;
-  {
-    try {
-      adchpp_TigerHash_update(arg1,(std::string const &)*arg2);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_TigerHash_finalize(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::TigerHash *arg1 = (adchpp::TigerHash *) 0 ;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::TigerHash::finalize",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::TigerHash::finalize",1,"adchpp::TigerHash *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__TigerHash,0))){
-    SWIG_fail_ptr("TigerHash_finalize",1,SWIGTYPE_p_adchpp__TigerHash);
-  }
-  
-  {
-    try {
-      result = adchpp_TigerHash_finalize(arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static void swig_delete_TigerHash(void *obj) {
-adchpp::TigerHash *arg1 = (adchpp::TigerHash *) obj;
-delete arg1;
-}
-static int _proxy__wrap_new_TigerHash(lua_State *L) {
-    assert(lua_istable(L,1));
-    lua_pushcfunction(L,_wrap_new_TigerHash);
-    assert(!lua_isnil(L,-1));
-    lua_replace(L,1); /* replace our table with real constructor */
-    lua_call(L,lua_gettop(L)-1,1);
-    return 1;
-}
-static swig_lua_attribute swig_TigerHash_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_method swig_TigerHash_methods[]= {
-    { "update", _wrap_TigerHash_update},
-    { "finalize", _wrap_TigerHash_finalize},
-    {0,0}
-};
-static swig_lua_method swig_TigerHash_meta[] = {
-    {0,0}
-};
-
-static swig_lua_attribute swig_TigerHash_Sf_SwigStatic_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_const_info swig_TigerHash_Sf_SwigStatic_constants[]= {
-    {SWIG_LUA_CONSTTAB_INT("BITS", adchpp::TigerHash::BITS)},
-    {SWIG_LUA_CONSTTAB_INT("BYTES", adchpp::TigerHash::BYTES)},
-    {0,0,0,0,0,0}
-};
-static swig_lua_method swig_TigerHash_Sf_SwigStatic_methods[]= {
-    {0,0}
-};
-static swig_lua_class* swig_TigerHash_Sf_SwigStatic_classes[]= {
-    0
-};
-
-static swig_lua_namespace swig_TigerHash_Sf_SwigStatic = {
-    "TigerHash",
-    swig_TigerHash_Sf_SwigStatic_methods,
-    swig_TigerHash_Sf_SwigStatic_attributes,
-    swig_TigerHash_Sf_SwigStatic_constants,
-    swig_TigerHash_Sf_SwigStatic_classes,
-    0
-};
-static swig_lua_class *swig_TigerHash_bases[] = {0};
-static const char *swig_TigerHash_base_names[] = {0};
-static swig_lua_class _wrap_class_TigerHash = { "TigerHash", "TigerHash", &SWIGTYPE_p_adchpp__TigerHash,_proxy__wrap_new_TigerHash, swig_delete_TigerHash, swig_TigerHash_methods, swig_TigerHash_attributes, &swig_TigerHash_Sf_SwigStatic, swig_TigerHash_meta, swig_TigerHash_bases, swig_TigerHash_base_names };
-
-static int _wrap_Encoder_toBase32(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  std::string temp1 ;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Encoder::adchpp_Encoder_toBase32",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::Encoder::adchpp_Encoder_toBase32",1,"std::string const &");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  {
-    try {
-      result = adchpp_Encoder_toBase32((std::string const &)*arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_Encoder_fromBase32(lua_State* L) {
-  int SWIG_arg = 0;
-  std::string *arg1 = 0 ;
-  std::string temp1 ;
-  std::string result;
-  
-  SWIG_check_num_args("adchpp::Encoder::adchpp_Encoder_fromBase32",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("adchpp::Encoder::adchpp_Encoder_fromBase32",1,"std::string const &");
-  temp1.assign(lua_tostring(L,1),lua_rawlen(L,1)); arg1=&temp1;
-  {
-    try {
-      result = adchpp_Encoder_fromBase32((std::string const &)*arg1);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static void swig_delete_Encoder(void *obj) {
-adchpp::Encoder *arg1 = (adchpp::Encoder *) obj;
-delete arg1;
-}
-static swig_lua_attribute swig_Encoder_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_method swig_Encoder_methods[]= {
-    {0,0}
-};
-static swig_lua_method swig_Encoder_meta[] = {
-    {0,0}
-};
-
-static swig_lua_attribute swig_Encoder_Sf_SwigStatic_attributes[] = {
-    {0,0,0}
-};
-static swig_lua_const_info swig_Encoder_Sf_SwigStatic_constants[]= {
-    {0,0,0,0,0,0}
-};
-static swig_lua_method swig_Encoder_Sf_SwigStatic_methods[]= {
-    { "toBase32", _wrap_Encoder_toBase32},
-    { "fromBase32", _wrap_Encoder_fromBase32},
-    {0,0}
-};
-static swig_lua_class* swig_Encoder_Sf_SwigStatic_classes[]= {
-    0
-};
-
-static swig_lua_namespace swig_Encoder_Sf_SwigStatic = {
-    "Encoder",
-    swig_Encoder_Sf_SwigStatic_methods,
-    swig_Encoder_Sf_SwigStatic_attributes,
-    swig_Encoder_Sf_SwigStatic_constants,
-    swig_Encoder_Sf_SwigStatic_classes,
-    0
-};
-static swig_lua_class *swig_Encoder_bases[] = {0};
-static const char *swig_Encoder_base_names[] = {0};
-static swig_lua_class _wrap_class_Encoder = { "Encoder", "Encoder", &SWIGTYPE_p_adchpp__Encoder,0, swig_delete_Encoder, swig_Encoder_methods, swig_Encoder_attributes, &swig_Encoder_Sf_SwigStatic, swig_Encoder_meta, swig_Encoder_bases, swig_Encoder_base_names };
-
 static int _wrap_Plugin_getVersion(lua_State* L) {
   int SWIG_arg = 0;
   adchpp::Plugin *arg1 = (adchpp::Plugin *) 0 ;
@@ -18305,7 +16879,7 @@ fail:
 static int _wrap_PluginManager_getPluginList(lua_State* L) {
   int SWIG_arg = 0;
   adchpp::PluginManager *arg1 = (adchpp::PluginManager *) 0 ;
-  adchpp::StringList *result = 0 ;
+  StringList *result = 0 ;
   
   SWIG_check_num_args("adchpp::PluginManager::getPluginList",1,1)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::PluginManager::getPluginList",1,"adchpp::PluginManager const *");
@@ -18316,7 +16890,7 @@ static int _wrap_PluginManager_getPluginList(lua_State* L) {
   
   {
     try {
-      result = (adchpp::StringList *) &((adchpp::PluginManager const *)arg1)->getPluginList();
+      result = (StringList *) &((adchpp::PluginManager const *)arg1)->getPluginList();
     } catch(const std::exception& e) {
       SWIG_exception(SWIG_UnknownError, e.what());
     }
@@ -18365,11 +16939,11 @@ fail:
 static int _wrap_PluginManager_setPluginList(lua_State* L) {
   int SWIG_arg = 0;
   adchpp::PluginManager *arg1 = (adchpp::PluginManager *) 0 ;
-  adchpp::StringList *arg2 = 0 ;
+  StringList *arg2 = 0 ;
   
   SWIG_check_num_args("adchpp::PluginManager::setPluginList",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::PluginManager::setPluginList",1,"adchpp::PluginManager *");
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg("adchpp::PluginManager::setPluginList",2,"adchpp::StringList const &");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("adchpp::PluginManager::setPluginList",2,"StringList const &");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__PluginManager,0))){
     SWIG_fail_ptr("PluginManager_setPluginList",1,SWIGTYPE_p_adchpp__PluginManager);
@@ -18382,7 +16956,7 @@ static int _wrap_PluginManager_setPluginList(lua_State* L) {
   
   {
     try {
-      (arg1)->setPluginList((adchpp::StringList const &)*arg2);
+      (arg1)->setPluginList((StringList const &)*arg2);
     } catch(const std::exception& e) {
       SWIG_exception(SWIG_UnknownError, e.what());
     }
@@ -18829,41 +17403,67 @@ fail:
 }
 
 
+static int _wrap_Util_getCfgPath(lua_State* L) {
+  int SWIG_arg = 0;
+  lua_State *arg1 = (lua_State *) 0 ;
+  std::string *result = 0 ;
+  
+  arg1 = L;
+  SWIG_check_num_args("adchpp::Util_getCfgPath",0,0)
+  {
+    try {
+      result = (std::string *) &adchpp::Util_getCfgPath(arg1);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_Util_getLocalIp(lua_State* L) {
+  int SWIG_arg = 0;
+  lua_State *arg1 = (lua_State *) 0 ;
+  std::string result;
+  
+  arg1 = L;
+  SWIG_check_num_args("adchpp::Util_getLocalIp",0,0)
+  {
+    try {
+      result = adchpp::Util_getLocalIp(arg1);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static swig_lua_attribute swig_SwigModule_attributes[] = {
     { "appName", _wrap_appName_get, _wrap_appName_set },
     { "versionString", _wrap_versionString_get, _wrap_versionString_set },
     { "versionFloat", _wrap_versionFloat_get, _wrap_versionFloat_set },
-    { "Util_emptyString", _wrap_Util_emptyString_get, _wrap_Util_emptyString_set },
     { "AdcCommand_HUB_SID", _wrap_AdcCommand_HUB_SID_get, SWIG_Lua_set_immutable },
     { "AdcCommand_INVALID_SID", _wrap_AdcCommand_INVALID_SID_get, SWIG_Lua_set_immutable },
     {0,0,0}
 };
 static swig_lua_const_info swig_SwigModule_constants[]= {
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_BAD_STATE", adchpp::Util::REASON_BAD_STATE)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_CID_CHANGE", adchpp::Util::REASON_CID_CHANGE)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_CID_TAKEN", adchpp::Util::REASON_CID_TAKEN)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_FLOODING", adchpp::Util::REASON_FLOODING)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_HUB_FULL", adchpp::Util::REASON_HUB_FULL)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_INVALID_COMMAND_TYPE", adchpp::Util::REASON_INVALID_COMMAND_TYPE)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_INVALID_IP", adchpp::Util::REASON_INVALID_IP)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_INVALID_SID", adchpp::Util::REASON_INVALID_SID)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_LOGIN_TIMEOUT", adchpp::Util::REASON_LOGIN_TIMEOUT)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_MAX_COMMAND_SIZE", adchpp::Util::REASON_MAX_COMMAND_SIZE)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_NICK_INVALID", adchpp::Util::REASON_NICK_INVALID)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_NICK_TAKEN", adchpp::Util::REASON_NICK_TAKEN)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_NO_BASE_SUPPORT", adchpp::Util::REASON_NO_BASE_SUPPORT)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_NO_TIGR_SUPPORT", adchpp::Util::REASON_NO_TIGR_SUPPORT)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_PID_MISSING", adchpp::Util::REASON_PID_MISSING)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_PID_CID_LENGTH", adchpp::Util::REASON_PID_CID_LENGTH)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_PID_CID_MISMATCH", adchpp::Util::REASON_PID_CID_MISMATCH)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_PID_WITHOUT_CID", adchpp::Util::REASON_PID_WITHOUT_CID)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_PLUGIN", adchpp::Util::REASON_PLUGIN)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_WRITE_OVERFLOW", adchpp::Util::REASON_WRITE_OVERFLOW)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_NO_BANDWIDTH", adchpp::Util::REASON_NO_BANDWIDTH)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_INVALID_DESCRIPTION", adchpp::Util::REASON_INVALID_DESCRIPTION)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_WRITE_TIMEOUT", adchpp::Util::REASON_WRITE_TIMEOUT)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_SOCKET_ERROR", adchpp::Util::REASON_SOCKET_ERROR)},
-    {SWIG_LUA_CONSTTAB_INT("Util_REASON_LAST", adchpp::Util::REASON_LAST)},
+    {SWIG_LUA_CONSTTAB_INT("TigerHash_BITS", TigerHash::BITS)},
+    {SWIG_LUA_CONSTTAB_INT("TigerHash_BYTES", TigerHash::BYTES)},
     {SWIG_LUA_CONSTTAB_INT("CID_SIZE", adchpp::CID::SIZE)},
     {SWIG_LUA_CONSTTAB_INT("CID_BASE32_SIZE", adchpp::CID::BASE32_SIZE)},
     {SWIG_LUA_CONSTTAB_INT("AdcCommand_ERROR_GENERIC", adchpp::AdcCommand::ERROR_GENERIC)},
@@ -18940,8 +17540,6 @@ static swig_lua_const_info swig_SwigModule_constants[]= {
     {SWIG_LUA_CONSTTAB_INT("Entity_FLAG_EXT_AWAY", adchpp::Entity::FLAG_EXT_AWAY)},
     {SWIG_LUA_CONSTTAB_INT("Entity_FLAG_OK_IP", adchpp::Entity::FLAG_OK_IP)},
     {SWIG_LUA_CONSTTAB_INT("Entity_FLAG_GHOST", adchpp::Entity::FLAG_GHOST)},
-    {SWIG_LUA_CONSTTAB_INT("TigerHash_BITS", adchpp::TigerHash::BITS)},
-    {SWIG_LUA_CONSTTAB_INT("TigerHash_BYTES", adchpp::TigerHash::BYTES)},
     {0,0,0,0,0,0}
 };
 static swig_lua_method swig_SwigModule_methods[]= {
@@ -18950,32 +17548,10 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "delete_size_t", _wrap_delete_size_t},
     { "size_t_getitem", _wrap_size_t_getitem},
     { "size_t_setitem", _wrap_size_t_setitem},
+    { "SimpleXML_escape", _wrap_SimpleXML_escape},
+    { "SimpleXML_needsEscape", _wrap_SimpleXML_needsEscape},
     { "Buffer_create", _wrap_Buffer_create},
     { "ServerInfo_create", _wrap_ServerInfo_create},
-    { "Text_acpToUtf8", _wrap_Text_acpToUtf8},
-    { "Text_acpToWide", _wrap_Text_acpToWide},
-    { "Text_utf8ToAcp", _wrap_Text_utf8ToAcp},
-    { "Text_utf8ToWide", _wrap_Text_utf8ToWide},
-    { "Text_wideToAcp", _wrap_Text_wideToAcp},
-    { "Text_wideToUtf8", _wrap_Text_wideToUtf8},
-    { "Text_validateUtf8", _wrap_Text_validateUtf8},
-    { "Util_getOsVersion", _wrap_Util_getOsVersion},
-    { "Util_decodeUrl", _wrap_Util_decodeUrl},
-    { "Util_formatTime", _wrap_Util_formatTime},
-    { "Util_getAppPath", _wrap_Util_getAppPath},
-    { "Util_getAppName", _wrap_Util_getAppName},
-    { "Util_translateError", _wrap_Util_translateError},
-    { "Util_getShortTimeString", _wrap_Util_getShortTimeString},
-    { "Util_getTimeString", _wrap_Util_getTimeString},
-    { "Util_formatBytes", _wrap_Util_formatBytes},
-    { "Util_tokenize", _wrap_Util_tokenize},
-    { "Util_formatSeconds", _wrap_Util_formatSeconds},
-    { "Util_getLocalIp", _wrap_Util_getLocalIp},
-    { "Util_rand", _wrap_Util_rand},
-    { "Util_randd", _wrap_Util_randd},
-    { "Util_isPrivateIp", _wrap_Util_isPrivateIp},
-    { "Util_validateCharset", _wrap_Util_validateCharset},
-    { "Util_getCfgPath", _wrap_Util_getCfgPath},
     { "CID_generate", _wrap_CID_generate},
     { "AdcCommand_toSID", _wrap_AdcCommand_toSID},
     { "AdcCommand_fromSID", _wrap_AdcCommand_fromSID},
@@ -18986,15 +17562,13 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "AdcCommand_fromFourCC", _wrap_AdcCommand_fromFourCC},
     { "AdcCommand_escape", _wrap_AdcCommand_escape},
     { "AdcCommand_toCMD", _wrap_AdcCommand_toCMD},
-    { "SimpleXML_escape", _wrap_SimpleXML_escape},
-    { "SimpleXML_needsEscape", _wrap_SimpleXML_needsEscape},
-    { "Encoder_toBase32", _wrap_Encoder_toBase32},
-    { "Encoder_fromBase32", _wrap_Encoder_fromBase32},
     { "getCM", _wrap_getCM},
     { "getLM", _wrap_getLM},
     { "getPM", _wrap_getPM},
     { "getSM", _wrap_getSM},
     { "getConfigPath", _wrap_getConfigPath},
+    { "Util_getCfgPath", _wrap_Util_getCfgPath},
+    { "Util_getLocalIp", _wrap_Util_getLocalIp},
     {0,0}
 };
 static swig_lua_class* swig_SwigModule_classes[]= {
@@ -19006,16 +17580,15 @@ static swig_lua_class* swig_SwigModule_classes[]= {
 &_wrap_class_TByteVector,
 &_wrap_class_TServerInfoList,
 &_wrap_class_TLSInfo,
+&_wrap_class_Exception,
+&_wrap_class_SimpleXML,
+&_wrap_class_TigerHash,
 &_wrap_class_Buffer,
 &_wrap_class_ManagedConnection,
 &_wrap_class_ServerInfo,
 &_wrap_class_SocketStats,
 &_wrap_class_SocketManager,
-&_wrap_class_Exception,
-&_wrap_class_Text,
-&_wrap_class_Util,
 &_wrap_class_CID,
-&_wrap_class_ParseException,
 &_wrap_class_AdcCommand,
 &_wrap_class_Entity,
 &_wrap_class_Client,
@@ -19041,9 +17614,6 @@ static swig_lua_class* swig_SwigModule_classes[]= {
 &_wrap_class_SignalTraitsSt,
 &_wrap_class_LogManager,
 &_wrap_class_ClientManager,
-&_wrap_class_SimpleXML,
-&_wrap_class_TigerHash,
-&_wrap_class_Encoder,
 &_wrap_class_Plugin,
 &_wrap_class_PluginManager,
     0
@@ -19075,21 +17645,15 @@ static void *_p_adchpp__HubTo_p_adchpp__Entity(void *x, int *SWIGUNUSEDPARM(newm
 static void *_p_adchpp__ClientTo_p_adchpp__Entity(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((adchpp::Entity *)  ((adchpp::Client *) x));
 }
-static void *_p_adchpp__ParseExceptionTo_p_adchpp__Exception(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((adchpp::Exception *)  ((adchpp::ParseException *) x));
+static void *_p_ExceptionTo_p_std__exception(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((std::exception *)  ((Exception *) x));
 }
-static void *_p_adchpp__ExceptionTo_p_std__exception(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((std::exception *)  ((adchpp::Exception *) x));
-}
-static void *_p_adchpp__ParseExceptionTo_p_std__exception(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((std::exception *) (adchpp::Exception *) ((adchpp::ParseException *) x));
-}
-static swig_type_info _swigt__SimpleXMLException = {"_SimpleXMLException", "SimpleXMLException", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__adchpp__ParseException = {"_adchpp__ParseException", "adchpp::ParseException", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__ParseException = {"_ParseException", "ParseException", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_Callback = {"_p_Callback", "Callback *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_CommandSignal = {"_p_CommandSignal", "CommandSignal *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_CommandSlot = {"_p_CommandSlot", "CommandSlot *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_DataFunction = {"_p_DataFunction", "DataFunction *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_Exception = {"_p_Exception", "Exception *", 0, 0, (void*)&_wrap_class_Exception, 0};
 static swig_type_info _swigt__p_Hub = {"_p_Hub", "Hub *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_ManagedConnection = {"_p_ManagedConnection", "ManagedConnection *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_PluginDataHandle = {"_p_PluginDataHandle", "PluginDataHandle *", 0, 0, (void*)0, 0};
@@ -19104,48 +17668,43 @@ static swig_type_info _swigt__p_SignalReady = {"_p_SignalReady", "SignalReady *"
 static swig_type_info _swigt__p_SignalReceive = {"_p_SignalReceive", "SignalReceive *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_SignalSend = {"_p_SignalSend", "SignalSend *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_SignalState = {"_p_SignalState", "SignalState *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_SimpleXML = {"_p_SimpleXML", "SimpleXML *", 0, 0, (void*)&_wrap_class_SimpleXML, 0};
 static swig_type_info _swigt__p_TLSInfo = {"_p_TLSInfo", "TLSInfo *", 0, 0, (void*)&_wrap_class_TLSInfo, 0};
+static swig_type_info _swigt__p_TigerHash = {"_p_TigerHash", "TigerHash *", 0, 0, (void*)&_wrap_class_TigerHash, 0};
 static swig_type_info _swigt__p_adchpp__AdcCommand = {"_p_adchpp__AdcCommand", "adchpp::AdcCommand *", 0, 0, (void*)&_wrap_class_AdcCommand, 0};
 static swig_type_info _swigt__p_adchpp__Bot = {"_p_adchpp__Bot", "adchpp::Bot *", 0, 0, (void*)&_wrap_class_Bot, 0};
 static swig_type_info _swigt__p_adchpp__Buffer = {"_p_adchpp__Buffer", "adchpp::Buffer *", 0, 0, (void*)&_wrap_class_Buffer, 0};
 static swig_type_info _swigt__p_adchpp__CID = {"_p_adchpp__CID", "adchpp::CID *", 0, 0, (void*)&_wrap_class_CID, 0};
 static swig_type_info _swigt__p_adchpp__Client = {"_p_adchpp__Client", "adchpp::Client *", 0, 0, (void*)&_wrap_class_Client, 0};
 static swig_type_info _swigt__p_adchpp__ClientManager = {"_p_adchpp__ClientManager", "adchpp::ClientManager *", 0, 0, (void*)&_wrap_class_ClientManager, 0};
-static swig_type_info _swigt__p_adchpp__Encoder = {"_p_adchpp__Encoder", "adchpp::Encoder *", 0, 0, (void*)&_wrap_class_Encoder, 0};
 static swig_type_info _swigt__p_adchpp__Entity = {"_p_adchpp__Entity", "adchpp::Entity *", 0, 0, (void*)&_wrap_class_Entity, 0};
-static swig_type_info _swigt__p_adchpp__Exception = {"_p_adchpp__Exception", "adchpp::Exception *", 0, 0, (void*)&_wrap_class_Exception, 0};
 static swig_type_info _swigt__p_adchpp__Hub = {"_p_adchpp__Hub", "adchpp::Hub *", 0, 0, (void*)&_wrap_class_Hub, 0};
 static swig_type_info _swigt__p_adchpp__LogManager = {"_p_adchpp__LogManager", "adchpp::LogManager *", 0, 0, (void*)&_wrap_class_LogManager, 0};
 static swig_type_info _swigt__p_adchpp__ManagedConnection = {"_p_adchpp__ManagedConnection", "adchpp::ManagedConnection *", 0, 0, (void*)&_wrap_class_ManagedConnection, 0};
-static swig_type_info _swigt__p_adchpp__ParseException = {"_p_adchpp__ParseException", "adchpp::ParseException *", 0, 0, (void*)&_wrap_class_ParseException, 0};
 static swig_type_info _swigt__p_adchpp__Plugin = {"_p_adchpp__Plugin", "adchpp::Plugin *", 0, 0, (void*)&_wrap_class_Plugin, 0};
 static swig_type_info _swigt__p_adchpp__PluginManager = {"_p_adchpp__PluginManager", "adchpp::PluginManager *", 0, 0, (void*)&_wrap_class_PluginManager, 0};
 static swig_type_info _swigt__p_adchpp__ServerInfo = {"_p_adchpp__ServerInfo", "adchpp::ServerInfo *", 0, 0, (void*)&_wrap_class_ServerInfo, 0};
+static swig_type_info _swigt__p_adchpp__SignalT_void_fSimpleXML_const_RF_t = {"_p_adchpp__SignalT_void_fSimpleXML_const_RF_t", "adchpp::Signal< void (SimpleXML const &) > *", 0, 0, (void*)&_wrap_class_SignalS, 0};
 static swig_type_info _swigt__p_adchpp__SignalT_void_fadchpp__Entity_RF_t = {"_p_adchpp__SignalT_void_fadchpp__Entity_RF_t", "adchpp::Signal< void (adchpp::Entity &) > *|adchpp::ClientManager::SignalConnected::Signal *|adchpp::ClientManager::SignalReady::Signal *", 0, 0, (void*)&_wrap_class_SignalE, 0};
 static swig_type_info _swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_DCReason_std__string_const_RF_t = {"_p_adchpp__SignalT_void_fadchpp__Entity_R_DCReason_std__string_const_RF_t", "adchpp::ClientManager::SignalDisconnected::Signal *|adchpp::Signal< void (adchpp::Entity &,DCReason,std::string const &) > *", 0, 0, (void*)&_wrap_class_SignalERS, 0};
 static swig_type_info _swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_adchpp__AdcCommand_R_bool_RF_t = {"_p_adchpp__SignalT_void_fadchpp__Entity_R_adchpp__AdcCommand_R_bool_RF_t", "adchpp::Signal< void (adchpp::Entity &,adchpp::AdcCommand &,bool &) > *|adchpp::ClientManager::SignalReceive::Signal *", 0, 0, (void*)&_wrap_class_SignalEAB, 0};
 static swig_type_info _swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_adchpp__AdcCommand_const_R_bool_RF_t = {"_p_adchpp__SignalT_void_fadchpp__Entity_R_adchpp__AdcCommand_const_R_bool_RF_t", "adchpp::Signal< void (adchpp::Entity &,adchpp::AdcCommand const &,bool &) > *|adchpp::ClientManager::SignalSend::Signal *", 0, 0, (void*)&_wrap_class_SignalEcAB, 0};
 static swig_type_info _swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_intF_t = {"_p_adchpp__SignalT_void_fadchpp__Entity_R_intF_t", "adchpp::Signal< void (adchpp::Entity &,int) > *|adchpp::ClientManager::SignalState::Signal *", 0, 0, (void*)&_wrap_class_SignalEI, 0};
 static swig_type_info _swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_std__string_const_RF_t = {"_p_adchpp__SignalT_void_fadchpp__Entity_R_std__string_const_RF_t", "adchpp::Signal< void (adchpp::Entity &,std::string const &) > *|adchpp::ClientManager::SignalBadLine::Signal *", 0, 0, (void*)&_wrap_class_SignalES, 0};
-static swig_type_info _swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t = {"_p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t", "adchpp::Signal< void (adchpp::Entity &,std::vector< std::string > const &,bool &) > *|adchpp::Signal< void (adchpp::Entity &,adchpp::StringList const &,bool &) > *|adchpp::PluginManager::CommandSignal *", 0, 0, (void*)&_wrap_class_SignalESB, 0};
+static swig_type_info _swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t = {"_p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t", "adchpp::Signal< void (adchpp::Entity &,std::vector< std::string > const &,bool &) > *|adchpp::Signal< void (adchpp::Entity &,StringList const &,bool &) > *|adchpp::PluginManager::CommandSignal *", 0, 0, (void*)&_wrap_class_SignalESB, 0};
 static swig_type_info _swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t__Slot = {"_p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t__Slot", "adchpp::Signal< void (adchpp::Entity &,std::vector< std::string > const &,bool &) >::Slot *|adchpp::PluginManager::CommandSlot *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_adchpp__SignalT_void_fadchpp__SimpleXML_const_RF_t = {"_p_adchpp__SignalT_void_fadchpp__SimpleXML_const_RF_t", "adchpp::Signal< void (adchpp::SimpleXML const &) > *|adchpp::Signal< void (SimpleXML const &) > *", 0, 0, (void*)&_wrap_class_SignalS, 0};
 static swig_type_info _swigt__p_adchpp__SignalT_void_fstd__string_const_RF_t = {"_p_adchpp__SignalT_void_fstd__string_const_RF_t", "adchpp::Signal< void (std::string const &) > *|adchpp::LogManager::SignalLog::Signal *", 0, 0, (void*)&_wrap_class_SignalSt, 0};
+static swig_type_info _swigt__p_adchpp__SignalTraitsT_void_fSimpleXML_const_RF_t = {"_p_adchpp__SignalTraitsT_void_fSimpleXML_const_RF_t", "adchpp::SignalTraits< void (SimpleXML const &) > *", 0, 0, (void*)&_wrap_class_SignalTraitsS, 0};
 static swig_type_info _swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_RF_t = {"_p_adchpp__SignalTraitsT_void_fadchpp__Entity_RF_t", "adchpp::SignalTraits< void (adchpp::Entity &) > *", 0, 0, (void*)&_wrap_class_SignalTraitsE, 0};
 static swig_type_info _swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_DCReason_std__string_const_RF_t = {"_p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_DCReason_std__string_const_RF_t", "adchpp::SignalTraits< void (adchpp::Entity &,DCReason,std::string const &) > *", 0, 0, (void*)&_wrap_class_SignalTraitsERS, 0};
 static swig_type_info _swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_adchpp__AdcCommand_R_bool_RF_t = {"_p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_adchpp__AdcCommand_R_bool_RF_t", "adchpp::SignalTraits< void (adchpp::Entity &,adchpp::AdcCommand &,bool &) > *", 0, 0, (void*)&_wrap_class_SignalTraitsEAB, 0};
 static swig_type_info _swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_adchpp__AdcCommand_const_R_bool_RF_t = {"_p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_adchpp__AdcCommand_const_R_bool_RF_t", "adchpp::SignalTraits< void (adchpp::Entity &,adchpp::AdcCommand const &,bool &) > *", 0, 0, (void*)&_wrap_class_SignalTraitsEcAB, 0};
 static swig_type_info _swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_intF_t = {"_p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_intF_t", "adchpp::SignalTraits< void (adchpp::Entity &,int) > *", 0, 0, (void*)&_wrap_class_SignalTraitsEI, 0};
 static swig_type_info _swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_std__string_const_RF_t = {"_p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_std__string_const_RF_t", "adchpp::SignalTraits< void (adchpp::Entity &,std::string const &) > *", 0, 0, (void*)&_wrap_class_SignalTraitsES, 0};
-static swig_type_info _swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t = {"_p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t", "adchpp::SignalTraits< void (adchpp::Entity &,adchpp::StringList const &,bool &) > *|adchpp::SignalTraits< void (adchpp::Entity &,std::vector< std::string > const &,bool &) > *", 0, 0, (void*)&_wrap_class_SignalTraitsESB, 0};
-static swig_type_info _swigt__p_adchpp__SignalTraitsT_void_fadchpp__SimpleXML_const_RF_t = {"_p_adchpp__SignalTraitsT_void_fadchpp__SimpleXML_const_RF_t", "adchpp::SignalTraits< void (adchpp::SimpleXML const &) > *|adchpp::SignalTraits< void (SimpleXML const &) > *", 0, 0, (void*)&_wrap_class_SignalTraitsS, 0};
+static swig_type_info _swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t = {"_p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t", "adchpp::SignalTraits< void (adchpp::Entity &,std::vector< std::string > const &,bool &) > *|adchpp::SignalTraits< void (adchpp::Entity &,StringList const &,bool &) > *", 0, 0, (void*)&_wrap_class_SignalTraitsESB, 0};
 static swig_type_info _swigt__p_adchpp__SignalTraitsT_void_fstd__string_const_RF_t = {"_p_adchpp__SignalTraitsT_void_fstd__string_const_RF_t", "adchpp::SignalTraits< void (std::string const &) > *", 0, 0, (void*)&_wrap_class_SignalTraitsSt, 0};
-static swig_type_info _swigt__p_adchpp__SimpleXML = {"_p_adchpp__SimpleXML", "adchpp::SimpleXML *", 0, 0, (void*)&_wrap_class_SimpleXML, 0};
 static swig_type_info _swigt__p_adchpp__SocketManager = {"_p_adchpp__SocketManager", "adchpp::SocketManager *", 0, 0, (void*)&_wrap_class_SocketManager, 0};
 static swig_type_info _swigt__p_adchpp__SocketStats = {"_p_adchpp__SocketStats", "adchpp::SocketStats *", 0, 0, (void*)&_wrap_class_SocketStats, 0};
-static swig_type_info _swigt__p_adchpp__Text = {"_p_adchpp__Text", "adchpp::Text *", 0, 0, (void*)&_wrap_class_Text, 0};
-static swig_type_info _swigt__p_adchpp__TigerHash = {"_p_adchpp__TigerHash", "adchpp::TigerHash *", 0, 0, (void*)&_wrap_class_TigerHash, 0};
-static swig_type_info _swigt__p_adchpp__Util = {"_p_adchpp__Util", "adchpp::Util *", 0, 0, (void*)&_wrap_class_Util, 0};
 static swig_type_info _swigt__p_difference_type = {"_p_difference_type", "difference_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_int = {"_p_int", "int *|int32_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_long_long = {"_p_long_long", "int64_t *|long long *", 0, 0, (void*)0, 0};
@@ -19168,15 +17727,13 @@ static swig_type_info _swigt__p_std__functionT_void_fadchpp__Entity_R_adchpp__Ad
 static swig_type_info _swigt__p_std__functionT_void_fadchpp__Entity_R_adchpp__AdcCommand_const_R_bool_RF_t = {"_p_std__functionT_void_fadchpp__Entity_R_adchpp__AdcCommand_const_R_bool_RF_t", "std::function< void (adchpp::Entity &,adchpp::AdcCommand const &,bool &) > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__functionT_void_fadchpp__Entity_R_intF_t = {"_p_std__functionT_void_fadchpp__Entity_R_intF_t", "std::function< void (adchpp::Entity &,int) > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__functionT_void_fadchpp__Entity_R_std__string_const_RF_t = {"_p_std__functionT_void_fadchpp__Entity_R_std__string_const_RF_t", "std::function< void (adchpp::Entity &,std::string const &) > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__functionT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t = {"_p_std__functionT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t", "std::function< void (adchpp::Entity &,std::vector< std::string > const &,bool &) > *|std::function< void (adchpp::Entity &,adchpp::StringList const &,bool &) > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__functionT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t = {"_p_std__functionT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t", "std::function< void (adchpp::Entity &,std::vector< std::string > const &,bool &) > *|std::function< void (adchpp::Entity &,StringList const &,bool &) > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__functionT_void_fstd__string_const_RF_t = {"_p_std__functionT_void_fstd__string_const_RF_t", "std::function< void (std::string const &) > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__string = {"_p_std__string", "std::string *", 0, 0, (void*)&_wrap_class_string, 0};
-static swig_type_info _swigt__p_std__string__size_type = {"_p_std__string__size_type", "std::string::size_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_adchpp__Entity_p_t = {"_p_std__vectorT_adchpp__Entity_p_t", "adchpp::EntityList *|std::vector< adchpp::Entity * > *", 0, 0, (void*)&_wrap_class_TEntityList, 0};
 static swig_type_info _swigt__p_std__vectorT_shared_ptrT_adchpp__ServerInfo_t_t = {"_p_std__vectorT_shared_ptrT_adchpp__ServerInfo_t_t", "std::vector< shared_ptr< adchpp::ServerInfo > > *|adchpp::ServerInfoList *", 0, 0, (void*)&_wrap_class_TServerInfoList, 0};
-static swig_type_info _swigt__p_std__vectorT_std__string_t = {"_p_std__vectorT_std__string_t", "std::vector< std::string > *|adchpp::StringList *", 0, 0, (void*)&_wrap_class_TStringList, 0};
-static swig_type_info _swigt__p_std__vectorT_unsigned_char_t = {"_p_std__vectorT_unsigned_char_t", "std::vector< unsigned char > *|std::vector< uint8_t > *|adchpp::ByteVector *", 0, 0, (void*)&_wrap_class_TByteVector, 0};
-static swig_type_info _swigt__p_std__wstring = {"_p_std__wstring", "std::wstring *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_std__string_t = {"_p_std__vectorT_std__string_t", "std::vector< std::string > *|StringList *", 0, 0, (void*)&_wrap_class_TStringList, 0};
+static swig_type_info _swigt__p_std__vectorT_unsigned_char_t = {"_p_std__vectorT_unsigned_char_t", "std::vector< unsigned char > *|std::vector< uint8_t > *|ByteVector *", 0, 0, (void*)&_wrap_class_TByteVector, 0};
 static swig_type_info _swigt__p_unsigned_char = {"_p_unsigned_char", "unsigned char *|uint8_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_unsigned_int = {"_p_unsigned_int", "size_t *|uint32_t *|unsigned int *|time_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_unsigned_long_long = {"_p_unsigned_long_long", "uint64_t *|unsigned long long *", 0, 0, (void*)0, 0};
@@ -19184,12 +17741,12 @@ static swig_type_info _swigt__p_unsigned_short = {"_p_unsigned_short", "unsigned
 static swig_type_info _swigt__p_value_type = {"_p_value_type", "value_type *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
-  &_swigt__SimpleXMLException,
-  &_swigt__adchpp__ParseException,
+  &_swigt__ParseException,
   &_swigt__p_Callback,
   &_swigt__p_CommandSignal,
   &_swigt__p_CommandSlot,
   &_swigt__p_DataFunction,
+  &_swigt__p_Exception,
   &_swigt__p_Hub,
   &_swigt__p_ManagedConnection,
   &_swigt__p_PluginDataHandle,
@@ -19204,23 +17761,23 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_SignalReceive,
   &_swigt__p_SignalSend,
   &_swigt__p_SignalState,
+  &_swigt__p_SimpleXML,
   &_swigt__p_TLSInfo,
+  &_swigt__p_TigerHash,
   &_swigt__p_adchpp__AdcCommand,
   &_swigt__p_adchpp__Bot,
   &_swigt__p_adchpp__Buffer,
   &_swigt__p_adchpp__CID,
   &_swigt__p_adchpp__Client,
   &_swigt__p_adchpp__ClientManager,
-  &_swigt__p_adchpp__Encoder,
   &_swigt__p_adchpp__Entity,
-  &_swigt__p_adchpp__Exception,
   &_swigt__p_adchpp__Hub,
   &_swigt__p_adchpp__LogManager,
   &_swigt__p_adchpp__ManagedConnection,
-  &_swigt__p_adchpp__ParseException,
   &_swigt__p_adchpp__Plugin,
   &_swigt__p_adchpp__PluginManager,
   &_swigt__p_adchpp__ServerInfo,
+  &_swigt__p_adchpp__SignalT_void_fSimpleXML_const_RF_t,
   &_swigt__p_adchpp__SignalT_void_fadchpp__Entity_RF_t,
   &_swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_DCReason_std__string_const_RF_t,
   &_swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_adchpp__AdcCommand_R_bool_RF_t,
@@ -19229,8 +17786,8 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_std__string_const_RF_t,
   &_swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t,
   &_swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t__Slot,
-  &_swigt__p_adchpp__SignalT_void_fadchpp__SimpleXML_const_RF_t,
   &_swigt__p_adchpp__SignalT_void_fstd__string_const_RF_t,
+  &_swigt__p_adchpp__SignalTraitsT_void_fSimpleXML_const_RF_t,
   &_swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_RF_t,
   &_swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_DCReason_std__string_const_RF_t,
   &_swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_adchpp__AdcCommand_R_bool_RF_t,
@@ -19238,14 +17795,9 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_intF_t,
   &_swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_std__string_const_RF_t,
   &_swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t,
-  &_swigt__p_adchpp__SignalTraitsT_void_fadchpp__SimpleXML_const_RF_t,
   &_swigt__p_adchpp__SignalTraitsT_void_fstd__string_const_RF_t,
-  &_swigt__p_adchpp__SimpleXML,
   &_swigt__p_adchpp__SocketManager,
   &_swigt__p_adchpp__SocketStats,
-  &_swigt__p_adchpp__Text,
-  &_swigt__p_adchpp__TigerHash,
-  &_swigt__p_adchpp__Util,
   &_swigt__p_difference_type,
   &_swigt__p_int,
   &_swigt__p_long_long,
@@ -19271,12 +17823,10 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_std__functionT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t,
   &_swigt__p_std__functionT_void_fstd__string_const_RF_t,
   &_swigt__p_std__string,
-  &_swigt__p_std__string__size_type,
   &_swigt__p_std__vectorT_adchpp__Entity_p_t,
   &_swigt__p_std__vectorT_shared_ptrT_adchpp__ServerInfo_t_t,
   &_swigt__p_std__vectorT_std__string_t,
   &_swigt__p_std__vectorT_unsigned_char_t,
-  &_swigt__p_std__wstring,
   &_swigt__p_unsigned_char,
   &_swigt__p_unsigned_int,
   &_swigt__p_unsigned_long_long,
@@ -19284,12 +17834,12 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_value_type,
 };
 
-static swig_cast_info _swigc__SimpleXMLException[] = {  {&_swigt__SimpleXMLException, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__adchpp__ParseException[] = {  {&_swigt__adchpp__ParseException, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__ParseException[] = {  {&_swigt__ParseException, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Callback[] = {  {&_swigt__p_Callback, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_CommandSignal[] = {  {&_swigt__p_CommandSignal, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_CommandSlot[] = {  {&_swigt__p_CommandSlot, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_DataFunction[] = {  {&_swigt__p_DataFunction, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_Exception[] = {  {&_swigt__p_Exception, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Hub[] = {  {&_swigt__p_Hub, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_ManagedConnection[] = {  {&_swigt__p_ManagedConnection, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_PluginDataHandle[] = {  {&_swigt__p_PluginDataHandle, 0, 0, 0},{0, 0, 0, 0}};
@@ -19304,23 +17854,23 @@ static swig_cast_info _swigc__p_SignalReady[] = {  {&_swigt__p_SignalReady, 0, 0
 static swig_cast_info _swigc__p_SignalReceive[] = {  {&_swigt__p_SignalReceive, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_SignalSend[] = {  {&_swigt__p_SignalSend, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_SignalState[] = {  {&_swigt__p_SignalState, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_SimpleXML[] = {  {&_swigt__p_SimpleXML, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_TLSInfo[] = {  {&_swigt__p_TLSInfo, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_TigerHash[] = {  {&_swigt__p_TigerHash, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__AdcCommand[] = {  {&_swigt__p_adchpp__AdcCommand, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__Bot[] = {  {&_swigt__p_adchpp__Bot, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__Buffer[] = {  {&_swigt__p_adchpp__Buffer, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__CID[] = {  {&_swigt__p_adchpp__CID, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__Client[] = {  {&_swigt__p_adchpp__Client, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__ClientManager[] = {  {&_swigt__p_adchpp__ClientManager, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_adchpp__Encoder[] = {  {&_swigt__p_adchpp__Encoder, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__Entity[] = {  {&_swigt__p_adchpp__Hub, _p_adchpp__HubTo_p_adchpp__Entity, 0, 0},  {&_swigt__p_adchpp__Client, _p_adchpp__ClientTo_p_adchpp__Entity, 0, 0},  {&_swigt__p_adchpp__Bot, _p_adchpp__BotTo_p_adchpp__Entity, 0, 0},  {&_swigt__p_adchpp__Entity, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_adchpp__Exception[] = {  {&_swigt__p_adchpp__Exception, 0, 0, 0},  {&_swigt__p_adchpp__ParseException, _p_adchpp__ParseExceptionTo_p_adchpp__Exception, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__Hub[] = {  {&_swigt__p_adchpp__Hub, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__LogManager[] = {  {&_swigt__p_adchpp__LogManager, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__ManagedConnection[] = {  {&_swigt__p_adchpp__ManagedConnection, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_adchpp__ParseException[] = {  {&_swigt__p_adchpp__ParseException, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__Plugin[] = {  {&_swigt__p_adchpp__Plugin, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__PluginManager[] = {  {&_swigt__p_adchpp__PluginManager, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__ServerInfo[] = {  {&_swigt__p_adchpp__ServerInfo, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_adchpp__SignalT_void_fSimpleXML_const_RF_t[] = {  {&_swigt__p_adchpp__SignalT_void_fSimpleXML_const_RF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__SignalT_void_fadchpp__Entity_RF_t[] = {  {&_swigt__p_adchpp__SignalT_void_fadchpp__Entity_RF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__SignalT_void_fadchpp__Entity_R_DCReason_std__string_const_RF_t[] = {  {&_swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_DCReason_std__string_const_RF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__SignalT_void_fadchpp__Entity_R_adchpp__AdcCommand_R_bool_RF_t[] = {  {&_swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_adchpp__AdcCommand_R_bool_RF_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -19329,8 +17879,8 @@ static swig_cast_info _swigc__p_adchpp__SignalT_void_fadchpp__Entity_R_intF_t[] 
 static swig_cast_info _swigc__p_adchpp__SignalT_void_fadchpp__Entity_R_std__string_const_RF_t[] = {  {&_swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_std__string_const_RF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t[] = {  {&_swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t__Slot[] = {  {&_swigt__p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t__Slot, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_adchpp__SignalT_void_fadchpp__SimpleXML_const_RF_t[] = {  {&_swigt__p_adchpp__SignalT_void_fadchpp__SimpleXML_const_RF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__SignalT_void_fstd__string_const_RF_t[] = {  {&_swigt__p_adchpp__SignalT_void_fstd__string_const_RF_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_adchpp__SignalTraitsT_void_fSimpleXML_const_RF_t[] = {  {&_swigt__p_adchpp__SignalTraitsT_void_fSimpleXML_const_RF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__SignalTraitsT_void_fadchpp__Entity_RF_t[] = {  {&_swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_RF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_DCReason_std__string_const_RF_t[] = {  {&_swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_DCReason_std__string_const_RF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_adchpp__AdcCommand_R_bool_RF_t[] = {  {&_swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_adchpp__AdcCommand_R_bool_RF_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -19338,14 +17888,9 @@ static swig_cast_info _swigc__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_adc
 static swig_cast_info _swigc__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_intF_t[] = {  {&_swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_intF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_std__string_const_RF_t[] = {  {&_swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_std__string_const_RF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t[] = {  {&_swigt__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_adchpp__SignalTraitsT_void_fadchpp__SimpleXML_const_RF_t[] = {  {&_swigt__p_adchpp__SignalTraitsT_void_fadchpp__SimpleXML_const_RF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__SignalTraitsT_void_fstd__string_const_RF_t[] = {  {&_swigt__p_adchpp__SignalTraitsT_void_fstd__string_const_RF_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_adchpp__SimpleXML[] = {  {&_swigt__p_adchpp__SimpleXML, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__SocketManager[] = {  {&_swigt__p_adchpp__SocketManager, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_adchpp__SocketStats[] = {  {&_swigt__p_adchpp__SocketStats, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_adchpp__Text[] = {  {&_swigt__p_adchpp__Text, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_adchpp__TigerHash[] = {  {&_swigt__p_adchpp__TigerHash, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_adchpp__Util[] = {  {&_swigt__p_adchpp__Util, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_long_long[] = {  {&_swigt__p_long_long, 0, 0, 0},{0, 0, 0, 0}};
@@ -19357,7 +17902,7 @@ static swig_cast_info _swigc__p_shared_ptrT_adchpp__ServerInfo_t[] = {  {&_swigt
 static swig_cast_info _swigc__p_short[] = {  {&_swigt__p_short, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_signed_char[] = {  {&_swigt__p_signed_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_size_type[] = {  {&_swigt__p_size_type, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__exception[] = {  {&_swigt__p_std__exception, 0, 0, 0},  {&_swigt__p_adchpp__Exception, _p_adchpp__ExceptionTo_p_std__exception, 0, 0},  {&_swigt__p_adchpp__ParseException, _p_adchpp__ParseExceptionTo_p_std__exception, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__exception[] = {  {&_swigt__p_std__exception, 0, 0, 0},  {&_swigt__p_Exception, _p_ExceptionTo_p_std__exception, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__functionT_void_fF_t[] = {  {&_swigt__p_std__functionT_void_fF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__functionT_void_fSimpleXML_const_RF_t[] = {  {&_swigt__p_std__functionT_void_fSimpleXML_const_RF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__functionT_void_fadchpp__Bot_R_shared_ptrT_adchpp__Buffer_t_const_RF_t[] = {  {&_swigt__p_std__functionT_void_fadchpp__Bot_R_shared_ptrT_adchpp__Buffer_t_const_RF_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -19371,12 +17916,10 @@ static swig_cast_info _swigc__p_std__functionT_void_fadchpp__Entity_R_std__strin
 static swig_cast_info _swigc__p_std__functionT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t[] = {  {&_swigt__p_std__functionT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__functionT_void_fstd__string_const_RF_t[] = {  {&_swigt__p_std__functionT_void_fstd__string_const_RF_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__string[] = {  {&_swigt__p_std__string, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__string__size_type[] = {  {&_swigt__p_std__string__size_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_adchpp__Entity_p_t[] = {  {&_swigt__p_std__vectorT_adchpp__Entity_p_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_shared_ptrT_adchpp__ServerInfo_t_t[] = {  {&_swigt__p_std__vectorT_shared_ptrT_adchpp__ServerInfo_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__string_t[] = {  {&_swigt__p_std__vectorT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_unsigned_char_t[] = {  {&_swigt__p_std__vectorT_unsigned_char_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__wstring[] = {  {&_swigt__p_std__wstring, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_unsigned_char[] = {  {&_swigt__p_unsigned_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_unsigned_int[] = {  {&_swigt__p_unsigned_int, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_unsigned_long_long[] = {  {&_swigt__p_unsigned_long_long, 0, 0, 0},{0, 0, 0, 0}};
@@ -19384,12 +17927,12 @@ static swig_cast_info _swigc__p_unsigned_short[] = {  {&_swigt__p_unsigned_short
 static swig_cast_info _swigc__p_value_type[] = {  {&_swigt__p_value_type, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
-  _swigc__SimpleXMLException,
-  _swigc__adchpp__ParseException,
+  _swigc__ParseException,
   _swigc__p_Callback,
   _swigc__p_CommandSignal,
   _swigc__p_CommandSlot,
   _swigc__p_DataFunction,
+  _swigc__p_Exception,
   _swigc__p_Hub,
   _swigc__p_ManagedConnection,
   _swigc__p_PluginDataHandle,
@@ -19404,23 +17947,23 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_SignalReceive,
   _swigc__p_SignalSend,
   _swigc__p_SignalState,
+  _swigc__p_SimpleXML,
   _swigc__p_TLSInfo,
+  _swigc__p_TigerHash,
   _swigc__p_adchpp__AdcCommand,
   _swigc__p_adchpp__Bot,
   _swigc__p_adchpp__Buffer,
   _swigc__p_adchpp__CID,
   _swigc__p_adchpp__Client,
   _swigc__p_adchpp__ClientManager,
-  _swigc__p_adchpp__Encoder,
   _swigc__p_adchpp__Entity,
-  _swigc__p_adchpp__Exception,
   _swigc__p_adchpp__Hub,
   _swigc__p_adchpp__LogManager,
   _swigc__p_adchpp__ManagedConnection,
-  _swigc__p_adchpp__ParseException,
   _swigc__p_adchpp__Plugin,
   _swigc__p_adchpp__PluginManager,
   _swigc__p_adchpp__ServerInfo,
+  _swigc__p_adchpp__SignalT_void_fSimpleXML_const_RF_t,
   _swigc__p_adchpp__SignalT_void_fadchpp__Entity_RF_t,
   _swigc__p_adchpp__SignalT_void_fadchpp__Entity_R_DCReason_std__string_const_RF_t,
   _swigc__p_adchpp__SignalT_void_fadchpp__Entity_R_adchpp__AdcCommand_R_bool_RF_t,
@@ -19429,8 +17972,8 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_adchpp__SignalT_void_fadchpp__Entity_R_std__string_const_RF_t,
   _swigc__p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t,
   _swigc__p_adchpp__SignalT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t__Slot,
-  _swigc__p_adchpp__SignalT_void_fadchpp__SimpleXML_const_RF_t,
   _swigc__p_adchpp__SignalT_void_fstd__string_const_RF_t,
+  _swigc__p_adchpp__SignalTraitsT_void_fSimpleXML_const_RF_t,
   _swigc__p_adchpp__SignalTraitsT_void_fadchpp__Entity_RF_t,
   _swigc__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_DCReason_std__string_const_RF_t,
   _swigc__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_adchpp__AdcCommand_R_bool_RF_t,
@@ -19438,14 +17981,9 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_intF_t,
   _swigc__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_std__string_const_RF_t,
   _swigc__p_adchpp__SignalTraitsT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t,
-  _swigc__p_adchpp__SignalTraitsT_void_fadchpp__SimpleXML_const_RF_t,
   _swigc__p_adchpp__SignalTraitsT_void_fstd__string_const_RF_t,
-  _swigc__p_adchpp__SimpleXML,
   _swigc__p_adchpp__SocketManager,
   _swigc__p_adchpp__SocketStats,
-  _swigc__p_adchpp__Text,
-  _swigc__p_adchpp__TigerHash,
-  _swigc__p_adchpp__Util,
   _swigc__p_difference_type,
   _swigc__p_int,
   _swigc__p_long_long,
@@ -19471,12 +18009,10 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_std__functionT_void_fadchpp__Entity_R_std__vectorT_std__string_t_const_R_bool_RF_t,
   _swigc__p_std__functionT_void_fstd__string_const_RF_t,
   _swigc__p_std__string,
-  _swigc__p_std__string__size_type,
   _swigc__p_std__vectorT_adchpp__Entity_p_t,
   _swigc__p_std__vectorT_shared_ptrT_adchpp__ServerInfo_t_t,
   _swigc__p_std__vectorT_std__string_t,
   _swigc__p_std__vectorT_unsigned_char_t,
-  _swigc__p_std__wstring,
   _swigc__p_unsigned_char,
   _swigc__p_unsigned_int,
   _swigc__p_unsigned_long_long,

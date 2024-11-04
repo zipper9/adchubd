@@ -16,17 +16,15 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "adchpp.h"
-
 #include "LogManager.h"
-
 #include "Core.h"
-#include "File.h"
+#include "AppPaths.h"
+#include <baselib/File.h>
+#include <baselib/FormatUtil.h>
+#include <baselib/PathUtil.h>
 
 namespace adchpp
 {
-
-	using namespace std;
 
 	LogManager::LogManager(Core& core) : logFile("logs/adchubd/%Y%m.log"), enabled(true), core(core)
 	{
@@ -50,8 +48,10 @@ namespace adchpp
 		signalLog_(msg);
 		if (getEnabled())
 		{
-			string logFilePath = Util::formatTime(File::makeAbsolutePath(core.getConfigPath(), getLogFile()));
-			FastMutex::Lock l(mtx);
+			string fileName = getLogFile();
+			Util::toNativePathSeparators(fileName);
+			string logFilePath = Util::formatDateTime(AppPaths::makeAbsolutePath(core.getConfigPath(), fileName), ::time(nullptr));
+			LockBase<CriticalSection> l(mtx);
 			try
 			{
 				File f(logFilePath, File::WRITE, File::OPEN | File::CREATE);

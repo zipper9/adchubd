@@ -20,6 +20,7 @@
 #define ADCHPP_ADCHPP_FORWARD_H_
 
 #include <vector>
+#include <memory>
 
 namespace adchpp
 {
@@ -38,8 +39,6 @@ namespace adchpp
 	struct ServerInfo;
 	typedef std::shared_ptr<ServerInfo> ServerInfoPtr;
 	typedef std::vector<ServerInfoPtr> ServerInfoList;
-
-	class SimpleXML;
 
 	class SocketFactory;
 	typedef std::shared_ptr<SocketFactory> SocketFactoryPtr;

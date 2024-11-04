@@ -19,6 +19,10 @@
 #ifndef ADCHPP_SIGNAL_H
 #define ADCHPP_SIGNAL_H
 
+#include <list>
+#include <functional>
+#include <memory>
+
 namespace adchpp
 {
 

@@ -16,16 +16,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "adchpp.h"
-
 #include "SocketManager.h"
-
 #include "ClientManager.h"
 #include "Core.h"
 #include "LogManager.h"
 #include "ManagedSocket.h"
 #include "ServerInfo.h"
-#include "SimpleXML.h"
+#include <baselib/SimpleXML.h>
 
 #ifdef HAVE_OPENSSL
 #include <boost/asio/ssl.hpp>

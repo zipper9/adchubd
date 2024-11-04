@@ -19,22 +19,17 @@
 #ifndef ADCHPP_CLIENTMANAGER_H
 #define ADCHPP_CLIENTMANAGER_H
 
+#include <baselib/TigerHash.h>
 #include "AdcCommand.h"
 #include "Bot.h"
 #include "CID.h"
 #include "Client.h"
 #include "Hub.h"
 #include "Signal.h"
-#include "TigerHash.h"
 #include "TimeUtil.h"
-
-#include "forward.h"
 
 namespace adchpp
 {
-
-	class ManagedSocket;
-
 	/**
 	 * The ClientManager takes care of all protocol details, clients and so on. This
 	 * is the very heart of ADCH++ together with SocketManager and ManagedSocket.
@@ -157,7 +152,7 @@ namespace adchpp
 		typedef SignalTraits<void(Entity&, const std::string&)> SignalBadLine;
 		typedef SignalTraits<void(Entity&, const AdcCommand&, bool&)> SignalSend;
 		typedef SignalTraits<void(Entity&, int)> SignalState;
-		typedef SignalTraits<void(Entity&, Util::Reason, const std::string&)> SignalDisconnected;
+		typedef SignalTraits<void(Entity&, Reason, const std::string&)> SignalDisconnected;
 
 		/** A client has just connected. */
 		SignalConnected::Signal& signalConnected()
@@ -262,7 +257,7 @@ namespace adchpp
 		void maybeSend(Entity& c, const AdcCommand& cmd);
 
 		void removeLogins(Entity& c) noexcept;
-		void removeEntity(Entity& c, Util::Reason reason, const std::string& info) noexcept;
+		void removeEntity(Entity& c, Reason reason, const std::string& info) noexcept;
 
 		bool handle(AdcCommand::SUP, Entity& c, AdcCommand& cmd) noexcept;
 		bool handle(AdcCommand::INF, Entity& c, AdcCommand& cmd) noexcept;
@@ -280,16 +275,16 @@ namespace adchpp
 		void onReady(Client&) noexcept;
 		void onReceive(Entity&, AdcCommand&) noexcept;
 		void onBadLine(Client&, const std::string&) noexcept;
-		void onFailed(Client&, Util::Reason reason, const std::string& info) noexcept;
+		void onFailed(Client&, Reason reason, const std::string& info) noexcept;
 
 		void badState(Entity& c, const AdcCommand& cmd) noexcept;
 		/** send a fatal STA, a QUI with TL-1, then disconnect. */
 		void disconnect(Entity& c,
-						Util::Reason reason,
-						const std::string& info,
-						AdcCommand::Error error = AdcCommand::ERROR_PROTOCOL_GENERIC,
-						const std::string& staParam = Util::emptyString,
-						int aReconnectTime = -1);
+			Reason reason,
+			const std::string& info,
+			AdcCommand::Error error = AdcCommand::ERROR_PROTOCOL_GENERIC,
+			const std::string& staParam = Util::emptyString,
+			int aReconnectTime = -1);
 
 		SignalConnected::Signal signalConnected_;
 		SignalReady::Signal signalReady_;

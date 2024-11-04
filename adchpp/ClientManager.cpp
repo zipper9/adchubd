@@ -16,18 +16,19 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "adchpp.h"
-
 #include "ClientManager.h"
-
 #include "Client.h"
 #include "Core.h"
-#include "Encoder.h"
-#include "File.h"
 #include "LogManager.h"
 #include "SocketManager.h"
-#include "TigerHash.h"
+#include "Utils.h"
 #include "version.h"
+
+#include <baselib/File.h>
+#include <baselib/Base32.h>
+#include <baselib/TigerHash.h>
+#include <baselib/Random.h>
+#include <baselib/StrUtil.h>
 
 #include <codecvt>
 #include <locale>
@@ -36,19 +37,11 @@
 #include <boost/asio/ip/address_v4.hpp>
 #include <boost/asio/ip/address_v6.hpp>
 
-#include <boost/range/adaptor/map.hpp>
-#include <boost/range/algorithm/find.hpp>
-#include <boost/range/algorithm/find_if.hpp>
-#include <boost/range/algorithm/remove_if.hpp>
-
-using boost::adaptors::map_values;
-using boost::range::find;
-using boost::range::find_if;
-
-namespace adchpp
-{
-
-	using namespace std;
+using namespace std;
+using adchpp::ClientManager;
+using adchpp::AdcCommand;
+using adchpp::Bot;
+using adchpp::Entity;
 
 	const string ClientManager::className = "ClientManager";
 
@@ -101,7 +94,7 @@ namespace adchpp
 		{
 			auto cc = logins.front().first;
 			dcdebug("ClientManager: Login timeout in state %d\n", cc->getState());
-			cc->disconnect(Util::REASON_LOGIN_TIMEOUT);
+			cc->disconnect(REASON_LOGIN_TIMEOUT);
 			logins.pop_front();
 		}
 	}
@@ -190,20 +183,24 @@ namespace adchpp
 
 	uint32_t ClientManager::makeSID()
 	{
+		const char* table = Util::getBase32Chars();
+		union
+		{
+			uint32_t sid;
+			char chars[4];
+		} sid;
 		while (true)
 		{
-			union
+			uint32_t value = Util::rand();
+			for (int i = 0; i < 4; i++)
 			{
-				uint32_t sid;
-				char chars[4];
-			} sid;
-			sid.chars[0] = Encoder::base32Alphabet[Util::rand(sizeof(Encoder::base32Alphabet))];
-			sid.chars[1] = Encoder::base32Alphabet[Util::rand(sizeof(Encoder::base32Alphabet))];
-			sid.chars[2] = Encoder::base32Alphabet[Util::rand(sizeof(Encoder::base32Alphabet))];
-			sid.chars[3] = Encoder::base32Alphabet[Util::rand(sizeof(Encoder::base32Alphabet))];
-			if (sid.sid != 0 && entities.find(sid.sid) == entities.end())
-				return sid.sid;
+				sid.chars[i] = table[value & 31];
+				value >>= 5;
+			}
+			if (sid.sid && entities.find(sid.sid) == entities.end())
+				break;
 		}
+		return sid.sid;
 	}
 
 	void ClientManager::onConnected(Client& c) noexcept
@@ -229,7 +226,7 @@ namespace adchpp
 		    cmd.getType() == AdcCommand::TYPE_DIRECT || cmd.getType() == AdcCommand::TYPE_ECHO ||
 		    cmd.getType() == AdcCommand::TYPE_FEATURE || cmd.getType() == AdcCommand::TYPE_HUB))
 		{
-			disconnect(c, Util::REASON_INVALID_COMMAND_TYPE, "Invalid command type");
+			disconnect(c, REASON_INVALID_COMMAND_TYPE, "Invalid command type");
 			return;
 		}
 
@@ -248,7 +245,7 @@ namespace adchpp
 
 	void ClientManager::badState(Entity& c, const AdcCommand& cmd) noexcept
 	{
-		disconnect(c, Util::REASON_BAD_STATE, "Invalid state for command",
+		disconnect(c, REASON_BAD_STATE, "Invalid state for command",
 			AdcCommand::ERROR_BAD_STATE, "FC" + cmd.getFourCC());
 	}
 
@@ -285,13 +282,13 @@ namespace adchpp
 
 		if (!c.hasSupport(AdcCommand::toFourCC("BASE")))
 		{
-			disconnect(c, Util::REASON_NO_BASE_SUPPORT, "This hub requires BASE support");
+			disconnect(c, REASON_NO_BASE_SUPPORT, "This hub requires BASE support");
 			return false;
 		}
 
 		if (!c.hasSupport(AdcCommand::toFourCC("TIGR")))
 		{
-			disconnect(c, Util::REASON_NO_TIGR_SUPPORT, "This hub requires TIGR support");
+			disconnect(c, REASON_NO_TIGR_SUPPORT, "This hub requires TIGR support");
 			return false;
 		}
 
@@ -305,9 +302,9 @@ namespace adchpp
 
 		if (cmd.getParam("DE", 0, strtmp))
 		{
-			if (!Util::validateCharset(strtmp, 32))
+			if (!Utils::validateCharset(strtmp, 32))
 			{
-				disconnect(c, Util::REASON_INVALID_DESCRIPTION, "Invalid character in description");
+				disconnect(c, REASON_INVALID_DESCRIPTION, "Invalid character in description");
 				return false;
 			}
 		}
@@ -336,7 +333,7 @@ namespace adchpp
 		tiger.update(&password[0], password.size());
 		tiger.update(&salt[0], salt.size());
 		uint8_t tmp[TigerHash::BYTES];
-		Encoder::fromBase32(suppliedHash.c_str(), tmp, TigerHash::BYTES);
+		Util::fromBase32(suppliedHash.c_str(), tmp, TigerHash::BYTES);
 		return memcmp(tiger.finalize(), tmp, TigerHash::BYTES) == 0;
 	}
 
@@ -357,7 +354,7 @@ namespace adchpp
 
 		if (overflowing > 3 && overflowing > (entities.size() / 4))
 		{
-			disconnect(c, Util::REASON_NO_BANDWIDTH, "Not enough bandwidth available, please try again later",
+			disconnect(c, REASON_NO_BANDWIDTH, "Not enough bandwidth available, please try again later",
 				AdcCommand::ERROR_HUB_FULL, Util::emptyString, 1);
 			return false;
 		}
@@ -439,7 +436,7 @@ namespace adchpp
 					cc.send(sta);
 					failHBRI(cc);
 
-					c.disconnect(Util::REASON_INVALID_IP,
+					c.disconnect(REASON_INVALID_IP,
 						"Validation request was received over the wrong IP protocol");
 					return false;
 				}
@@ -453,7 +450,7 @@ namespace adchpp
 				// disconnect the validation connection
 				AdcCommand sta(AdcCommand::SEV_SUCCESS, AdcCommand::SUCCESS, "Validation succeed");
 				c.send(sta);
-				c.disconnect(Util::REASON_HBRI);
+				c.disconnect(REASON_HBRI);
 
 				// remove extra parameters
 				auto& params = cmd.getParameters();
@@ -510,7 +507,7 @@ namespace adchpp
 		AdcCommand sta(AdcCommand::SEV_FATAL, AdcCommand::ERROR_LOGIN_GENERIC, error);
 		c.send(sta);
 
-		c.disconnect(Util::REASON_HBRI);
+		c.disconnect(REASON_HBRI);
 		return true;
 	}
 
@@ -543,7 +540,7 @@ namespace adchpp
 	{
 		using namespace boost::asio::ip;
 
-		auto isLocalUser = Util::isPrivateIp(remoteAddress.to_string(), v6);
+		auto isLocalUser = adchpp::Utils::isPrivateIp(remoteAddress.to_string(), v6);
 
 		// Primary
 		{
@@ -636,7 +633,7 @@ namespace adchpp
 
 		if (!error.empty())
 		{
-			disconnect(c, Util::REASON_INVALID_IP, error, AdcCommand::ERROR_BAD_IP, "IP" + c.getIp());
+			disconnect(c, REASON_INVALID_IP, error, AdcCommand::ERROR_BAD_IP, "IP" + c.getIp());
 			return false;
 		}
 
@@ -664,13 +661,13 @@ namespace adchpp
 			dcdebug("%s verifying CID %s\n", AdcCommand::fromSID(c.getSID()).c_str(), strtmp.c_str());
 			if (c.getState() != Entity::STATE_IDENTIFY)
 			{
-				disconnect(c, Util::REASON_CID_CHANGE, "CID changes not allowed");
+				disconnect(c, REASON_CID_CHANGE, "CID changes not allowed");
 				return false;
 			}
 
 			if (strtmp.size() != CID::BASE32_SIZE)
 			{
-				disconnect(c, Util::REASON_PID_CID_LENGTH, "Invalid CID length");
+				disconnect(c, REASON_PID_CID_LENGTH, "Invalid CID length");
 				return false;
 			}
 
@@ -680,13 +677,13 @@ namespace adchpp
 
 			if (!cmd.getParam("PD", 0, strtmp))
 			{
-				disconnect(c, Util::REASON_PID_MISSING, "PID missing", AdcCommand::ERROR_INF_MISSING, "FLPD");
+				disconnect(c, REASON_PID_MISSING, "PID missing", AdcCommand::ERROR_INF_MISSING, "FLPD");
 				return false;
 			}
 
 			if (strtmp.size() != CID::BASE32_SIZE)
 			{
-				disconnect(c, Util::REASON_PID_CID_LENGTH, "Invalid PID length");
+				disconnect(c, REASON_PID_CID_LENGTH, "Invalid PID length");
 				return false;
 			}
 
@@ -696,7 +693,7 @@ namespace adchpp
 			th.update(pid.data(), CID::SIZE);
 			if (!(CID(th.finalize()) == cid))
 			{
-				disconnect(c, Util::REASON_PID_CID_MISMATCH, "PID does not correspond to CID", AdcCommand::ERROR_INVALID_PID);
+				disconnect(c, REASON_PID_CID_MISMATCH, "PID does not correspond to CID", AdcCommand::ERROR_INVALID_PID);
 				return false;
 			}
 
@@ -704,8 +701,8 @@ namespace adchpp
 			if (other != cids.end())
 			{
 				// disconnect the ghost
-				disconnect(*other->second, Util::REASON_CID_TAKEN, "CID taken", AdcCommand::ERROR_CID_TAKEN);
-				removeEntity(*other->second, Util::REASON_CID_TAKEN, Util::emptyString);
+				disconnect(*other->second, REASON_CID_TAKEN, "CID taken", AdcCommand::ERROR_CID_TAKEN);
+				removeEntity(*other->second, REASON_CID_TAKEN, Util::emptyString);
 			}
 
 			c.setCID(cid);
@@ -716,7 +713,7 @@ namespace adchpp
 
 		if (cmd.getParam("PD", 0, strtmp))
 		{
-			disconnect(c, Util::REASON_PID_WITHOUT_CID, "CID required when sending PID");
+			disconnect(c, REASON_PID_WITHOUT_CID, "CID required when sending PID");
 			return false;
 		}
 
@@ -740,7 +737,7 @@ namespace adchpp
 
 		bool validateNick(const string& nick)
 		{
-			if (!Util::validateCharset(nick, 33)) // chars < 33 forbidden (including the space char)
+			if (!adchpp::Utils::validateCharset(nick, 33)) // chars < 33 forbidden (including the space char)
 				return false;
 
 			// avoid impersonators
@@ -760,7 +757,7 @@ namespace adchpp
 
 			if (!validateNick(strtmp))
 			{
-				disconnect(c, Util::REASON_NICK_INVALID, "Invalid character in nick", AdcCommand::ERROR_NICK_INVALID);
+				disconnect(c, REASON_NICK_INVALID, "Invalid character in nick", AdcCommand::ERROR_NICK_INVALID);
 				return false;
 			}
 
@@ -769,7 +766,7 @@ namespace adchpp
 
 			if (nicks.find(strtmp) != nicks.end())
 			{
-				disconnect(c, Util::REASON_NICK_TAKEN, "Nick taken, please pick another one", AdcCommand::ERROR_NICK_TAKEN);
+				disconnect(c, REASON_NICK_TAKEN, "Nick taken, please pick another one", AdcCommand::ERROR_NICK_TAKEN);
 				return false;
 			}
 
@@ -787,7 +784,7 @@ namespace adchpp
 	}
 
 	void ClientManager::disconnect(Entity& c,
-		Util::Reason reason, const std::string& info, AdcCommand::Error error,
+		Reason reason, const std::string& info, AdcCommand::Error error,
 		const std::string& staParam, int aReconnectTime)
 	{
 		// send a fatal STA
@@ -833,7 +830,7 @@ namespace adchpp
 		}
 
 		if (sendData)
-			c.send(AdcCommand(AdcCommand::CMD_GPA).addParam(Encoder::toBase32(&challenge[0], challenge.size())));
+			c.send(AdcCommand(AdcCommand::CMD_GPA).addParam(Util::toBase32(&challenge[0], challenge.size())));
 
 		setState(c, Entity::STATE_VERIFY);
 		return challenge;
@@ -894,7 +891,7 @@ namespace adchpp
 		}
 	}
 
-	void ClientManager::removeEntity(Entity& c, Util::Reason reason, const std::string& info) noexcept
+	void ClientManager::removeEntity(Entity& c, Reason reason, const std::string& info) noexcept
 	{
 		if (c.isSet(Entity::FLAG_GHOST)) return;
 
@@ -918,9 +915,9 @@ namespace adchpp
 		cids.erase(c.getCID());
 	}
 
-	Entity* ClientManager::getEntity(uint32_t aSid) noexcept
+	Entity* ClientManager::getEntity(uint32_t sid) noexcept
 	{
-		switch (aSid)
+		switch (sid)
 		{
 			case AdcCommand::INVALID_SID:
 				return nullptr;
@@ -928,7 +925,7 @@ namespace adchpp
 				return &hub;
 			default:
 			{
-				EntityIter i = entities.find(aSid);
+				auto i = entities.find(sid);
 				return i == entities.end() ? nullptr : i->second;
 			}
 		}
@@ -946,9 +943,7 @@ namespace adchpp
 		return (i == cids.end()) ? AdcCommand::INVALID_SID : i->second->getSID();
 	}
 
-	void ClientManager::onFailed(Client& c, Util::Reason reason, const std::string& info) noexcept
+	void ClientManager::onFailed(Client& c, Reason reason, const std::string& info) noexcept
 	{
 		removeEntity(c, reason, info);
 	}
-
-} // namespace adchpp

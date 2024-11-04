@@ -16,10 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "adchpp.h"
-
 #include "Bot.h"
-
 #include "ClientManager.h"
 #include "Core.h"
 #include "SocketManager.h"
@@ -30,7 +27,7 @@ namespace adchpp
 	// TODO replace with lambda
 	struct BotRemover
 	{
-		BotRemover(Bot* bot_, Util::Reason reason, const std::string& info)
+		BotRemover(Bot* bot_, Reason reason, const std::string& info)
 		: bot(bot_), reason(reason), info(info)
 		{
 		}
@@ -40,7 +37,7 @@ namespace adchpp
 		}
 
 		Bot* bot;
-		Util::Reason reason;
+		Reason reason;
 		std::string info;
 	};
 
@@ -53,7 +50,7 @@ namespace adchpp
 		setCID(CID::generate());
 	}
 
-	void Bot::disconnect(Util::Reason reason, const std::string& info) noexcept
+	void Bot::disconnect(Reason reason, const std::string& info) noexcept
 	{
 		if (!disconnecting)
 		{
@@ -64,7 +61,7 @@ namespace adchpp
 		}
 	}
 
-	void Bot::die(Util::Reason reason, const std::string& info)
+	void Bot::die(Reason reason, const std::string& info)
 	{
 		cm.removeEntity(*this, reason, info);
 		delete this;

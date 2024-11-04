@@ -16,13 +16,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "adchpp.h"
-
 #include "Client.h"
-
 #include "ClientManager.h"
-#include "Core.h"
-#include "SocketManager.h"
 #include "TimeUtil.h"
 
 namespace adchpp
@@ -94,7 +89,7 @@ namespace adchpp
 		socket->setConnectedHandler(Handler0<&Client::onConnected>(this));
 		socket->setReadyHandler(Handler0<&Client::onReady>(this));
 		socket->setDataHandler(Handler1<BufferPtr, &Client::onData>(this));
-		socket->setFailedHandler(Handler2<Util::Reason, std::string, &Client::onFailed>(this));
+		socket->setFailedHandler(Handler2<Reason, std::string, &Client::onFailed>(this));
 	}
 
 	void Client::onConnected() noexcept
@@ -167,7 +162,7 @@ namespace adchpp
 				if (cm.getMaxCommandSize() > 0 && buffer->size() > cm.getMaxCommandSize())
 				{
 					send(AdcCommand(AdcCommand::SEV_FATAL, AdcCommand::ERROR_PROTOCOL_GENERIC, "Command too long"));
-					disconnect(Util::REASON_MAX_COMMAND_SIZE);
+					disconnect(REASON_MAX_COMMAND_SIZE);
 					return;
 				}
 
@@ -187,7 +182,7 @@ namespace adchpp
 					}
 					else if (cmd.getFrom() != getSID())
 					{
-						disconnect(Util::REASON_INVALID_SID);
+						disconnect(REASON_INVALID_SID);
 						return;
 					}
 
@@ -203,7 +198,7 @@ namespace adchpp
 		}
 	}
 
-	void Client::disconnect(Util::Reason reason, const std::string& info) noexcept
+	void Client::disconnect(Reason reason, const std::string& info) noexcept
 	{
 		dcassert(socket);
 		if (!disconnecting)
@@ -214,7 +209,7 @@ namespace adchpp
 		}
 	}
 
-	void Client::onFailed(Util::Reason reason, const std::string& info) noexcept
+	void Client::onFailed(Reason reason, const std::string& info) noexcept
 	{
 		cm.onFailed(*this, reason, info);
 		delete this;

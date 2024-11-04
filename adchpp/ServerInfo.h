@@ -19,6 +19,8 @@
 #ifndef ADCHPP_SERVER_INFO_H
 #define ADCHPP_SERVER_INFO_H
 
+#include <string>
+
 namespace adchpp
 {
 

@@ -22,17 +22,15 @@
     <ClCompile Include="adchppd\adchppd.cpp" />
     <ClCompile Include="adchppd\adchppdw.cpp" />
     <ClCompile Include="adchpp\AdcCommand.cpp" />
-    <ClCompile Include="adchpp\adchpp.cpp" />
+    <ClCompile Include="adchpp\AppPaths.cpp" />
     <ClCompile Include="adchpp\BloomManager.cpp" />
     <ClCompile Include="adchpp\Bot.cpp" />
     <ClCompile Include="adchpp\Buffer.cpp" />
+    <ClCompile Include="adchpp\CID.cpp" />
     <ClCompile Include="adchpp\Client.cpp" />
     <ClCompile Include="adchpp\ClientManager.cpp" />
-    <ClCompile Include="adchpp\common.cpp" />
     <ClCompile Include="adchpp\Core.cpp" />
-    <ClCompile Include="adchpp\Encoder.cpp" />
     <ClCompile Include="adchpp\Entity.cpp" />
-    <ClCompile Include="adchpp\File.cpp" />
     <ClCompile Include="adchpp\HashBloom.cpp" />
     <ClCompile Include="adchpp\Hub.cpp" />
     <ClCompile Include="adchpp\LogManager.cpp" />
@@ -41,18 +39,29 @@
     <ClCompile Include="adchpp\ManagedSocket.cpp" />
     <ClCompile Include="adchpp\PluginManager.cpp" />
     <ClCompile Include="adchpp\ScriptManager.cpp" />
-    <ClCompile Include="adchpp\SimpleXML.cpp" />
     <ClCompile Include="adchpp\SocketManager.cpp" />
-    <ClCompile Include="adchpp\Text.cpp" />
-    <ClCompile Include="adchpp\Thread.cpp" />
-    <ClCompile Include="adchpp\TigerHash.cpp" />
-    <ClCompile Include="adchpp\Util.cpp" />
+    <ClCompile Include="adchpp\Utils.cpp" />
     <ClCompile Include="adchpp\version.cpp" />
+    <ClCompile Include="baselib\Base32.cpp" />
+    <ClCompile Include="baselib\BaseUtil.cpp" />
+    <ClCompile Include="baselib\CompatibilityManager.cpp" />
+    <ClCompile Include="baselib\debug.cpp" />
+    <ClCompile Include="baselib\Exception.cpp" />
+    <ClCompile Include="baselib\File.cpp" />
+    <ClCompile Include="baselib\FormatUtil.cpp" />
+    <ClCompile Include="baselib\ParamExpander.cpp" />
+    <ClCompile Include="baselib\Random.cpp" />
+    <ClCompile Include="baselib\SimpleXML.cpp" />
+    <ClCompile Include="baselib\SimpleXMLReader.cpp" />
+    <ClCompile Include="baselib\SysVersion.cpp" />
+    <ClCompile Include="baselib\Text.cpp" />
+    <ClCompile Include="baselib\Thread.cpp" />
+    <ClCompile Include="baselib\TigerHash.cpp" />
     <ClCompile Include="swig\lua_wrap.cxx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="adchpp\AdcCommand.h" />
-    <ClInclude Include="adchpp\adchpp.h" />
+    <ClInclude Include="adchpp\AppPaths.h" />
     <ClInclude Include="adchpp\AsyncStream.h" />
     <ClInclude Include="adchpp\BloomManager.h" />
     <ClInclude Include="adchpp\Bot.h" />
@@ -60,42 +69,49 @@
     <ClInclude Include="adchpp\CID.h" />
     <ClInclude Include="adchpp\Client.h" />
     <ClInclude Include="adchpp\ClientManager.h" />
-    <ClInclude Include="adchpp\common.h" />
     <ClInclude Include="adchpp\compiler.h" />
-    <ClInclude Include="adchpp\config.h" />
     <ClInclude Include="adchpp\Core.h" />
-    <ClInclude Include="adchpp\Encoder.h" />
     <ClInclude Include="adchpp\Engine.h" />
     <ClInclude Include="adchpp\Entity.h" />
-    <ClInclude Include="adchpp\Exception.h" />
     <ClInclude Include="adchpp\FastAlloc.h" />
-    <ClInclude Include="adchpp\File.h" />
     <ClInclude Include="adchpp\forward.h" />
     <ClInclude Include="adchpp\HashBloom.h" />
-    <ClInclude Include="adchpp\HashValue.h" />
     <ClInclude Include="adchpp\Hub.h" />
     <ClInclude Include="adchpp\LogManager.h" />
     <ClInclude Include="adchpp\LuaCommon.h" />
     <ClInclude Include="adchpp\LuaEngine.h" />
     <ClInclude Include="adchpp\LuaScript.h" />
     <ClInclude Include="adchpp\ManagedSocket.h" />
-    <ClInclude Include="adchpp\Mutex.h" />
-    <ClInclude Include="adchpp\nullptr.h" />
     <ClInclude Include="adchpp\Plugin.h" />
     <ClInclude Include="adchpp\PluginManager.h" />
     <ClInclude Include="adchpp\Pool.h" />
     <ClInclude Include="adchpp\ScriptManager.h" />
     <ClInclude Include="adchpp\ServerInfo.h" />
-    <ClInclude Include="adchpp\shared_ptr.h" />
     <ClInclude Include="adchpp\Signal.h" />
-    <ClInclude Include="adchpp\SimpleXML.h" />
     <ClInclude Include="adchpp\SocketManager.h" />
-    <ClInclude Include="adchpp\Text.h" />
-    <ClInclude Include="adchpp\Thread.h" />
     <ClInclude Include="adchpp\TigerHash.h" />
     <ClInclude Include="adchpp\TimeUtil.h" />
-    <ClInclude Include="adchpp\Util.h" />
+    <ClInclude Include="adchpp\Utils.h" />
     <ClInclude Include="adchpp\version.h" />
+    <ClInclude Include="baselib\Base32.h" />
+    <ClInclude Include="baselib\BaseStreams.h" />
+    <ClInclude Include="baselib\BaseThread.h" />
+    <ClInclude Include="baselib\BaseUtil.h" />
+    <ClInclude Include="baselib\CompatibilityManager.h" />
+    <ClInclude Include="baselib\debug.h" />
+    <ClInclude Include="baselib\Exception.h" />
+    <ClInclude Include="baselib\File.h" />
+    <ClInclude Include="baselib\FormatUtil.h" />
+    <ClInclude Include="baselib\HashValue.h" />
+    <ClInclude Include="baselib\ParamExpander.h" />
+    <ClInclude Include="baselib\Random.h" />
+    <ClInclude Include="baselib\SimpleXML.h" />
+    <ClInclude Include="baselib\SimpleXMLException.h" />
+    <ClInclude Include="baselib\SimpleXMLReader.h" />
+    <ClInclude Include="baselib\SysVersion.h" />
+    <ClInclude Include="baselib\Text.h" />
+    <ClInclude Include="baselib\Thread.h" />
+    <ClInclude Include="baselib\TigerHash.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -221,7 +237,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;HAVE_OPENSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\boost;$(SolutionDir)\openssl\include;$(SolutionDir)\lua;$(SolutionDir)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4267;4244;4102</DisableSpecificWarnings>

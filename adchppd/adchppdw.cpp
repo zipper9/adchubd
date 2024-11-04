@@ -16,17 +16,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <adchpp/adchpp.h>
-#include <adchpp/common.h>
-
-#include <adchpp/File.h>
+#include <baselib/File.h>
+#include <baselib/BaseUtil.h>
+#include <baselib/CompatibilityManager.h>
+#include <adchpp/AppPaths.h>
 #include <adchpp/LogManager.h>
-#include <adchpp/Util.h>
 #include <adchpp/version.h>
-
 #include "adchppd.h"
-
-#include <locale.h>
+#include <winsvc.h>
 
 using namespace adchpp;
 using std::string;
@@ -49,7 +46,7 @@ static void installService()
 		return;
 	}
 
-	string cmdLine = '"' + Util::getAppName() + "\" -c \"" + configPath + "\\\" -d \"" + string(serviceName) + "\"";
+	string cmdLine = '"' + AppPaths::getModuleFileName() + "\" -c \"" + configPath + "\\\" -d \"" + string(serviceName) + "\"";
 	SC_HANDLE service = CreateService(scm, serviceName, _T("ADC Hub Service"), SERVICE_ALL_ACCESS,
 		SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL,
 		cmdLine.c_str(), NULL, NULL, NULL, NULL, NULL);
@@ -108,7 +105,7 @@ static void init()
 	// else
 	// LOG(modName, versionString + " started from console");
 
-	loadXML(*core, File::makeAbsolutePath(core->getConfigPath(), "config.xml"));
+	loadXML(*core, AppPaths::makeAbsolutePath(core->getConfigPath(), "config.xml"));
 }
 
 static void uninit()
@@ -178,7 +175,7 @@ static void WINAPI serviceStart(DWORD, TCHAR* argv[])
 
 		init();
 	}
-	catch (const adchpp::Exception&)
+	catch (const Exception&)
 	{
 		// LOG(modName, "Failed to start: " + e.getError());
 	}
@@ -217,7 +214,7 @@ static void runService()
 	}
 }
 
-BOOL WINAPI HandlerRoutine(DWORD dwCtrlType)
+static BOOL WINAPI HandlerRoutine(DWORD dwCtrlType)
 {
 	if (core && dwCtrlType == CTRL_C_EVENT)
 	{
@@ -272,8 +269,9 @@ static void checkArg(int argc, char* argv[], int i)
 
 int _tmain(int argc, TCHAR* argv[])
 {
+	CompatibilityManager::init();
 	setlocale(LC_ALL, "");
-	configPath = Util::getAppPath() + "config\\";
+	configPath = AppPaths::makeAbsolutePath("config\\");
 	int task = 0;
 	for (int i = 1; i < argc; ++i)
 	{
@@ -292,7 +290,7 @@ int _tmain(int argc, TCHAR* argv[])
 				printf("-c <directory>\n");
 				return 2;
 			}
-			if (!File::isAbsolutePath(cfg))
+			if (!File::isAbsolute(cfg))
 			{
 				printf("Config dir must be an absolute path\n");
 				return 2;

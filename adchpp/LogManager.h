@@ -19,13 +19,14 @@
 #ifndef ADCHPP_LOGMANAGER_H
 #define ADCHPP_LOGMANAGER_H
 
-#include "forward.h"
-
-#include "Mutex.h"
+#include <baselib/Locks.h>
+#include <string>
 #include "Signal.h"
 
 namespace adchpp
 {
+	class Core;
+
 	/**
 	 * Log writing utilities.
 	 */
@@ -66,7 +67,7 @@ namespace adchpp
 	private:
 		friend class Core;
 
-		FastMutex mtx;
+		FastCriticalSection mtx;
 		std::string logFile;
 		bool enabled;
 

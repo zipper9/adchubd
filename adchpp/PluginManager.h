@@ -70,8 +70,6 @@
 namespace adchpp
 {
 
-	class SimpleXML;
-
 #ifdef _WIN32
 
 #ifdef BUILDING_ADCHPP

@@ -19,8 +19,7 @@
 #ifndef HASHBLOOM_H_
 #define HASHBLOOM_H_
 
-#include "common.h"
-#include "HashValue.h"
+#include <baselib/HashValue.h>
 
 namespace adchpp
 {

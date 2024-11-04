@@ -16,12 +16,10 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "adchpp.h"
 #include "LuaScript.h"
 #include "LuaEngine.h"
-#include "File.h"
 #include "LogManager.h"
-#include "Util.h"
+#include "AppPaths.h"
 
 #ifdef _WIN32
 #include <direct.h>
@@ -61,7 +59,7 @@ void LuaScript::loadFile(const string& path, const string& filename)
 	if (!getcwd(old_dir, MAX_PATH))
 		old_dir[0] = 0;
 
-	auto absPath = File::makeAbsolutePath(path);
+	auto absPath = AppPaths::makeAbsolutePath(path);
 	if (chdir(absPath.c_str()) != 0)
 	{
 		// LOG(className, "Unable to change to directory " + absPath);

@@ -19,7 +19,8 @@
 #ifndef ADCHPP_POOL_H
 #define ADCHPP_POOL_H
 
-#include "Mutex.h"
+#include <baselib/Locks.h>
+#include <vector>
 
 namespace adchpp
 {
@@ -92,19 +93,19 @@ namespace adchpp
 
 		T* get()
 		{
-			FastMutex::Lock l(mtx);
+			LockBase l(mtx);
 			return pool.get();
 		}
 		void put(T* obj)
 		{
-			FastMutex::Lock l(mtx);
+			LockBase l(mtx);
 			pool.put(obj);
 		}
 
 	private:
 		Pool(const Pool&);
 		Pool& operator=(const Pool&);
-		FastMutex mtx;
+		FastCriticalSection mtx;
 
 		SimplePool<T, Clear> pool;
 	};

@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "adchpp.h"
+#include <baselib/StrUtil.h>
 #include "Entity.h"
 #include "ClientManager.h"
 
@@ -80,7 +80,7 @@ namespace adchpp
 	void Entity::updateFields(const AdcCommand& cmd)
 	{
 		dcassert(cmd.getCommand() == AdcCommand::CMD_INF);
-		for (StringIterC j = cmd.getParameters().begin(); j != cmd.getParameters().end(); ++j)
+		for (auto j = cmd.getParameters().begin(); j != cmd.getParameters().end(); ++j)
 		{
 			if (j->size() < 2) continue;
 			setField(j->c_str(), j->substr(2));
@@ -148,7 +148,7 @@ namespace adchpp
 
 	void Entity::updateSupports(const AdcCommand& cmd) noexcept
 	{
-		for (StringIterC i = cmd.getParameters().begin(); i != cmd.getParameters().end(); ++i)
+		for (auto i = cmd.getParameters().begin(); i != cmd.getParameters().end(); ++i)
 		{
 			const std::string& str = *i;
 			if (str.size() != 6) continue;

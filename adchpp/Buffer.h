@@ -19,6 +19,8 @@
 #ifndef BUFFER_H_
 #define BUFFER_H_
 
+#include <baselib/typedefs.h>
+#include <memory>
 #include "FastAlloc.h"
 #include "Pool.h"
 

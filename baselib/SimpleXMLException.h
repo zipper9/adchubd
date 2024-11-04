@@ -1,0 +1,8 @@
+#ifndef BASELIB_SIMPLE_XML_EXCEPTION_H_
+#define BASELIB_SIMPLE_XML_EXCEPTION_H_
+
+#include "Exception.h"
+
+STANDARD_EXCEPTION(SimpleXMLException);
+
+#endif // BASELIB_SIMPLE_XML_EXCEPTION_H_

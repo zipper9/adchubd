@@ -19,8 +19,6 @@
 #ifndef ADCHPP_CLIENT_H
 #define ADCHPP_CLIENT_H
 
-#include "common.h"
-
 #include "AdcCommand.h"
 #include "CID.h"
 #include "Entity.h"
@@ -44,7 +42,7 @@ namespace adchpp
 		virtual void send(const BufferPtr& command) { socket->write(command); }
 
 		/** @param reason The statistic to update */
-		virtual void disconnect(Util::Reason reason, const std::string& info = Util::emptyString) noexcept;
+		virtual void disconnect(Reason reason, const std::string& info = Util::emptyString) noexcept;
 		const std::string& getIp() const noexcept
 		{
 			return socket->getIp();
@@ -94,7 +92,7 @@ namespace adchpp
 		void onConnected() noexcept;
 		void onReady() noexcept;
 		void onData(const BufferPtr&) noexcept;
-		void onFailed(Util::Reason reason, const std::string& info) noexcept;
+		void onFailed(Reason reason, const std::string& info) noexcept;
 	};
 
 } // namespace adchpp

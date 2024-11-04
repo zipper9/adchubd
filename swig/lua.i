@@ -147,14 +147,14 @@ public:
 		lua_pop(L, 1);
 	}
 
-	void operator()(const adchpp::SimpleXML& s) {
+	void operator()(const SimpleXML& s) {
 		pushFunction();
 
-		SWIG_NewPointerObj(L, &s, SWIGTYPE_p_adchpp__SimpleXML, 0);
+		SWIG_NewPointerObj(L, &s, SWIGTYPE_p_SimpleXML, 0);
 		docall(1, 0);
 	}
 
-	void operator()(adchpp::Entity& c, const adchpp::StringList& cmd, bool& i) {
+	void operator()(adchpp::Entity& c, const StringList& cmd, bool& i) {
 		pushFunction();
 
 		SWIG_NewPointerObj(L, &c, SWIGTYPE_p_adchpp__Entity, 0);
@@ -287,7 +287,7 @@ uint32_t, const uint32_t&
 	$1 = LuaFunction(L);
 }
 
-%typemap(in) std::function<void (adchpp::Entity &, const adchpp::StringList&, bool&) > {
+%typemap(in) std::function<void (adchpp::Entity &, const StringList&, bool&) > {
 	$1 = LuaFunction(L);
 }
 
@@ -361,10 +361,8 @@ namespace adchpp {
 	SocketManager* getSM(lua_State* l) { return &getCurrentCore(l)->getSocketManager(); }
 
 	const std::string &getConfigPath(lua_State *l) { return getCurrentCore(l)->getConfigPath(); }
+	const std::string &Util_getCfgPath(lua_State *l) { return getConfigPath(l); }
+	std::string Util_getLocalIp(lua_State *l) { return Utils::getLocalIp(); }
 }
 
 %}
-
-%extend adchpp::Util {
-	static const std::string &getCfgPath(lua_State *l) { return adchpp::getConfigPath(l); }
-}

@@ -16,23 +16,16 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <adchpp/adchpp.h>
-#include <adchpp/common.h>
-
-#include "adchppd.h"
-
-#include <adchpp/ClientManager.h>
 #include <adchpp/Core.h>
-#include <adchpp/Entity.h>
-#include <adchpp/File.h>
+#include <adchpp/ClientManager.h>
 #include <adchpp/LogManager.h>
 #include <adchpp/PluginManager.h>
-#include <adchpp/SimpleXML.h>
 #include <adchpp/SocketManager.h>
-#include <adchpp/Util.h>
+#include <adchpp/AppPaths.h>
+#include <baselib/File.h>
+#include <baselib/SimpleXML.h>
 
 using namespace adchpp;
-using namespace std;
 
 void loadXML(Core& core, const string& aFileName)
 {
@@ -47,57 +40,57 @@ void loadXML(Core& core, const string& aFileName)
 
 		xml.stepIn();
 
-		while (xml.findChild(Util::emptyString))
+		while (xml.getNextChild())
 		{
-			if (xml.getChildName() == "Settings")
+			if (xml.getChildTag() == "Settings")
 			{
 				xml.stepIn();
 
-				while (xml.findChild(Util::emptyString))
+				while (xml.getNextChild())
 				{
 
-					printf("Processing %s\n", xml.getChildName().c_str());
-					if (xml.getChildName() == "HubName")
+					printf("Processing %s\n", xml.getChildTag().c_str());
+					if (xml.getChildTag() == "HubName")
 					{
 						core.getClientManager().getEntity(AdcCommand::HUB_SID)->setField("NI", xml.getChildData());
 					}
-					else if (xml.getChildName() == "Description")
+					else if (xml.getChildTag() == "Description")
 					{
 						core.getClientManager().getEntity(AdcCommand::HUB_SID)->setField("DE", xml.getChildData());
 					}
-					else if (xml.getChildName() == "Log")
+					else if (xml.getChildTag() == "Log")
 					{
 						core.getLogManager().setEnabled(xml.getChildData() == "1");
 					}
-					else if (xml.getChildName() == "LogFile")
+					else if (xml.getChildTag() == "LogFile")
 					{
 						core.getLogManager().setLogFile(xml.getChildData());
 					}
-					else if (xml.getChildName() == "MaxCommandSize")
+					else if (xml.getChildTag() == "MaxCommandSize")
 					{
 						core.getClientManager().setMaxCommandSize(Util::toInt(xml.getChildData()));
 					}
-					else if (xml.getChildName() == "BufferSize")
+					else if (xml.getChildTag() == "BufferSize")
 					{
 						core.getSocketManager().setBufferSize(Util::toInt(xml.getChildData()));
 					}
-					else if (xml.getChildName() == "MaxBufferSize")
+					else if (xml.getChildTag() == "MaxBufferSize")
 					{
 						core.getSocketManager().setMaxBufferSize(Util::toInt(xml.getChildData()));
 					}
-					else if (xml.getChildName() == "OverflowTimeout")
+					else if (xml.getChildTag() == "OverflowTimeout")
 					{
 						core.getSocketManager().setOverflowTimeout(Util::toInt(xml.getChildData()));
 					}
-					else if (xml.getChildName() == "DisconnectTimeout")
+					else if (xml.getChildTag() == "DisconnectTimeout")
 					{
 						core.getSocketManager().setDisconnectTimeout(Util::toInt(xml.getChildData()));
 					}
-					else if (xml.getChildName() == "LogTimeout")
+					else if (xml.getChildTag() == "LogTimeout")
 					{
 						core.getClientManager().setLogTimeout(Util::toInt(xml.getChildData()));
 					}
-					else if (xml.getChildName() == "HbriTimeout")
+					else if (xml.getChildTag() == "HbriTimeout")
 					{
 						core.getClientManager().setHbriTimeout(Util::toInt(xml.getChildData()));
 					}
@@ -105,7 +98,7 @@ void loadXML(Core& core, const string& aFileName)
 
 				xml.stepOut();
 			}
-			else if (xml.getChildName() == "Servers")
+			else if (xml.getChildTag() == "Servers")
 			{
 				xml.stepIn();
 
@@ -113,7 +106,7 @@ void loadXML(Core& core, const string& aFileName)
 
 				while (xml.findChild("Server"))
 				{
-					ServerInfoPtr server = make_shared<ServerInfo>();
+					ServerInfoPtr server = std::make_shared<ServerInfo>();
 					server->port = xml.getChildAttrib("Port", Util::emptyString);
 
 					server->bind4 = xml.getChildAttrib("BindAddress4", Util::emptyString);
@@ -123,10 +116,10 @@ void loadXML(Core& core, const string& aFileName)
 
 					if (xml.getBoolChildAttrib("TLS"))
 					{
-						server->TLSParams.cert = File::makeAbsolutePath(xml.getChildAttrib("Certificate"));
-						server->TLSParams.pkey = File::makeAbsolutePath(xml.getChildAttrib("PrivateKey"));
-						server->TLSParams.trustedPath = File::makeAbsolutePath(xml.getChildAttrib("TrustedPath"));
-						server->TLSParams.dh = File::makeAbsolutePath(xml.getChildAttrib("DHParams"));
+						server->TLSParams.cert = AppPaths::makeAbsolutePath(xml.getChildAttrib("Certificate"));
+						server->TLSParams.pkey = AppPaths::makeAbsolutePath(xml.getChildAttrib("PrivateKey"));
+						server->TLSParams.trustedPath = AppPaths::makeAbsolutePath(xml.getChildAttrib("TrustedPath"));
+						server->TLSParams.dh = AppPaths::makeAbsolutePath(xml.getChildAttrib("DHParams"));
 					}
 
 					printf("Loaded server for port %s (secure: %s)\n", server->port.c_str(),
@@ -145,7 +138,7 @@ void loadXML(Core& core, const string& aFileName)
 
 				xml.stepOut();
 			}
-			else if (xml.getChildName() == "Plugins")
+			else if (xml.getChildTag() == "Plugins")
 			{
 				core.getPluginManager().setPluginPath(xml.getChildAttrib("Path"));
 				xml.stepIn();

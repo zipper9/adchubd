@@ -19,8 +19,6 @@
 #ifndef HUB_H_
 #define HUB_H_
 
-#include "forward.h"
-
 #include "Entity.h"
 
 namespace adchpp
@@ -33,7 +31,7 @@ namespace adchpp
 
 		virtual int getType() const { return TYPE_HUB; }
 		virtual void send(const BufferPtr& cmd) {}
-		virtual void disconnect(Util::Reason reason, const std::string&) noexcept {}
+		virtual void disconnect(Reason reason, const std::string&) noexcept {}
 	};
 
 } // namespace adchpp

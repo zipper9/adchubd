@@ -16,13 +16,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "adchpp.h"
 #include "LuaEngine.h"
 #include "LuaScript.h"
 #include "Core.h"
-#include "File.h"
 #include "PluginManager.h"
-#include "Util.h"
+#include "AppPaths.h"
+#include <baselib/StrUtil.h>
 
 extern "C"
 {
@@ -103,7 +102,7 @@ Script* LuaEngine::loadScript(const string& path, const string& filename, const 
 		luaL_register(l, "luadchpp", &funcs);
 		luadchpp = true;
 	}
-	setScriptPath(l, File::makeAbsolutePath(path));
+	setScriptPath(l, AppPaths::makeAbsolutePath(path));
 
 	if (call("loading", filename)) return 0;
 

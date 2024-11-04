@@ -17,7 +17,6 @@
  */
 
 #include "version.h"
-#include "adchpp.h"
 
 #define VERSIONSTRING "1.0.0"
 #define VERSIONFLOAT 1.0F
@@ -33,10 +32,8 @@
 namespace adchpp
 {
 
-	using namespace std;
-
-	string appName = APPNAME;
-	string versionString = FULLVERSIONSTRING;
+	std::string appName = APPNAME;
+	std::string versionString = FULLVERSIONSTRING;
 	float versionFloat = VERSIONFLOAT;
 
 } // namespace adchpp

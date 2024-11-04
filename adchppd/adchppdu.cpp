@@ -16,18 +16,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <adchpp/adchpp.h>
-#include <adchpp/common.h>
-
 #include <adchpp/Core.h>
-#include <adchpp/File.h>
-#include <adchpp/Util.h>
+#include <adchpp/AppPaths.h>
 #include <adchpp/version.h>
-
+#include <baselib/File.h>
 #include <limits.h>
 #include <locale.h>
 #include <signal.h>
-
 #include "adchppd.h"
 
 using namespace std;
@@ -75,7 +70,7 @@ static void init()
 		fflush(pidFile);
 	}
 
-	loadXML(*core, File::makeAbsolutePath(core->getConfigPath(), "config.xml"));
+	loadXML(*core, AppPaths::makeAbsolutePath(core->getConfigPath(), "config.xml"));
 }
 
 static void installHandler()
@@ -175,15 +170,6 @@ int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "");
 
-	char buf[PATH_MAX + 1] = { 0 };
-	char* path = buf;
-	if (readlink("/proc/self/exe", buf, sizeof(buf)) == -1)
-	{
-		path = getenv("_");
-		if (!path) path = argv[0];
-	}
-
-	Util::setApp(path);
 	string configPath = "/etc/" APPNAME "/";
 	bool asDaemon = false;
 
@@ -230,7 +216,7 @@ int main(int argc, char* argv[])
 
 	if (!pidFileName.empty())
 	{
-		pidFileName = File::makeAbsolutePath("/run/", pidFileName);
+		pidFileName = AppPaths::makeAbsolutePath("/run/", pidFileName);
 		pidFile = fopen(pidFileName.c_str(), "w");
 		if (!pidFile)
 		{

@@ -16,11 +16,9 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "adchpp.h"
-
+#include <baselib/Text.h>
+#include <baselib/StrUtil.h>
 #include "AdcCommand.h"
-
-#include "Text.h"
 
 namespace adchpp
 {
@@ -266,7 +264,7 @@ namespace adchpp
 			tmp += features;
 		}
 
-		for (StringIterC i = getParameters().begin(); i != getParameters().end(); ++i)
+		for (auto i = getParameters().begin(); i != getParameters().end(); ++i)
 		{
 			tmp += ' ';
 			escape(*i, tmp);

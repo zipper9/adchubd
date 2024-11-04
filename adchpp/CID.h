@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006-2018 Jacek Sieka, arnetheduck on gmail point com
+ * Copyright (C) 2001-2017 Jacek Sieka, arnetheduck on gmail point com
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,112 +16,131 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef ADCHPP_CID_H
-#define ADCHPP_CID_H
+#ifndef DCPLUSPLUS_DCPP_CID_H
+#define DCPLUSPLUS_DCPP_CID_H
 
-#include "Encoder.h"
-#include "Util.h"
+#include <baselib/Base32.h>
+#include <baselib/debug.h>
+#include <boost/functional/hash.hpp>
 
 namespace adchpp
 {
 
-	class CID
-	{
+class CID
+{
 	public:
 		enum
 		{
-			SIZE = 192 / 8
-		};
-		enum
-		{
+			SIZE = 192 / 8,
 			BASE32_SIZE = 39
 		};
 
-		CID() noexcept
+		CID()
 		{
-			memset(cid, 0, sizeof(cid));
+			init();
 		}
-		explicit CID(const uint8_t* data) noexcept
+		explicit CID(const uint8_t* data)
 		{
-			memcpy(cid, data, sizeof(cid));
+			memcpy(cid.b, data, SIZE);
 		}
-		explicit CID(const std::string& base32) noexcept
+		explicit CID(const string& base32)
 		{
-			Encoder::fromBase32(base32.c_str(), cid, sizeof(cid));
+			fromBase32(base32);
 		}
-
-		CID(const CID& rhs) noexcept
+		void init()
 		{
-			memcpy(cid, rhs.cid, sizeof(cid));
+			memset(cid.b, 0, SIZE);
 		}
-		CID& operator=(const CID& rhs) noexcept
+		
+		bool operator==(const CID& rhs) const
 		{
-			memcpy(cid, rhs.cid, sizeof(cid));
-			return *this;
+			return memcmp(cid.b, rhs.cid.b, SIZE) == 0;
 		}
-
-		bool operator==(const CID& rhs) const noexcept
+		bool operator!=(const CID& rhs) const
 		{
-			return memcmp(cid, rhs.cid, sizeof(cid)) == 0;
+			return memcmp(cid.b, rhs.cid.b, SIZE) != 0;
 		}
-		bool operator<(const CID& rhs) const noexcept
+		bool operator<(const CID& rhs) const
 		{
-			return memcmp(cid, rhs.cid, sizeof(cid)) < 0;
+			return memcmp(cid.b, rhs.cid.b, SIZE) < 0;
 		}
-
-		std::string toBase32() const noexcept
+		string toBase32() const
 		{
-			return Encoder::toBase32(cid, sizeof(cid));
+			return Util::toBase32(cid.b, SIZE);
 		}
-		std::string& toBase32(std::string& tmp) const noexcept
+		string& toBase32(string& tmp) const
 		{
-			return Encoder::toBase32(cid, sizeof(cid), tmp);
+			return Util::toBase32(cid.b, SIZE, tmp);
 		}
 
-		size_t toHash() const noexcept
+		void fromBase32(const string& base32)
 		{
-			static_assert(sizeof(cid) >= sizeof(cidHash), "cid too small, cidHash invalid");
-			return cidHash;
-		}
-		const uint8_t* data() const noexcept
-		{
-			return cid;
-		}
-
-		bool isZero() const noexcept
-		{
-			return std::all_of(cid, cid + SIZE, [](uint8_t c) { return c == 0; });
-		}
-
-		static CID generate() noexcept
-		{
-			uint8_t data[CID::SIZE];
-			for (size_t i = 0; i < sizeof(data); ++i)
+			if (base32.length() == 39)
+				Util::fromBase32(base32.c_str(), cid.b, SIZE);
+			else
 			{
-				data[i] = (uint8_t)Util::rand();
+				string tmp = base32;
+				tmp.resize(39);
+				Util::fromBase32(tmp.c_str(), cid.b, SIZE);
 			}
-			return CID(data);
+		}
+		
+		size_t toHash() const
+		{
+			return cid.w[0];
+		}
+		
+		const uint8_t* data() const { return cid.b; }
+		uint8_t* writableData() { return cid.b; }
+		
+		const size_t* dataW() const { return cid.w; }
+		size_t* writableDataW() { return cid.w; }
+
+		bool isZero() const
+		{
+			for (int i = 0; i < SIZE/sizeof(size_t); i++)
+				if (cid.w[i]) return false;
+			return true;
+		}
+		
+		static CID generate();
+		static void generate(uint8_t *cid);
+
+		void regenerate()
+		{
+			generate(cid.b);
 		}
 
 	private:
 		union
 		{
-			uint8_t cid[SIZE];
-			size_t cidHash;
-		};
-	};
+			uint8_t b[SIZE];
+			size_t  w[SIZE/sizeof(size_t)];
+		} cid;
+};
 
-} // namespace adchpp
+}
 
 namespace std
 {
-	template <> struct hash<adchpp::CID>
+	template<> struct hash<adchpp::CID>
 	{
-		size_t operator()(const adchpp::CID& cid) const
+		size_t operator()(const adchpp::CID& rhs) const
 		{
-			return cid.toHash();
+			return rhs.toHash();
 		}
 	};
-} // namespace std
+}
 
-#endif
+namespace boost
+{
+	template<> struct hash<adchpp::CID>
+	{
+		size_t operator()(const adchpp::CID& rhs) const
+		{
+			return rhs.toHash();
+		}
+	};
+}
+
+#endif // !defined(CID_H)

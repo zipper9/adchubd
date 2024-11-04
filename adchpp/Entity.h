@@ -19,12 +19,13 @@
 #ifndef ADCHPP_ENTITY_H
 #define ADCHPP_ENTITY_H
 
+#include <baselib/Flags.h>
 #include "AdcCommand.h"
 #include "Buffer.h"
 #include "CID.h"
 #include "Plugin.h"
 #include "TimeUtil.h"
-#include "forward.h"
+#include "Reason.h"
 
 namespace adchpp
 {
@@ -95,7 +96,7 @@ namespace adchpp
 		virtual int getType() const = 0;
 		virtual void send(const BufferPtr& cmd) = 0;
 		virtual void inject(AdcCommand& cmd);
-		virtual void disconnect(Util::Reason reason, const std::string& info = Util::emptyString) = 0;
+		virtual void disconnect(Reason reason, const std::string& info = Util::emptyString) = 0;
 
 		/** The number of bytes in the write buffer */
 		virtual size_t getQueuedBytes() const;
