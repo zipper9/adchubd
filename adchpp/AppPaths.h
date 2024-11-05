@@ -6,6 +6,7 @@
 namespace AppPaths
 {
 	std::string getModuleFileName();
+	std::string getModuleDirectory();
 	std::string makeAbsolutePath(const std::string& filename);
 	std::string makeAbsolutePath(const std::string& path, const std::string& filename);
 }

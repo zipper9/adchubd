@@ -49,9 +49,20 @@ string AppPaths::getModuleFileName()
 }
 #endif
 
+string AppPaths::getModuleDirectory()
+{
+	string path = getModuleFileName();
+	string::size_type pos = path.rfind(PATH_SEPARATOR);
+	if (pos == string::npos)
+		path.clear();
+	else
+		path.erase(pos + 1);
+	return path;
+}
+
 string AppPaths::makeAbsolutePath(const string& filename)
 {
-	return makeAbsolutePath(getModuleFileName(), filename);
+	return makeAbsolutePath(getModuleDirectory(), filename);
 }
 
 string AppPaths::makeAbsolutePath(const string& path, const string& filename)
