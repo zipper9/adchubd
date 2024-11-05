@@ -23,8 +23,8 @@
 #include "AsyncStream.h"
 #include "Buffer.h"
 #include "Signal.h"
-#include "TimeUtil.h"
 #include "Reason.h"
+#include "Utils.h"
 #include "forward.h"
 
 namespace adchpp

@@ -23,8 +23,7 @@ using namespace adchpp;
 
 void CID::generate(uint8_t *data)
 {
-	for (size_t i = 0; i < SIZE; ++i)
-		data[i] = (uint8_t) Util::rand();
+	Util::randBytes(data, SIZE, false);
 }
 
 CID CID::generate()

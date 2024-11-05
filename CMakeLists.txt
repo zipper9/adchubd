@@ -33,6 +33,7 @@ baselib/SysVersion.cpp
 baselib/Text.cpp
 baselib/Thread.cpp
 baselib/TigerHash.cpp
+baselib/TimeUtil.cpp
 adchpp/AdcCommand.cpp
 adchpp/AppPaths.cpp
 adchpp/BloomManager.cpp

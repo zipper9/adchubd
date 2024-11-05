@@ -57,6 +57,7 @@
     <ClCompile Include="baselib\Text.cpp" />
     <ClCompile Include="baselib\Thread.cpp" />
     <ClCompile Include="baselib\TigerHash.cpp" />
+    <ClCompile Include="baselib\TimeUtil.cpp" />
     <ClCompile Include="swig\lua_wrap.cxx" />
   </ItemGroup>
   <ItemGroup>
@@ -90,7 +91,6 @@
     <ClInclude Include="adchpp\Signal.h" />
     <ClInclude Include="adchpp\SocketManager.h" />
     <ClInclude Include="adchpp\TigerHash.h" />
-    <ClInclude Include="adchpp\TimeUtil.h" />
     <ClInclude Include="adchpp\Utils.h" />
     <ClInclude Include="adchpp\version.h" />
     <ClInclude Include="baselib\Base32.h" />
@@ -112,6 +112,7 @@
     <ClInclude Include="baselib\Text.h" />
     <ClInclude Include="baselib\Thread.h" />
     <ClInclude Include="baselib\TigerHash.h" />
+    <ClInclude Include="baselib\TimeUtil.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

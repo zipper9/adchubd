@@ -20,6 +20,7 @@
 #define ADCHPP_UTILS_H_
 
 #include <string>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 namespace adchpp
 {
@@ -32,6 +33,15 @@ namespace adchpp
 		static bool isPrivateIp(std::string const& ip, bool v6);
 		static bool validateCharset(std::string const& field, int p);
 	};
+
+	namespace time
+	{
+		using namespace boost::posix_time;
+		inline ptime now()
+		{
+			return microsec_clock::local_time();
+		}
+	}
 }
 
 #endif // ADCHPP_UTILS_H_

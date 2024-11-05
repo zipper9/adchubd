@@ -141,6 +141,9 @@
     <ClCompile Include="adchpp\Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="baselib\TimeUtil.cpp">
+      <Filter>baselib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="adchpp\AdcCommand.h">
@@ -207,9 +210,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="adchpp\TigerHash.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="adchpp\TimeUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="adchpp\version.h">
@@ -298,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="adchpp\Utils.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\TimeUtil.h">
+      <Filter>baselib</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

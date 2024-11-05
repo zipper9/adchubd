@@ -24,7 +24,7 @@
 #include "Buffer.h"
 #include "CID.h"
 #include "Plugin.h"
-#include "TimeUtil.h"
+#include "Utils.h"
 #include "Reason.h"
 
 namespace adchpp

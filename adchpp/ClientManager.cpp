@@ -21,7 +21,6 @@
 #include "Core.h"
 #include "LogManager.h"
 #include "SocketManager.h"
-#include "Utils.h"
 #include "version.h"
 
 #include <baselib/File.h>
@@ -821,16 +820,14 @@ using adchpp::Entity;
 		dcassert(c.getState() == Entity::STATE_IDENTIFY);
 		dcdebug("%s entering VERIFY\n", AdcCommand::fromSID(c.getSID()).c_str());
 
+		static const size_t CHALLENGE_SIZE = 32;
 		ByteVector challenge;
-		challenge.reserve(32);
-		for (int i = 0; i < 32 / 4; ++i)
-		{
-			uint32_t r = Util::rand();
-			challenge.insert(challenge.end(), (uint8_t*)&r, 4 + (uint8_t*)&r);
-		}
+		challenge.resize(CHALLENGE_SIZE);
+		uint8_t* data = &challenge[0];
+		Util::randBytes(data, CHALLENGE_SIZE, true);
 
 		if (sendData)
-			c.send(AdcCommand(AdcCommand::CMD_GPA).addParam(Util::toBase32(&challenge[0], challenge.size())));
+			c.send(AdcCommand(AdcCommand::CMD_GPA).addParam(Util::toBase32(data, CHALLENGE_SIZE)));
 
 		setState(c, Entity::STATE_VERIFY);
 		return challenge;

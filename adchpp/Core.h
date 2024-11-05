@@ -19,7 +19,7 @@
 #ifndef ADCHPP_ADCHPP_CORE_H_
 #define ADCHPP_ADCHPP_CORE_H_
 
-#include "TimeUtil.h"
+#include "Utils.h"
 #include "forward.h"
 
 namespace adchpp
