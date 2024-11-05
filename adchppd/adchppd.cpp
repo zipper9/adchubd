@@ -24,86 +24,86 @@
 #include <adchpp/AppPaths.h>
 #include <baselib/File.h>
 #include <baselib/SimpleXML.h>
+#include <baselib/PathUtil.h>
 
 using namespace adchpp;
 
-void loadXML(Core& core, const string& aFileName)
+void loadXML(Core& core, const string& fileName)
 {
-	printf("Loading settings from %s\n", aFileName.c_str());
+	printf("Loading settings from %s\n", fileName.c_str());
 	try
 	{
 		SimpleXML xml;
-
-		xml.fromXML(File(aFileName, File::READ, File::OPEN).read());
-
+		xml.fromXML(File(fileName, File::READ, File::OPEN).read());
 		xml.resetCurrentChild();
-
 		xml.stepIn();
-
 		while (xml.getNextChild())
 		{
 			if (xml.getChildTag() == "Settings")
 			{
 				xml.stepIn();
-
 				while (xml.getNextChild())
 				{
-
-					printf("Processing %s\n", xml.getChildTag().c_str());
-					if (xml.getChildTag() == "HubName")
+					const string& tag = xml.getChildTag();
+					printf("Processing %s\n", tag.c_str());
+					if (tag == "HubName")
 					{
 						core.getClientManager().getEntity(AdcCommand::HUB_SID)->setField("NI", xml.getChildData());
 					}
-					else if (xml.getChildTag() == "Description")
+					else if (tag == "Description")
 					{
 						core.getClientManager().getEntity(AdcCommand::HUB_SID)->setField("DE", xml.getChildData());
 					}
-					else if (xml.getChildTag() == "Log")
+					else if (tag == "Log")
 					{
 						core.getLogManager().setEnabled(xml.getChildData() == "1");
 					}
-					else if (xml.getChildTag() == "LogFile")
+					else if (tag == "LogFile")
 					{
 						core.getLogManager().setLogFile(xml.getChildData());
 					}
-					else if (xml.getChildTag() == "MaxCommandSize")
+					else if (tag == "DataPath")
+					{
+						string path = xml.getChildData();
+						Util::toNativePathSeparators(path);
+						Util::appendPathSeparator(path);
+						core.setDataPath(path);
+					}
+					else if (tag == "MaxCommandSize")
 					{
 						core.getClientManager().setMaxCommandSize(Util::toInt(xml.getChildData()));
 					}
-					else if (xml.getChildTag() == "BufferSize")
+					else if (tag == "BufferSize")
 					{
 						core.getSocketManager().setBufferSize(Util::toInt(xml.getChildData()));
 					}
-					else if (xml.getChildTag() == "MaxBufferSize")
+					else if (tag == "MaxBufferSize")
 					{
 						core.getSocketManager().setMaxBufferSize(Util::toInt(xml.getChildData()));
 					}
-					else if (xml.getChildTag() == "OverflowTimeout")
+					else if (tag == "OverflowTimeout")
 					{
 						core.getSocketManager().setOverflowTimeout(Util::toInt(xml.getChildData()));
 					}
-					else if (xml.getChildTag() == "DisconnectTimeout")
+					else if (tag == "DisconnectTimeout")
 					{
 						core.getSocketManager().setDisconnectTimeout(Util::toInt(xml.getChildData()));
 					}
-					else if (xml.getChildTag() == "LogTimeout")
+					else if (tag == "LogTimeout")
 					{
 						core.getClientManager().setLogTimeout(Util::toInt(xml.getChildData()));
 					}
-					else if (xml.getChildTag() == "HbriTimeout")
+					else if (tag == "HbriTimeout")
 					{
 						core.getClientManager().setHbriTimeout(Util::toInt(xml.getChildData()));
 					}
 				}
-
 				xml.stepOut();
 			}
 			else if (xml.getChildTag() == "Servers")
 			{
 				xml.stepIn();
-
 				ServerInfoList servers;
-
 				while (xml.findChild("Server"))
 				{
 					ServerInfoPtr server = std::make_shared<ServerInfo>();
@@ -133,9 +133,7 @@ void loadXML(Core& core, const string& aFileName)
 #endif
 						servers.push_back(server);
 				}
-
 				core.getSocketManager().setServers(servers);
-
 				xml.stepOut();
 			}
 			else if (xml.getChildTag() == "Plugins")

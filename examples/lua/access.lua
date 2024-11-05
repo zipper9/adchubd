@@ -11,23 +11,22 @@ local adchpp = base.luadchpp
 local string = base.require('string')
 
 -- Where to read/write user database
-local users_file = adchpp.Util_getCfgPath() .. "users.txt"
+local users_file = adchpp.getDataPath() .. "users.txt"
 
 -- Where to read/write settings
-local settings_file = adchpp.Util_getCfgPath() .. "settings.txt"
+local settings_file = adchpp.getDataPath() .. "settings.txt"
 
 -- ADC extensions this script adds support for
 local extensions = { "PING" }
 
 -- Regexes for the various fields. 
 cid_regex = "^" .. string.rep("[A-Z2-7]", 39) .. "$" -- No way of expressing exactly 39 chars without being explicit it seems
-pid_regex = cid_regex
 sid_regex = "^" .. string.rep("[A-Z2-7]", 4) .. "$"
 integer_regex = "^%d+$"
 
 inf_fields = {
 	["ID"] = cid_regex,
-	["PD"] = pid_regex,
+	["PD"] = cid_regex,
 	["I4"] = "^%d+%.%d+%.%d+%.%d+$",
 	["I6"] = "^[%x:]+$", -- This could probably be made better...
 	["U4"] = integer_regex,

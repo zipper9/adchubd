@@ -50,19 +50,17 @@ local function log(message)
 end
 
 -- Where to read/write database and settings
-local fl_settings_file = adchpp.Util_getCfgPath() .. "fl_settings.txt"
-local li_settings_file = adchpp.Util_getCfgPath() .. "li_settings.txt"
-local en_settings_file = adchpp.Util_getCfgPath() .. "en_settings.txt"
+local fl_settings_file = adchpp.getDataPath() .. "fl_settings.txt"
+local li_settings_file = adchpp.getDataPath() .. "li_settings.txt"
+local en_settings_file = adchpp.getDataPath() .. "en_settings.txt"
 local fldb_folder = "FL_DataBase"
-local script_path = base.scriptPath .. '/'
-local fldb_path = script_path .. fldb_folder .. '/'
-local fldb_path = string.gsub(fldb_path, '\\', '/')
-local fldb_path = string.gsub(fldb_path, '//+', '/')
-local limitstats_file = fldb_path .. "limitstats.txt"
-local commandstats_file = fldb_path .. "commandstats.txt"
-local tmpbanstats_file = fldb_path .. "tmpbanstats.txt"
-local kickstats_file = fldb_path .. "kickstats.txt"
-local entitystats_file = fldb_path .. "entitystats.txt"
+local fldb_path = adchpp.getDataPath() .. fldb_folder
+local path_sep = string.sub(adchpp.getDataPath(), -1)
+local limitstats_file = fldb_path .. path_sep .. "limitstats.txt"
+local commandstats_file = fldb_path .. path_sep .. "commandstats.txt"
+local tmpbanstats_file = fldb_path .. path_sep .. "tmpbanstats.txt"
+local kickstats_file = fldb_path .. path_sep .. "kickstats.txt"
+local entitystats_file = fldb_path .. path_sep .. "entitystats.txt"
 
 -- Setting the level for administrating commands, viewing the stats and script's bans
 local level_admin = 9
@@ -164,7 +162,7 @@ local function verify_fldb_folder()
 	local file = io.open(tmpbanstats_file, "r")
 	if not file then
 		log('The folder '.. fldb_path .. ' was not found, creating it ...')
-		fldb_folder_exist = os.execute("mkdir ".. fldb_folder)
+		fldb_folder_exist = os.execute("mkdir ".. fldb_path)
 	else
 		file:close()
 	end
@@ -1009,7 +1007,7 @@ local function data_info_string_entity_hist(info)
 	end
 
 	if info.su then
-		str = str .. "\n\tSuported: " .. info.su
+		str = str .. "\n\tSupported: " .. info.su
 	end
 
 	if info.updated then

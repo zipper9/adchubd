@@ -21,19 +21,27 @@
 #include "LogManager.h"
 #include "PluginManager.h"
 #include "SocketManager.h"
+#include "version.h"
+#include <baselib/File.h>
 
 namespace adchpp
 {
+	using std::string;
 
-	std::shared_ptr<Core> Core::create(const std::string& configPath)
+	std::shared_ptr<Core> Core::create(const string& configPath)
 	{
 		auto ret = std::shared_ptr<Core>(new Core(configPath));
 		ret->init();
 		return ret;
 	}
 
-	Core::Core(const std::string& configPath) : configPath(configPath), startTime(time::now())
+	Core::Core(const string& configPath) : configPath(configPath), startTime(time::now())
 	{
+#ifdef _WIN32
+		dataPath = configPath;
+#else
+		dataPath = "/var/lib/" APPNAME "/data/";
+#endif
 	}
 
 	Core::~Core()
@@ -62,8 +70,8 @@ namespace adchpp
 
 	void Core::run()
 	{
+		File::ensureDirectory(dataPath);
 		pm->load();
-
 		sm->run();
 	}
 
@@ -79,22 +87,21 @@ namespace adchpp
 		pm->shutdown();
 	}
 
-	const std::string& Core::getConfigPath() const
-	{
-		return configPath;
-	}
 	LogManager& Core::getLogManager()
 	{
 		return *lm;
 	}
+
 	SocketManager& Core::getSocketManager()
 	{
 		return *sm;
 	}
+
 	PluginManager& Core::getPluginManager()
 	{
 		return *pm;
 	}
+
 	ClientManager& Core::getClientManager()
 	{
 		return *cm;
@@ -110,7 +117,7 @@ namespace adchpp
 		sm->addJob(msec, callback);
 	}
 
-	void Core::addJob(const std::string& time, const Callback& callback)
+	void Core::addJob(const string& time, const Callback& callback)
 	{
 		sm->addJob(time, callback);
 	}
@@ -120,7 +127,7 @@ namespace adchpp
 		return sm->addTimedJob(msec, callback);
 	}
 
-	Core::Callback Core::addTimedJob(const std::string& time, const Callback& callback)
+	Core::Callback Core::addTimedJob(const string& time, const Callback& callback)
 	{
 		return sm->addTimedJob(time, callback);
 	}

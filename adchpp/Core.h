@@ -44,7 +44,9 @@ namespace adchpp
 		PluginManager& getPluginManager();
 		ClientManager& getClientManager();
 
-		const std::string& getConfigPath() const;
+		const std::string& getConfigPath() const { return configPath; }
+		const std::string& getDataPath() const { return dataPath; }
+		void setDataPath(const std::string& path) { dataPath = path; }
 
 		/** execute a function asynchronously */
 		void addJob(const Callback& callback) noexcept;
@@ -73,10 +75,7 @@ namespace adchpp
 		 */
 		Callback addTimedJob(const std::string& time, const Callback& callback);
 
-		time::ptime getStartTime() const
-		{
-			return startTime;
-		}
+		time::ptime getStartTime() const { return startTime; }
 
 	private:
 		Core(const std::string& configPath);
@@ -90,7 +89,8 @@ namespace adchpp
 		std::unique_ptr<PluginManager> pm;
 		std::unique_ptr<ClientManager> cm;
 
-		std::string configPath;
+		const std::string configPath;
+		std::string dataPath;
 		time::ptime startTime;
 	};
 

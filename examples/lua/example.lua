@@ -6,7 +6,7 @@
 -- be a good idea.
 
 -- Generally, to reach member "bar" of the class "foo" of ADCH++, one has to use: adchpp.foo_bar.
--- Examples: adchpp.Util_getCfgPath(), adchpp.AdcCommand_CMD_MSG, adchpp.Entity_STATE_NORMAL...
+-- Examples: adchpp.getDataPath(), adchpp.AdcCommand_CMD_MSG, adchpp.Entity_STATE_NORMAL...
 
 -- Feel free to use <https://answers.launchpad.net/adchpp> or <www.adcportal.com> if you need help.
 

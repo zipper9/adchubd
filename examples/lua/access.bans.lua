@@ -14,7 +14,7 @@ local string = base.require("string")
 local table = base.require("table")
 
 -- Where to read/write ban database
-local bans_file = adchpp.Util_getCfgPath() .. "bans.txt"
+local bans_file = adchpp.getDataPath() .. "bans.txt"
 bans = {}
 bans.cids = {}
 bans.ips = {}

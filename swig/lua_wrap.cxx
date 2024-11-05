@@ -3150,6 +3150,7 @@ namespace adchpp {
 	SocketManager* getSM(lua_State* l) { return &getCurrentCore(l)->getSocketManager(); }
 
 	const std::string &getConfigPath(lua_State *l) { return getCurrentCore(l)->getConfigPath(); }
+	const std::string &getDataPath(lua_State *l) { return getCurrentCore(l)->getDataPath(); }
 	const std::string &Util_getCfgPath(lua_State *l) { return getConfigPath(l); }
 	std::string Util_getLocalIp(lua_State *l) { return Utils::getLocalIp(); }
 }
@@ -17403,6 +17404,31 @@ fail:
 }
 
 
+static int _wrap_getDataPath(lua_State* L) {
+  int SWIG_arg = 0;
+  lua_State *arg1 = (lua_State *) 0 ;
+  std::string *result = 0 ;
+  
+  arg1 = L;
+  SWIG_check_num_args("adchpp::getDataPath",0,0)
+  {
+    try {
+      result = (std::string *) &adchpp::getDataPath(arg1);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushlstring(L,result->data(),result->size()); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_Util_getCfgPath(lua_State* L) {
   int SWIG_arg = 0;
   lua_State *arg1 = (lua_State *) 0 ;
@@ -17567,6 +17593,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "getPM", _wrap_getPM},
     { "getSM", _wrap_getSM},
     { "getConfigPath", _wrap_getConfigPath},
+    { "getDataPath", _wrap_getDataPath},
     { "Util_getCfgPath", _wrap_Util_getCfgPath},
     { "Util_getLocalIp", _wrap_Util_getLocalIp},
     {0,0}

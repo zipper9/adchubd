@@ -11,7 +11,7 @@ base.assert(base['access'], 'access.lua must be loaded and running before histor
 local access = base.access
 
 -- Where to read/write history file - set to nil to disable persistent history
-local history_file = adchpp.Util_getCfgPath() .. "history.txt"
+local history_file = adchpp.getDataPath() .. "history.txt"
 
 local os = base.require('os')
 local json = base.require('json')

@@ -27,21 +27,21 @@ local texts = {}
 
 texts.about = {
 	label = 'About this hub',
-	path = adchpp.Util_getCfgPath() .. 'about.txt',
+	path = adchpp.getDataPath() .. 'about.txt',
 	user_command = true,
 	user_connect = true,
 }
 
 texts.motd = {
 	label = 'Message of the day',
-	path = adchpp.Util_getCfgPath() .. 'motd.txt',
+	path = adchpp.getDataPath() .. 'motd.txt',
 	user_command = true,
 	user_connect = true,
 }
 
 texts.rules = {
 	label = 'Rules',
-	path = adchpp.Util_getCfgPath() .. 'rules.txt',
+	path = adchpp.getDataPath() .. 'rules.txt',
 	user_command = true,
 	user_connect = true,
 }
