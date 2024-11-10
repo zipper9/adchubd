@@ -1,5 +1,6 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.11)
 project(adchubd)
+set(CMAKE_CXX_STANDARD 14)
 
 find_package(Boost REQUIRED)
 find_package(OpenSSL)
@@ -70,11 +71,6 @@ add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${Boost_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/lua)
 
-find_package(Threads)
-if(CMAKE_USE_PTHREADS_INIT)
-  add_compile_definitions(HAVE_PTHREAD)
-endif()
-
 if(OPENSSL_FOUND)
   add_compile_definitions(HAVE_OPENSSL)
   include_directories(${OPENSSL_INCLUDE_DIR})
@@ -82,3 +78,9 @@ if(OPENSSL_FOUND)
 endif()
 
 target_link_libraries(${CMAKE_PROJECT_NAME} lua)
+
+if(NOT WIN32)
+  find_package(Threads)
+  find_package(Iconv)
+  target_link_libraries(${CMAKE_PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT} ${CMAKE_DL_LIBS} ${Iconv_LIBRARIES})
+endif()

@@ -3,6 +3,7 @@
 
 #include <locale.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string>
 #include <type_traits>
 

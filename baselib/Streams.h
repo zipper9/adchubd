@@ -23,6 +23,7 @@
 #include "BaseStreams.h"
 #include <algorithm>
 #include <string.h>
+#include <stdint.h>
 
 #ifndef NO_RESOURCE_MANAGER
 #include "ResourceManager.h"

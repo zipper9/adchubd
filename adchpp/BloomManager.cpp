@@ -164,7 +164,7 @@ void BloomManager::onReceive(Entity& e, AdcCommand& cmd, bool& ok)
 			return;
 		}
 
-		c.setDataMode(bind(&BloomManager::onData, this, _1, _2, _3), bytes);
+		c.setDataMode(std::bind(&BloomManager::onData, this, _1, _2, _3), bytes);
 		ok = false;
 	}
 }
@@ -241,7 +241,7 @@ void BloomManager::onStats(Entity& c)
 	size_t clients = core.getClientManager().getEntities().size();
 	stats += "\nClient support: " + Util::toString(bytes.first) + "/" + Util::toString(clients) +
 			 " (" + Util::toString(bytes.first * 100. / clients) + "%)";
-	stats += "\nApproximate memory usage: " + Util::formatBytes(bytes.second) + ", " +
+	stats += "\nApproximate memory usage: " + Util::formatBytes((int64_t) bytes.second) + ", " +
 			 Util::formatBytes(static_cast<double>(bytes.second) / clients) + "/client";
 	c.send(AdcCommand(AdcCommand::CMD_MSG).addParam(stats));
 }

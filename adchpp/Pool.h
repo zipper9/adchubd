@@ -93,12 +93,12 @@ namespace adchpp
 
 		T* get()
 		{
-			LockBase l(mtx);
+			LOCK(mtx);
 			return pool.get();
 		}
 		void put(T* obj)
 		{
-			LockBase l(mtx);
+			LOCK(mtx);
 			pool.put(obj);
 		}
 
