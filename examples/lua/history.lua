@@ -248,7 +248,7 @@ else
 	cm:regBot(hidden_bot)
 
 	autil.on_unloaded(_NAME, function()
-		hidden_bot:disconnect(adchpp.Util_REASON_PLUGIN)
+		hidden_bot:disconnect(adchpp.REASON_PLUGIN)
 	end)
 end
 

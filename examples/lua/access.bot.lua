@@ -111,7 +111,7 @@ main_bot = makeBot()
 cm:regBot(main_bot)
 
 autil.on_unloaded(_NAME, function()
-	main_bot:disconnect(adchpp.Util_REASON_PLUGIN)
+	main_bot:disconnect(adchpp.REASON_PLUGIN)
 end)
 
 access.register_handler(adchpp.AdcCommand_CMD_MSG, onMSG)

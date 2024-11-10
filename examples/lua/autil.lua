@@ -61,7 +61,7 @@ function dump(c, code, params)
 	:addParam(adchpp.AdcCommand_SEV_FATAL .. code):addParam(msg))
 
 	c:send(cmd)
-	c:disconnect(adchpp.Util_REASON_PLUGIN)
+	c:disconnect(adchpp.REASON_PLUGIN)
 end
 
 local function file_of_name(file, name)
