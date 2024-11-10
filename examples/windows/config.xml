@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<ADCHub>
+	<Settings>
+		<HubName>TheHub</HubName>
+		<Description>No description</Description>
+
+		<!-- Enable/disable logging -->
+		<Log>1</Log>
+
+		<!-- Log path -->
+		<LogFile>logs/%Y%m.log</LogFile>
+
+		<MaxCommandSize>16384</MaxCommandSize>
+
+		<!-- Buffer size, this is the minimum buffer size that is initially assigned to
+			 each user. Larger buffer = more memory usage / user, less = a little bit
+			 slower performance if the user sends more than these many bytes at a time
+			 (in a chat message for instance...). Don't set to lower than 256. -->
+		<BufferSize>1024</BufferSize>
+		<MaxBufferSize>16384</MaxBufferSize>
+
+		<OverflowTimeout>60000</OverflowTimeout>
+		<DisconnectTimeout>10000</DisconnectTimeout>
+		<LogTimeout>10000</LogTimeout>
+		<HbriTimeout>3000</HbriTimeout>
+	</Settings>
+
+	<Servers>
+		<!--
+		One <Server> tag per listening socket.
+
+		To enable TLS, set TLS="1" and define the following
+		paths: Certificate, PrivateKey, DHParams (optional).
+
+		An example secure server setting:
+		<Server Port="2781" TLS="1"
+			Certificate="certs/cert.pem"
+			PrivateKey="certs/privkey.pem" />
+		-->
+		<Server Port="2780"/>
+	</Servers>
+
+	<Plugins>
+		<!-- Enable scripting (recommended). -->
+		<Plugin>Script</Plugin>
+		<!-- Enable Bloom extension support. -->
+		<Plugin>Bloom</Plugin>
+	</Plugins>
+</ADCHub>
