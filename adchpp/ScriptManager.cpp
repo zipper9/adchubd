@@ -24,6 +24,7 @@
 #include "Core.h"
 #include "LogManager.h"
 #include "PluginManager.h"
+#include "version.h"
 #include <baselib/File.h>
 #include <baselib/SimpleXML.h>
 
@@ -32,6 +33,12 @@ using std::placeholders::_1;
 using adchpp::ScriptManager;
 
 const string ScriptManager::className = "ScriptManager";
+
+#ifdef _WIN32
+static const string defaultScriptPath = "Scripts";
+#else
+static const string defaultScriptPath = "/etc/" APPNAME "/scripts";
+#endif
 
 ScriptManager::ScriptManager(Core& core) : core(core)
 {
@@ -63,9 +70,7 @@ void ScriptManager::load()
 		xml.stepIn();
 		while (xml.findChild("Engine"))
 		{
-			const std::string& scriptPath = xml.getChildAttrib("scriptPath");
-			const std::string& language = xml.getChildAttrib("language");
-
+			const string& language = xml.getChildAttrib("language");
 			if (language.empty() || language == "lua")
 			{
 				engines.push_back(std::unique_ptr<LuaEngine>(new LuaEngine(core)));
@@ -76,10 +81,13 @@ void ScriptManager::load()
 				continue;
 			}
 
+			const string* scriptPath = &xml.getChildAttrib("scriptPath");
+			if (scriptPath->empty()) scriptPath = &defaultScriptPath;
+
 			xml.stepIn();
 			while (xml.findChild("Script"))
 			{
-				engines.back()->loadScript(scriptPath, xml.getChildData(), ParameterMap());
+				engines.back()->loadScript(*scriptPath, xml.getChildData(), ParameterMap());
 			}
 			xml.stepOut();
 		}
