@@ -19,62 +19,70 @@
 #include "LogManager.h"
 #include "Core.h"
 #include "AppPaths.h"
+#include "version.h"
 #include <baselib/File.h>
 #include <baselib/FormatUtil.h>
 #include <baselib/PathUtil.h>
+#include <baselib/ParamExpander.h>
 
-namespace adchpp
+using namespace adchpp;
+
+LogManager::LogManager(Core& core) : enabled(true), useConsole(true), core(core)
 {
+#ifdef _WIN32
+	logFileTemplate = "logs/%Y%m.log";
+#else
+	logFileTemplate = "/var/log/" APPNAME "/%Y%m.log";
+#endif
+}
 
-	LogManager::LogManager(Core& core) : logFile("logs/adchubd/%Y%m.log"), enabled(true), core(core)
+void LogManager::log(const string& area, const string& msg) noexcept
+{
+	static const string format("%Y-%m-%d %H:%M:%S: ");
+	Util::TimeParamExpander ex(::time(nullptr));
+	string tmp = Util::formatParams(format, &ex, false);
+	tmp += area;
+	tmp += ": ";
+	tmp += msg;
+	if (tmp.back() != '\n') tmp += '\n';
+	doLog(ex, tmp);
+}
+
+void LogManager::doLog(Util::ParamExpander& ex, const string& msg) noexcept
+{
+	sig(msg);
+	if (useConsole)
 	{
+		fputs(msg.c_str(), stdout);
+		fflush(stdout);
 	}
+	if (!enabled) return;
 
-	void LogManager::log(const string& area, const string& msg) noexcept
+	string fileName = logFileTemplate;
+	Util::toNativePathSeparators(fileName);
+	string newFileName = Util::formatParams(AppPaths::makeAbsolutePath(core.getConfigPath(), fileName), &ex, false);
+	LockBase<CriticalSection> l(mtx);
+	try
 	{
-		char buf[64];
-		time_t now = std::time(NULL);
-		size_t s = strftime(buf, 64, "%Y-%m-%d %H:%M:%S: ", localtime(&now));
-		string tmp(buf, s);
-		tmp += area;
-		tmp += ": ";
-		tmp += msg;
-		dolog(tmp);
-	}
-
-	void LogManager::dolog(const string& msg) noexcept
-	{
-		dcdebug("Logging: %s\n", msg.c_str());
-		signalLog_(msg);
-		if (getEnabled())
+		if (newFileName != currentFileName)
 		{
-			string fileName = getLogFile();
-			Util::toNativePathSeparators(fileName);
-			string logFilePath = Util::formatDateTime(AppPaths::makeAbsolutePath(core.getConfigPath(), fileName), ::time(nullptr));
-			LockBase<CriticalSection> l(mtx);
-			try
-			{
-				File f(logFilePath, File::WRITE, File::OPEN | File::CREATE);
-				f.setEndPos(0);
-				f.write(msg + "\r\n");
-				return;
-			}
-			catch (const FileException& e)
-			{
-				dcdebug("LogManager::log: %s\n", e.getError().c_str());
-			}
-			try
-			{
-				File::ensureDirectory(logFilePath);
-				File f(logFilePath, File::WRITE, File::OPEN | File::CREATE);
-				f.setEndPos(0);
-				f.write(msg + "\r\n");
-			}
-			catch (const FileException& ee)
-			{
-				dcdebug("LogManager::log2: %s\n", ee.getError().c_str());
-			}
+			currentFileName.clear();
+			File::ensureDirectory(newFileName);
+			file.close();
+#ifdef _WIN32
+			file.init(Text::utf8ToWide(newFileName), File::WRITE, File::OPEN | File::CREATE);
+#else
+			file.init(newFileName, File::WRITE, File::OPEN | File::CREATE);
+#endif
+			file.setEndPos(0);
+			currentFileName = std::move(newFileName);
 		}
+		file.write(msg);
+		return;
 	}
-
-} // namespace adchpp
+	catch (const FileException& e)
+	{
+		dcdebug("LogManager::log: %s\n", e.getError().c_str());
+		return;
+	}
+}

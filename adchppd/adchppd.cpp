@@ -45,7 +45,6 @@ void loadXML(Core& core, const string& fileName)
 				while (xml.getNextChild())
 				{
 					const string& tag = xml.getChildTag();
-					printf("Processing %s\n", tag.c_str());
 					if (tag == "HubName")
 					{
 						core.getClientManager().getEntity(AdcCommand::HUB_SID)->setField("NI", xml.getChildData());
@@ -122,8 +121,6 @@ void loadXML(Core& core, const string& fileName)
 						server->TLSParams.dh = AppPaths::makeAbsolutePath(xml.getChildAttrib("DHParams"));
 					}
 
-					printf("Loaded server for port %s (secure: %s)\n", server->port.c_str(),
-						   server->secure() ? "true" : "false");
 #ifndef HAVE_OPENSSL
 					if (server->secure())
 						fprintf(stderr,

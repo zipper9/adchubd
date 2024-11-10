@@ -105,6 +105,7 @@ static void init()
 	// else
 	// LOG(modName, versionString + " started from console");
 
+	core->getLogManager().setUseConsole(!asService);
 	loadXML(*core, AppPaths::makeAbsolutePath(core->getConfigPath(), "config.xml"));
 }
 
@@ -226,6 +227,7 @@ static BOOL WINAPI HandlerRoutine(DWORD dwCtrlType)
 
 static void runConsole()
 {
+	asService = false;
 	SetConsoleCtrlHandler(HandlerRoutine, TRUE);
 
 	printf("Starting %s\n", appName.c_str());

@@ -20,8 +20,10 @@
 #define ADCHPP_LOGMANAGER_H
 
 #include <baselib/Locks.h>
-#include <string>
+#include <baselib/File.h>
 #include "Signal.h"
+
+namespace Util { class ParamExpander; }
 
 namespace adchpp
 {
@@ -40,43 +42,32 @@ namespace adchpp
 		 */
 		void log(const std::string& area, const std::string& msg) noexcept;
 
-		void setLogFile(const std::string& fileName)
-		{
-			logFile = fileName;
-		}
-		const std::string& getLogFile() const
-		{
-			return logFile;
-		}
-
-		void setEnabled(bool enabled_)
-		{
-			enabled = enabled_;
-		}
-		bool getEnabled() const
-		{
-			return enabled;
-		}
+		void setLogFile(const std::string& s) { logFileTemplate = s; }
+		const std::string& getLogFile() const { return logFileTemplate; }
+		void setEnabled(bool flag) { enabled = flag; }
+		bool getEnabled() const { return enabled; }
+		void setUseConsole(bool flag) { useConsole = flag; }
+		bool getUseConsole() const { return useConsole; }
 
 		typedef SignalTraits<void(const std::string&)> SignalLog;
-		SignalLog::Signal& signalLog()
-		{
-			return signalLog_;
-		}
+		SignalLog::Signal& signalLog() { return sig; }
 
 	private:
 		friend class Core;
 
-		FastCriticalSection mtx;
-		std::string logFile;
+		CriticalSection mtx;
+		std::string logFileTemplate;
+		std::string currentFileName;
+		File file;
 		bool enabled;
+		bool useConsole;
 
 		LogManager(Core& core);
 
-		SignalLog::Signal signalLog_;
+		SignalLog::Signal sig;
 		Core& core;
 
-		void dolog(const std::string& msg) noexcept;
+		void doLog(Util::ParamExpander& ex, const std::string& msg) noexcept;
 	};
 
 #define LOGC(core, area, msg) (core).getLogManager().log(area, msg)

@@ -17,6 +17,7 @@
  */
 
 #include <adchpp/Core.h>
+#include <adchpp/LogManager.h>
 #include <adchpp/AppPaths.h>
 #include <adchpp/version.h>
 #include <baselib/File.h>
@@ -39,7 +40,7 @@ void breakHandler(int)
 	if (core) core->shutdown();
 }
 
-static void init()
+static void init(bool asDaemon)
 {
 	// Ignore SIGPIPE...
 	struct sigaction sa = { 0 };
@@ -70,6 +71,7 @@ static void init()
 		fflush(pidFile);
 	}
 
+	core->getLogManager().setUseConsole(!asDaemon);
 	loadXML(*core, AppPaths::makeAbsolutePath(core->getConfigPath(), "config.xml"));
 }
 
@@ -81,9 +83,8 @@ static void installHandler()
 	sigaction(SIGTERM, &sa, nullptr);
 }
 
-static void uninit(bool asDaemon)
+static void uninit()
 {
-	if (!asDaemon) puts("Shut down");
 	if (pidFile)
 	{
 		fclose(pidFile);
@@ -140,7 +141,7 @@ static void run(const string& configPath, bool asDaemon)
 	try
 	{
 		core = Core::create(configPath);
-		init();
+		init(asDaemon);
 		if (!asDaemon) printf("%s running, press Ctrl-C to exit...\n", versionString.c_str());
 		core->run();
 		core.reset();
@@ -149,7 +150,7 @@ static void run(const string& configPath, bool asDaemon)
 	{
 		fprintf(stderr, "\nFATAL: Can't start %s: %s\n", appName.c_str(), e.what());
 	}
-	uninit(asDaemon);
+	uninit();
 }
 
 static void printUsage()
