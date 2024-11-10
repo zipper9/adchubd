@@ -16015,50 +16015,6 @@ fail:
 }
 
 
-static int _wrap_ClientManager_verifyNick(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::ClientManager *arg1 = (adchpp::ClientManager *) 0 ;
-  adchpp::Entity *arg2 = 0 ;
-  adchpp::AdcCommand *arg3 = 0 ;
-  bool result;
-  
-  SWIG_check_num_args("adchpp::ClientManager::verifyNick",3,3)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::ClientManager::verifyNick",1,"adchpp::ClientManager *");
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg("adchpp::ClientManager::verifyNick",2,"adchpp::Entity &");
-  if(!lua_isuserdata(L,3)) SWIG_fail_arg("adchpp::ClientManager::verifyNick",3,"adchpp::AdcCommand const &");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__ClientManager,0))){
-    SWIG_fail_ptr("ClientManager_verifyNick",1,SWIGTYPE_p_adchpp__ClientManager);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_adchpp__Entity,0))){
-    SWIG_fail_ptr("ClientManager_verifyNick",2,SWIGTYPE_p_adchpp__Entity);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&arg3,SWIGTYPE_p_adchpp__AdcCommand,0))){
-    SWIG_fail_ptr("ClientManager_verifyNick",3,SWIGTYPE_p_adchpp__AdcCommand);
-  }
-  
-  {
-    try {
-      result = (bool)(arg1)->verifyNick(*arg2,(adchpp::AdcCommand const &)*arg3);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_ClientManager_verifyPassword(lua_State* L) {
   int SWIG_arg = 0;
   adchpp::ClientManager *arg1 = (adchpp::ClientManager *) 0 ;
@@ -16096,97 +16052,6 @@ static int _wrap_ClientManager_verifyPassword(lua_State* L) {
   {
     try {
       result = (bool)(arg1)->verifyPassword(*arg2,(std::string const &)*arg3,(ByteVector const &)*arg4,(std::string const &)*arg5);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ClientManager_verifyIp(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::ClientManager *arg1 = (adchpp::ClientManager *) 0 ;
-  adchpp::Client *arg2 = 0 ;
-  adchpp::AdcCommand *arg3 = 0 ;
-  bool arg4 ;
-  bool result;
-  
-  SWIG_check_num_args("adchpp::ClientManager::verifyIp",4,4)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::ClientManager::verifyIp",1,"adchpp::ClientManager *");
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg("adchpp::ClientManager::verifyIp",2,"adchpp::Client &");
-  if(!lua_isuserdata(L,3)) SWIG_fail_arg("adchpp::ClientManager::verifyIp",3,"adchpp::AdcCommand &");
-  if(!lua_isboolean(L,4)) SWIG_fail_arg("adchpp::ClientManager::verifyIp",4,"bool");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__ClientManager,0))){
-    SWIG_fail_ptr("ClientManager_verifyIp",1,SWIGTYPE_p_adchpp__ClientManager);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_adchpp__Client,0))){
-    SWIG_fail_ptr("ClientManager_verifyIp",2,SWIGTYPE_p_adchpp__Client);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&arg3,SWIGTYPE_p_adchpp__AdcCommand,0))){
-    SWIG_fail_ptr("ClientManager_verifyIp",3,SWIGTYPE_p_adchpp__AdcCommand);
-  }
-  
-  arg4 = (lua_toboolean(L, 4)!=0);
-  {
-    try {
-      result = (bool)(arg1)->verifyIp(*arg2,*arg3,arg4);
-    } catch(const std::exception& e) {
-      SWIG_exception(SWIG_UnknownError, e.what());
-    }
-  }
-  lua_pushboolean(L,(int)(result!=0)); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ClientManager_verifyCID(lua_State* L) {
-  int SWIG_arg = 0;
-  adchpp::ClientManager *arg1 = (adchpp::ClientManager *) 0 ;
-  adchpp::Entity *arg2 = 0 ;
-  adchpp::AdcCommand *arg3 = 0 ;
-  bool result;
-  
-  SWIG_check_num_args("adchpp::ClientManager::verifyCID",3,3)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("adchpp::ClientManager::verifyCID",1,"adchpp::ClientManager *");
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg("adchpp::ClientManager::verifyCID",2,"adchpp::Entity &");
-  if(!lua_isuserdata(L,3)) SWIG_fail_arg("adchpp::ClientManager::verifyCID",3,"adchpp::AdcCommand &");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_adchpp__ClientManager,0))){
-    SWIG_fail_ptr("ClientManager_verifyCID",1,SWIGTYPE_p_adchpp__ClientManager);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_adchpp__Entity,0))){
-    SWIG_fail_ptr("ClientManager_verifyCID",2,SWIGTYPE_p_adchpp__Entity);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&arg3,SWIGTYPE_p_adchpp__AdcCommand,0))){
-    SWIG_fail_ptr("ClientManager_verifyCID",3,SWIGTYPE_p_adchpp__AdcCommand);
-  }
-  
-  {
-    try {
-      result = (bool)(arg1)->verifyCID(*arg2,*arg3);
     } catch(const std::exception& e) {
       SWIG_exception(SWIG_UnknownError, e.what());
     }
@@ -16723,10 +16588,7 @@ static swig_lua_method swig_ClientManager_methods[]= {
     { "enterNormal", _wrap_ClientManager_enterNormal},
     { "verifySUP", _wrap_ClientManager_verifySUP},
     { "verifyINF", _wrap_ClientManager_verifyINF},
-    { "verifyNick", _wrap_ClientManager_verifyNick},
     { "verifyPassword", _wrap_ClientManager_verifyPassword},
-    { "verifyIp", _wrap_ClientManager_verifyIp},
-    { "verifyCID", _wrap_ClientManager_verifyCID},
     { "verifyOverflow", _wrap_ClientManager_verifyOverflow},
     { "setState", _wrap_ClientManager_setState},
     { "getQueuedBytes", _wrap_ClientManager_getQueuedBytes},

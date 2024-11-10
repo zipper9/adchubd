@@ -296,25 +296,67 @@ using adchpp::Entity;
 
 	bool ClientManager::verifyINF(Entity& c, AdcCommand& cmd) noexcept
 	{
-		if (!verifyCID(c, cmd)) return false;
-		if (!verifyNick(c, cmd)) return false;
+		CID cid;
+		if (!verifyCID(c, cmd, cid)) return false;
 
-		if (cmd.getParam("DE", 0, strtmp))
+		string nick;
+		if (cmd.getParam("NI", 0, nick) && !verifyNick(c, nick)) return false;
+
+		string description;
+		if (cmd.getParam("DE", 0, description))
 		{
-			if (!Utils::validateCharset(strtmp, 32))
+			if (!Utils::validateCharset(description, 32))
 			{
 				disconnect(c, REASON_INVALID_DESCRIPTION, "Invalid character in description");
 				return false;
 			}
 		}
 
+		bool validateSecondaryProtocol = false;
 		Client* cc = c.getType() == Entity::TYPE_CLIENT ? static_cast<Client*>(&c) : nullptr;
-		if (cc && !verifyIp(*cc, cmd, false)) return false;
-		c.updateFields(cmd);
-		string tmp;
-		if (cc && cmd.getParam("SU", 0, tmp) && !c.isSet(Entity::FLAG_VALIDATE_HBRI) && c.getState() != Entity::STATE_HBRI)
-			stripProtocolSupports(*cc);
+		if (cc && !verifyIp(*cc, cmd, validateSecondaryProtocol)) return false;
 
+		if (c.getState() == Entity::STATE_IDENTIFY)
+		{
+			auto other = cids.find(cid);
+			if (other != cids.end())
+			{
+				// disconnect the ghost
+				disconnect(*other->second, REASON_CID_TAKEN, "CID taken", AdcCommand::ERROR_CID_TAKEN);
+				removeEntity(*other->second, REASON_CID_TAKEN, Util::emptyString);
+			}
+			c.setCID(cid);
+			cids.insert(make_pair(cid, &c));
+		}
+
+		if (!nick.empty())
+		{
+			const string& oldNick = c.getField("NI");
+			if (!oldNick.empty() && oldNick != nick) nicks.erase(oldNick);
+			nicks.insert(make_pair(nick, &c));
+		}
+
+		c.updateFields(cmd);
+
+		if (cc)
+		{
+			if (validateSecondaryProtocol)
+			{
+				if (c.getState() == Entity::STATE_NORMAL)
+				{
+					// Connected user with new params, perform new validation
+					sendHBRI(*cc);
+				}
+				else
+				{
+					// Connecting user, handle validation later
+					c.setFlag(Entity::FLAG_VALIDATE_HBRI);
+				}
+			}
+			string supports;
+			if (cmd.getParam("SU", 0, supports) && !c.isSet(Entity::FLAG_VALIDATE_HBRI) && c.getState() != Entity::STATE_HBRI)
+				stripProtocolSupports(*cc);
+		}
 		return true;
 	}
 
@@ -440,7 +482,8 @@ using adchpp::Entity;
 					return false;
 				}
 
-				if (!verifyIp(cc, cmd, true))
+				bool unused;
+				if (!verifyIp(cc, cmd, unused))
 				{
 					failHBRI(*mainCC);
 					return false;
@@ -598,7 +641,7 @@ using adchpp::Entity;
 		return true;
 	}
 
-	bool ClientManager::verifyIp(Client& c, AdcCommand& cmd, bool isHbriConn) noexcept
+	bool ClientManager::verifyIp(Client& c, AdcCommand& cmd, bool& validateSecondaryProtocol) noexcept
 	{
 		if (c.isSet(Entity::FLAG_OK_IP)) return true;
 
@@ -613,11 +656,9 @@ using adchpp::Entity;
 		}
 		catch (const boost::system::system_error&)
 		{
-			printf("Error when reading IP %s\n", c.getIp().c_str());
 			return false;
 		}
 
-		auto validateSecondaryProtocol = false;
 		string error;
 		if (!c.isV6())
 		{
@@ -636,57 +677,39 @@ using adchpp::Entity;
 			return false;
 		}
 
-		if (!isHbriConn && validateSecondaryProtocol)
-		{
-			if (c.getState() == Entity::STATE_NORMAL)
-			{
-				// Connected user with new params, perform new validation
-				sendHBRI(c);
-			}
-			else
-			{
-				// Connecting user, handle validation later
-				c.setFlag(Entity::FLAG_VALIDATE_HBRI);
-			}
-		}
-
 		return true;
 	}
 
-	bool ClientManager::verifyCID(Entity& c, AdcCommand& cmd) noexcept
+	bool ClientManager::verifyCID(Entity& c, const AdcCommand& cmd, CID& cid) noexcept
 	{
-		if (cmd.getParam("ID", 0, strtmp))
+		string cidStr, pidStr;
+		bool hasCID = cmd.getParam("ID", 0, cidStr);
+		bool hasPID = cmd.getParam("PD", 0, pidStr);
+		if (hasCID)
 		{
-			dcdebug("%s verifying CID %s\n", AdcCommand::fromSID(c.getSID()).c_str(), strtmp.c_str());
 			if (c.getState() != Entity::STATE_IDENTIFY)
 			{
 				disconnect(c, REASON_CID_CHANGE, "CID changes not allowed");
 				return false;
 			}
-
-			if (strtmp.size() != CID::BASE32_SIZE)
+			if (cidStr.length() != CID::BASE32_SIZE)
 			{
 				disconnect(c, REASON_PID_CID_LENGTH, "Invalid CID length");
 				return false;
 			}
-
-			CID cid(strtmp);
-
-			strtmp.clear();
-
-			if (!cmd.getParam("PD", 0, strtmp))
+			if (!hasPID)
 			{
 				disconnect(c, REASON_PID_MISSING, "PID missing", AdcCommand::ERROR_INF_MISSING, "FLPD");
 				return false;
 			}
-
-			if (strtmp.size() != CID::BASE32_SIZE)
+			if (pidStr.length() != CID::BASE32_SIZE)
 			{
 				disconnect(c, REASON_PID_CID_LENGTH, "Invalid PID length");
 				return false;
 			}
 
-			CID pid(strtmp);
+			CID pid(pidStr);
+			cid = CID(cidStr);
 
 			TigerHash th;
 			th.update(pid.data(), CID::SIZE);
@@ -695,27 +718,20 @@ using adchpp::Entity;
 				disconnect(c, REASON_PID_CID_MISMATCH, "PID does not correspond to CID", AdcCommand::ERROR_INVALID_PID);
 				return false;
 			}
-
-			auto other = cids.find(cid);
-			if (other != cids.end())
-			{
-				// disconnect the ghost
-				disconnect(*other->second, REASON_CID_TAKEN, "CID taken", AdcCommand::ERROR_CID_TAKEN);
-				removeEntity(*other->second, REASON_CID_TAKEN, Util::emptyString);
-			}
-
-			c.setCID(cid);
-
-			cids.insert(make_pair(c.getCID(), &c));
-			cmd.delParam("PD", 0);
 		}
-
-		if (cmd.getParam("PD", 0, strtmp))
+		else
 		{
-			disconnect(c, REASON_PID_WITHOUT_CID, "CID required when sending PID");
-			return false;
+			if (c.getState() == Entity::STATE_IDENTIFY)
+			{
+				disconnect(c, REASON_PID_MISSING, "CID must be supplied");
+				return false;
+			}
+			if (hasPID)
+			{
+				disconnect(c, REASON_PID_WITHOUT_CID, "CID required when sending PID");
+				return false;
+			}
 		}
-
 		return true;
 	}
 
@@ -748,30 +764,19 @@ using adchpp::Entity;
 		}
 	} // namespace
 
-	bool ClientManager::verifyNick(Entity& c, const AdcCommand& cmd) noexcept
+	bool ClientManager::verifyNick(Entity& c, const string& nick) noexcept
 	{
-		if (cmd.getParam("NI", 0, strtmp))
+		if (!validateNick(nick))
 		{
-			dcdebug("%s verifying nick %s\n", AdcCommand::fromSID(c.getSID()).c_str(), strtmp.c_str());
-
-			if (!validateNick(strtmp))
-			{
-				disconnect(c, REASON_NICK_INVALID, "Invalid character in nick", AdcCommand::ERROR_NICK_INVALID);
-				return false;
-			}
-
-			const string& oldNick = c.getField("NI");
-			if (!oldNick.empty()) nicks.erase(oldNick);
-
-			if (nicks.find(strtmp) != nicks.end())
-			{
-				disconnect(c, REASON_NICK_TAKEN, "Nick taken, please pick another one", AdcCommand::ERROR_NICK_TAKEN);
-				return false;
-			}
-
-			nicks.insert(make_pair(strtmp, &c));
+			disconnect(c, REASON_NICK_INVALID, "Invalid character in nick", AdcCommand::ERROR_NICK_INVALID);
+			return false;
 		}
-
+		const string& oldNick = c.getField("NI");
+		if (oldNick != nick && nicks.find(nick) != nicks.end())
+		{
+			disconnect(c, REASON_NICK_TAKEN, "Nick taken, please pick another one", AdcCommand::ERROR_NICK_TAKEN);
+			return false;
+		}
 		return true;
 	}
 

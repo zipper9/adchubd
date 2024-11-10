@@ -728,10 +728,7 @@ public:
 	bool enterNormal(Entity& c, bool sendData, bool sendOwnInf) throw();
 	bool verifySUP(Entity& c, AdcCommand& cmd) throw();
 	bool verifyINF(Entity& c, AdcCommand& cmd) throw();
-	bool verifyNick(Entity& c, const AdcCommand& cmd) throw();
 	bool verifyPassword(Entity& c, const std::string& password, const ByteVector& salt, const std::string& suppliedHash);
-	bool verifyIp(Client& c, AdcCommand& cmd, bool isHbriConn) throw();
-	bool verifyCID(Entity& c, AdcCommand& cmd) throw();
 	bool verifyOverflow(Entity& c);
 	void setState(Entity& c, Entity::State newState) throw();
 	size_t getQueuedBytes() throw();

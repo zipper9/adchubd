@@ -113,26 +113,10 @@ namespace adchpp
 		bool verifyINF(Entity& c, AdcCommand& cmd) noexcept;
 
 		/**
-		 * Verify nick on INF (check that its not a dupe etc...)
-		 * @return false if the client was disconnected
-		 */
-		bool verifyNick(Entity& c, const AdcCommand& cmd) noexcept;
-
-		/**
 		 * Verify password
 		 */
 		bool verifyPassword(Entity& c, const std::string& password, const ByteVector& salt, const std::string& suppliedHash);
 		bool verifyPassword(Entity& c, const std::string& password, const ByteVector& salt, const std::string& suppliedHash, TigerHash& tiger);
-
-		/**
-		 * Verify that IP is correct and replace any zero addresses.
-		 */
-		bool verifyIp(Client& c, AdcCommand& cmd, bool isHbriConn) noexcept;
-
-		/**
-		 * Verify that CID is correct and corresponds to PID
-		 */
-		bool verifyCID(Entity& c, AdcCommand& cmd) noexcept;
 
 		/**
 		 * Verify that there aren't too many sockets overflowing (indicates lack of
@@ -242,15 +226,15 @@ namespace adchpp
 		size_t logTimeout;
 		size_t hbriTimeout;
 
-		// Temporary string to use whenever a temporary string is needed (to avoid
-		// (de)allocating memory all the time...)
-		std::string strtmp;
-
 		static const std::string className;
 
 		friend class CommandHandler<ClientManager>;
 
 		uint32_t makeSID();
+
+		bool verifyNick(Entity& c, const std::string& nick) noexcept;
+		bool verifyCID(Entity& c, const AdcCommand& cmd, CID& cid) noexcept;
+		bool verifyIp(Client& c, AdcCommand& cmd, bool& validateSecondaryProtocol) noexcept;
 
 		bool sendHBRI(Client& c);
 		void maybeSend(Entity& c, const AdcCommand& cmd);
