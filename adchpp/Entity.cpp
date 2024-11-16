@@ -19,6 +19,7 @@
 #include <baselib/StrUtil.h>
 #include "Entity.h"
 #include "ClientManager.h"
+#include "Tag16.h"
 
 namespace adchpp
 {
@@ -77,13 +78,21 @@ namespace adchpp
 		return !fields.empty();
 	}
 
+	static bool isFieldSupported(uint16_t code)
+	{
+		return code != TAG('P', 'D');
+	}
+
 	void Entity::updateFields(const AdcCommand& cmd)
 	{
 		dcassert(cmd.getCommand() == AdcCommand::CMD_INF);
 		for (auto j = cmd.getParameters().begin(); j != cmd.getParameters().end(); ++j)
 		{
-			if (j->size() < 2) continue;
-			setField(j->c_str(), j->substr(2));
+			if (j->length() < 2)
+				continue;
+			const char* c = j->c_str();
+			if (isFieldSupported(AdcCommand::toField(c)))
+				setField(c, j->substr(2));
 		}
 	}
 
