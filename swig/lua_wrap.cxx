@@ -2710,6 +2710,7 @@ SWIG_Lua_dostring(lua_State *L, const char *str) {
 #include <baselib/TigerHash.h>
 #include <baselib/Text.h>
 #include <baselib/SimpleXML.h>
+#include <baselib/FormatUtil.h>
 
 using namespace adchpp;
 using std::shared_ptr;
@@ -3153,6 +3154,7 @@ namespace adchpp {
 	const std::string &getDataPath(lua_State *l) { return getCurrentCore(l)->getDataPath(); }
 	const std::string &Util_getCfgPath(lua_State *l) { return getConfigPath(l); }
 	std::string Util_getLocalIp(lua_State *l) { return Utils::getLocalIp(); }
+	std::string Util_formatBytes(lua_State *l, int64_t bytes) { return Util::formatBytes(bytes); }
 }
 
 
@@ -17341,6 +17343,36 @@ fail:
 }
 
 
+static int _wrap_Util_formatBytes(lua_State* L) {
+  int SWIG_arg = 0;
+  lua_State *arg1 = (lua_State *) 0 ;
+  int64_t arg2 ;
+  std::string result;
+  
+  arg1 = L;
+  SWIG_check_num_args("adchpp::Util_formatBytes",1,1)
+  if(!lua_isnumber(L,1)) SWIG_fail_arg("adchpp::Util_formatBytes",1,"int64_t");
+  {
+    arg2 = (int64_t)lua_tonumber(L,1);
+  }
+  {
+    try {
+      result = adchpp::Util_formatBytes(arg1,arg2);
+    } catch(const std::exception& e) {
+      SWIG_exception(SWIG_UnknownError, e.what());
+    }
+  }
+  lua_pushlstring(L,(&result)->data(),(&result)->size()); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static swig_lua_attribute swig_SwigModule_attributes[] = {
     { "appName", _wrap_appName_get, _wrap_appName_set },
     { "versionString", _wrap_versionString_get, _wrap_versionString_set },
@@ -17483,6 +17515,7 @@ static swig_lua_method swig_SwigModule_methods[]= {
     { "getDataPath", _wrap_getDataPath},
     { "Util_getCfgPath", _wrap_Util_getCfgPath},
     { "Util_getLocalIp", _wrap_Util_getLocalIp},
+    { "Util_formatBytes", _wrap_Util_formatBytes},
     {0,0}
 };
 static swig_lua_class* swig_SwigModule_classes[]= {

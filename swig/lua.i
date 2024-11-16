@@ -364,6 +364,7 @@ namespace adchpp {
 	const std::string &getDataPath(lua_State *l) { return getCurrentCore(l)->getDataPath(); }
 	const std::string &Util_getCfgPath(lua_State *l) { return getConfigPath(l); }
 	std::string Util_getLocalIp(lua_State *l) { return Utils::getLocalIp(); }
+	std::string Util_formatBytes(lua_State *l, int64_t bytes) { return Util::formatBytes(bytes); }
 }
 
 %}

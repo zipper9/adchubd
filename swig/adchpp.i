@@ -14,6 +14,7 @@
 #include <baselib/TigerHash.h>
 #include <baselib/Text.h>
 #include <baselib/SimpleXML.h>
+#include <baselib/FormatUtil.h>
 
 using namespace adchpp;
 using std::shared_ptr;
