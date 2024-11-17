@@ -1,14 +1,18 @@
 #ifndef APP_PATHS_H_
 #define APP_PATHS_H_
 
-#include <string>
+#include <baselib/tstring.h>
 
 namespace AppPaths
 {
-	std::string getModuleFileName();
-	std::string getModuleDirectory();
-	std::string makeAbsolutePath(const std::string& filename);
-	std::string makeAbsolutePath(const std::string& path, const std::string& filename);
+	tstring getModuleFileName();
+	tstring getModuleDirectory();
+	string makeAbsolutePath(const string& filename);
+	string makeAbsolutePath(const string& path, const string& filename);
+#ifdef _UNICODE
+	wstring makeAbsolutePath(const wstring& filename);
+	wstring makeAbsolutePath(const wstring& path, const wstring& filename);
+#endif
 }
 
 #endif // APP_PATHS_H_

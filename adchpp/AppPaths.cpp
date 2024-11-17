@@ -14,14 +14,18 @@
 #endif
 
 #ifdef _WIN32
-string AppPaths::getModuleFileName()
+tstring AppPaths::getModuleFileName()
 {
-	static string moduleFileName;
+	static tstring moduleFileName;
 	if (moduleFileName.empty())
 	{
 		WCHAR buf[MAX_PATH];
 		DWORD len = GetModuleFileNameW(NULL, buf, MAX_PATH);
+#ifdef _UNICODE
+		moduleFileName.assign(buf, len);
+#else
 		Text::wideToUtf8(buf, len, moduleFileName);
+#endif
 	}
 	return moduleFileName;
 }
@@ -49,11 +53,11 @@ string AppPaths::getModuleFileName()
 }
 #endif
 
-string AppPaths::getModuleDirectory()
+tstring AppPaths::getModuleDirectory()
 {
-	string path = getModuleFileName();
-	string::size_type pos = path.rfind(PATH_SEPARATOR);
-	if (pos == string::npos)
+	tstring path = getModuleFileName();
+	tstring::size_type pos = path.rfind(PATH_SEPARATOR);
+	if (pos == tstring::npos)
 		path.clear();
 	else
 		path.erase(pos + 1);
@@ -62,7 +66,7 @@ string AppPaths::getModuleDirectory()
 
 string AppPaths::makeAbsolutePath(const string& filename)
 {
-	return makeAbsolutePath(getModuleDirectory(), filename);
+	return makeAbsolutePath(Text::fromT(getModuleDirectory()), filename);
 }
 
 string AppPaths::makeAbsolutePath(const string& path, const string& filename)
@@ -73,3 +77,19 @@ string AppPaths::makeAbsolutePath(const string& path, const string& filename)
 	result += filename;
 	return result;
 }
+
+#ifdef _UNICODE
+wstring AppPaths::makeAbsolutePath(const wstring& filename)
+{
+	return makeAbsolutePath(getModuleDirectory(), filename);
+}
+
+wstring AppPaths::makeAbsolutePath(const wstring& path, const wstring& filename)
+{
+	if (filename.empty() || File::isAbsolute(filename)) return filename;
+	wstring result = path;
+	Util::appendPathSeparator(result);
+	result += filename;
+	return result;
+}
+#endif

@@ -18,6 +18,10 @@ if(APPLE)
   add_compile_definitions(_DARWIN_C_SOURCE)
 endif()
 
+if(WIN32)
+  add_compile_definitions(_UNICODE UNICODE)
+endif()
+
 set(SOURCES
 baselib/Base32.cpp
 baselib/BaseUtil.cpp
