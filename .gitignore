@@ -9,3 +9,5 @@ CMakeCache.txt
 cmake_install.cmake
 ZERO_CHECK.vcxproj*
 ALL_BUILD.vcxproj*
+Makefile
+lua/Makefile
