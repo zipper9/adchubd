@@ -31,6 +31,7 @@ baselib/Exception.cpp
 baselib/File.cpp
 baselib/FormatUtil.cpp
 baselib/ParamExpander.cpp
+baselib/ProfileLocker.cpp
 baselib/Random.cpp
 baselib/SimpleXML.cpp
 baselib/SimpleXMLReader.cpp

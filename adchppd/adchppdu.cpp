@@ -21,6 +21,8 @@
 #include <adchpp/AppPaths.h>
 #include <adchpp/version.h>
 #include <baselib/File.h>
+#include <baselib/PathUtil.h>
+#include <baselib/ProfileLocker.h>
 #include <limits.h>
 #include <locale.h>
 #include <signal.h>
@@ -132,10 +134,13 @@ static void daemonize()
 	dup(0);
 }
 
-static void run(const string& configPath, bool asDaemon)
+static void run(const string& configPath, bool asDaemon, ProfileLocker& locker)
 {
 	if (asDaemon)
+	{
 		daemonize();
+		locker.updatePidFile();
+	}
 	else
 		printf("Starting %s\n", appName.c_str());
 	try
@@ -155,7 +160,14 @@ static void run(const string& configPath, bool asDaemon)
 
 static void printUsage()
 {
-	printf("Usage: " APPNAME " [[-c <configdir>] [-d]] | [-v] | [-h]\n");
+	const char* text = "Usage: " APPNAME " [options...]\n"
+		"Options:\n"
+		"\t-c confdir\tSpecify the path of the configuration directory (default: /etc/" APPNAME ")\n"
+		"\t-d\tRun as a daemon\n"
+		"\t-p filename\tCreate PID file\n"
+		"\t-v\tPrint version number\n"
+		"\t-h\tShow this help message\n";
+	puts(text);
 }
 
 static void checkArg(int argc, char* argv[], int i)
@@ -194,8 +206,7 @@ int main(int argc, char* argv[])
 				fprintf(stderr, "Config dir must be an absolute path\n");
 				return 2;
 			}
-
-			if (cfg[cfg.length() - 1] != '/') cfg += '/';
+			Util::appendPathSeparator(cfg);
 			configPath = std::move(cfg);
 		}
 		else if (strcmp(argv[i], "-p") == 0)
@@ -215,17 +226,18 @@ int main(int argc, char* argv[])
 		}
 	}
 
+	ProfileLocker locker;
 	if (!pidFileName.empty())
 	{
 		pidFileName = AppPaths::makeAbsolutePath("/run/", pidFileName);
-		pidFile = fopen(pidFileName.c_str(), "w");
-		if (!pidFile)
+		locker.setLockFileName(pidFileName);
+		if (!locker.lock())
 		{
-			fprintf(stderr, "Can't open %s for writing\n", pidFileName.c_str());
+			fprintf(stderr, "Unable to create lock file %s\n", pidFileName.c_str());
 			return 1;
 		}
 	}
 
-	run(configPath, asDaemon);
+	run(configPath, asDaemon, locker);
 	return 0;
 }

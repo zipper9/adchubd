@@ -50,6 +50,7 @@
     <ClCompile Include="baselib\File.cpp" />
     <ClCompile Include="baselib\FormatUtil.cpp" />
     <ClCompile Include="baselib\ParamExpander.cpp" />
+    <ClCompile Include="baselib\ProfileLocker.cpp" />
     <ClCompile Include="baselib\Random.cpp" />
     <ClCompile Include="baselib\SimpleXML.cpp" />
     <ClCompile Include="baselib\SimpleXMLReader.cpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="baselib\FormatUtil.h" />
     <ClInclude Include="baselib\HashValue.h" />
     <ClInclude Include="baselib\ParamExpander.h" />
+    <ClInclude Include="baselib\ProfileLocker.h" />
     <ClInclude Include="baselib\Random.h" />
     <ClInclude Include="baselib\SimpleXML.h" />
     <ClInclude Include="baselib\SimpleXMLException.h" />

@@ -144,6 +144,9 @@
     <ClCompile Include="baselib\TimeUtil.cpp">
       <Filter>baselib</Filter>
     </ClCompile>
+    <ClCompile Include="baselib\ProfileLocker.cpp">
+      <Filter>baselib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="adchpp\AdcCommand.h">
@@ -300,6 +303,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="baselib\TimeUtil.h">
+      <Filter>baselib</Filter>
+    </ClInclude>
+    <ClInclude Include="baselib\ProfileLocker.h">
       <Filter>baselib</Filter>
     </ClInclude>
   </ItemGroup>
