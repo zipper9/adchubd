@@ -1,0 +1,9 @@
+[Unit]
+Description=ADC Hub Server
+After=syslog.target network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/adchubd -p adchubd.pid
+Restart=on-failure
+RestartSec=30s
